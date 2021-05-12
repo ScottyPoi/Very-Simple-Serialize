@@ -41,8 +41,6 @@ export default function BasicType({ ...props }) {
   }
 
   const equals = (value1, value2) => {
-    assertValidValue(value1);
-    assertValidValue(value2);
     return value1 === value2;
   }
 
