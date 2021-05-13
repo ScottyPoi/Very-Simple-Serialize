@@ -41,13 +41,17 @@ export default function BooleanType({ ...props }) {
   }
 
   return (
+    <div className='col'>
+
     <BasicType
+
       value={value}
+      string={value ? "true" : "false"}
       serialized={output}
       type={"Boolean"}
       offset={offset}
       clone={clone}
-      defaultValue={false}
+      defaultValue={"false"}
       getSerializedLength={getSerializedLength}
       assertValidValue={assertValidValue}
       serializeToBytes={serializeToBytes}
@@ -55,5 +59,6 @@ export default function BooleanType({ ...props }) {
     >
       {props.children}
     </BasicType>
+    </div>
   );
 }

@@ -58,6 +58,7 @@ export default function UintNumberType({ ...props }) {
   };
 
   return (
+    <div className='col'>
     <BasicType
       value={value}
       type={"Uint"}
@@ -70,5 +71,6 @@ export default function UintNumberType({ ...props }) {
     >
       {props.children}
     </BasicType>
+    </div>
   );
 }

@@ -4,11 +4,17 @@ import BooleanType from '../components/BooleanType'
 export default function First() {
 
     return (
-        <div>FEE
+        <div className='container'>
+            <div className='row'>
             <UintNumberType
-            value={4}
+            value={1}
             offset={0}
             uintType={"Uint8"} />
+            
+            <BooleanType
+            value={true}
+            offset={0} />
+        </div>
         </div>
     )
 
