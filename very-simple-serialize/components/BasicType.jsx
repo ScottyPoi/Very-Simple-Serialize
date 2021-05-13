@@ -5,6 +5,7 @@ export default function BasicType({ ...props }) {
     const value = props.value;
     const serialized = props.serialized;
     const type = props.type;
+    const uintType = props.uintType;
     const offset = props.offset;
     const clone = props.clone;
     const defaultValue = props.defaultValue;
@@ -12,6 +13,7 @@ export default function BasicType({ ...props }) {
   const getSerializedLength = props.getSerializedLength;
   const serializeToBytes = props.serializeToBytes;
   const deserializeFromBytes = props.deserializeFromBytes
+  const bytes = props.bytes;
 
   
 
@@ -19,7 +21,7 @@ export default function BasicType({ ...props }) {
     return (type === "Uint") | "Boolean";
   }
 
-  const bytesValidate = () => {
+  const bytesValidate = (value, offset) => {
     if (!value) {
       throw new Error("Data is null or undefined");
     }
@@ -50,6 +52,8 @@ export default function BasicType({ ...props }) {
       serialized={serialized}
       offset={offset}
       type={type}
+      uintType={uintType}
+      bytes={bytes}
       defaultValue={defaultValue}
       equals={equals}
       serializeToBytes={serializeToBytes}
