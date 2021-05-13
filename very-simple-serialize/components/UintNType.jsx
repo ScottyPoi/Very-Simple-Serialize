@@ -1,12 +1,12 @@
 import { useState } from "react";
 import BasicType from "./BasicType";
-export default function UintNumberType({ ...props }) {
+export default function UintNType({ ...props }) {
   const value = props.value;
   const offset = props.offset;
   const uintType = props.uintType;
-  const byteLength = uintType === "Uint8" ? 1 : uintType === "Uint16" ? 2 : 3;
+  const byteLength = uintType === "Uint8" ? 1 : uintType === "Uint16" ? 2 : uintType === "Uint32" ? 4 : uintType === "Uint64" ? 8 : uintType === "Uint128" ? 16 : uintType === "Uint256" ? 32 : 0;
 
-  const UintNumberTypes = ["Uint8", "Uint16", "Uint32"];
+  const UintNumberTypes = ["Uint8", "Uint16", "Uint32", "Uint64", "Uint128", "Uint256"];
 
   const assertValidType = () => {
     if (!UintNumberTypes.includes(uintType)) {
@@ -21,20 +21,14 @@ export default function UintNumberType({ ...props }) {
   };
 
   const serializeToBytes = (value, output, offset) => {
-    let array = new Uint8Array();
+    let array = new Uint8Array(32);
     array = Uint8Array.from(output);
     let val = value;
-    if (byteLength > 6 && val === Infinity) {
-      for (let i = offset; i < offset + byteLength; i++) {
-        array[i] = 0xff;
-      }
-    } else {
       const MAX_BYTE = 0xff;
       for (let i = 0; i < byteLength; i++) {
         array[offset + i] = val & MAX_BYTE;
         val = Math.floor(val / 256);
       }
-    }
     return array;
   };
 
@@ -62,9 +56,11 @@ export default function UintNumberType({ ...props }) {
     <BasicType
       value={value}
       type={"Uint"}
+      uintType={uintType}
       offset={offset}
       clone={clone}
       defaultValue={0}
+      bytes={byteLength}
       assertValidValue={assertValidValue}
       serializeToBytes={serializeToBytes}
       deserializeFromBytes={deserializeFromBytes}

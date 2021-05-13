@@ -2,7 +2,7 @@ import BasicType from "./BasicType";
 import { useState } from 'react'
 export default function BooleanType({ ...props }) {
 
-    const [output, setOutput] = useState(new Uint8Array(8))
+    const [output, setOutput] = useState(new Uint8Array(32))
 
   const value = props.value;
   const offset = props.offset;
@@ -16,7 +16,7 @@ export default function BooleanType({ ...props }) {
   }
 
   const serializeToBytes = (value, output, offset) => {
-    let array = new Uint8Array;
+    let array = new Uint8Array();
     array = Uint8Array.from(output)
     array[offset] = value ? 1 : 0;
     return array;
@@ -41,7 +41,6 @@ export default function BooleanType({ ...props }) {
   }
 
   return (
-    <div className='col'>
 
     <BasicType
 
@@ -56,9 +55,9 @@ export default function BooleanType({ ...props }) {
       assertValidValue={assertValidValue}
       serializeToBytes={serializeToBytes}
       deserializeFromBytes={deserializeFromBytes}
+      bytes={1}
     >
       {props.children}
     </BasicType>
-    </div>
   );
 }
