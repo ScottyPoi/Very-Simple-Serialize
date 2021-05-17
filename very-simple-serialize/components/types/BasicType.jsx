@@ -1,4 +1,4 @@
-import SSZType from './SSZType';
+import DisplayBasicType from '../DisplayBasicType';
 import { useState } from 'react';
 export default function BasicType({ ...props }) {
 
@@ -15,7 +15,11 @@ export default function BasicType({ ...props }) {
   const deserializeFromBytes = props.deserializeFromBytes
   const bytes = props.bytes;
 
-  
+  function toHexString(byteArray) {
+    return Array.prototype.map.call(byteArray, function(byte) {
+      return ('0' + (byte & 0xFF).toString(16)).slice(-2);
+    }).join('');
+  }
 
   const typeValidate = () => {
     return (type === "Uint") | "Boolean";
@@ -47,7 +51,7 @@ export default function BasicType({ ...props }) {
   }
 
   return (
-    <SSZType
+    <DisplayBasicType
       value={value}
       serialized={serialized}
       offset={offset}
@@ -61,6 +65,7 @@ export default function BasicType({ ...props }) {
       typeValidate={typeValidate}
       bytesValidate={bytesValidate}
       hashTreeRoot={hashTreeRoot}
-    >{props.children}</SSZType>
+      toHexString={toHexString}
+    >{props.children}</DisplayBasicType>
   );
 }

@@ -1,5 +1,5 @@
 import { createHash } from 'crypto';
-export default function SSZType({ ...props }) {
+export default function DisplayBasicType({ ...props }) {
   const value = props.value;
   const uintType = props.uintType;
   const string = value ? "true" : "false";
@@ -13,14 +13,16 @@ export default function SSZType({ ...props }) {
   const bytesValidate = props.bytesValidate;
   const hashTreeRoot = props.hashTreeRoot;
   const serial = props.serialized;
-  
   const bytes = props.bytes
+  const chunkDepth = props.chunkDepth;
+  const defaultNode = props.defaultNode;
+  const assertValidValue = props.assertValidValue;
+  const toHexString = props.toHexString;
+  const fromHexString= props.fromHexString;
+  const byteArrayEquals = props.byteArrayEquals;
+  const getByteBits = props.getByteBits;
 
-  function toHexString(byteArray) {
-    return Array.prototype.map.call(byteArray, function(byte) {
-      return ('0' + (byte & 0xFF).toString(16)).slice(-2);
-    }).join('');
-  }
+
 
   typeValidate();
   // bytesValidate(value, offset);
@@ -62,6 +64,6 @@ export default function SSZType({ ...props }) {
       <br />
       <div>Validate: {valid}</div>
       <br />
-    </>
+    {props.children}</>
   );
 }
