@@ -1,4 +1,4 @@
-import BasicType from "./BasicType";
+import BasicType from "../BasicType";
 import { useState } from 'react'
 export default function BooleanType({ ...props }) {
 
