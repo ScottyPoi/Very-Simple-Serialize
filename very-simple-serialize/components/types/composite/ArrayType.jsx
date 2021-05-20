@@ -46,7 +46,7 @@ export default function ArrayType({...props}) {
         fullChunks={fullChunks}
         type={type}
         compositeTypeRoot={arrayRoot}
-        arrayType={arrayType}
+        compositeType={arrayType}
         vectorType={vectorType}
         elementType={elementType}
         uintType={uintType}

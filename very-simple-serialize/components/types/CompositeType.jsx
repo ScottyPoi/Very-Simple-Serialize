@@ -10,6 +10,7 @@ const isBackedValue = (value) => {
 export default function CompositeType({...props}) {
 
     const type = props.type;
+    const compositeType = props.compositeType
     const chunk_count = props.chunk_count;
     const compositeTypeRoot = props.compositeTypeRoot;
     const fullChunks = props.fullChunks
@@ -346,6 +347,7 @@ export default function CompositeType({...props}) {
         values={values}
         length={length}
         root={compositeTypeRoot}
+        compositeType={compositeType}
         chunkDepth={chunkDepth}
         treeDefaultValue={treeDefaultValue}
         assertValidValue={assertValidValue}
