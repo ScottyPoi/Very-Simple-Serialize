@@ -268,9 +268,9 @@ export default function BasicArrayType({...props}) {
 
   return (
       <ArrayType
-      arrayType={"BasicArrayType"}
+      arrayType={basicArrayType}
       arrayRoot={basicArrayRoot}
-      basicArrayType={basicArrayType}
+      chunk_count={chunk_count}
       elementType={elementType}
       uintType={uintType}
       length={length}

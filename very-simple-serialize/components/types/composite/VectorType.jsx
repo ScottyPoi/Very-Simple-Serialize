@@ -50,6 +50,7 @@ export default function VectorType({ ...props }) {
         vectorType={vectorType}
         fullChunks={fullChunks}
         basicArrayRoot={vectorRoot}
+        chunk_count={chunk_count}
         // getSerializedValue={getSerializedValue}
         // getSerializedElementLength={getSerializedElementLength}
         // getSerializedVectorLength={getSerializedVectorLength}

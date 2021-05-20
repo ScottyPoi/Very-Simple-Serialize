@@ -15,6 +15,7 @@ export default function DisplayCompositeType({ ...props }) {
   const vectorType = props.vectorType;
   const fullChunks = props.fullChunks;
   const root = props.root;
+  const compositeType = props.compositeType;
 
   const serializeLength = (length) => {
     let array = new Uint8Array(32);
@@ -78,17 +79,16 @@ export default function DisplayCompositeType({ ...props }) {
 
   return (
     <div>
-      <div>Type: Composite: {basicArrayType} : {vectorType}</div>
+      <div>Type: Composite: {compositeType} : {vectorType}</div>
       <br />
       <div>Element Type: {uintType ? uintType : elementType}</div>
       <br />
       <div>Length: {length}</div>
-      <br />
       <div>Length (Serialized): 0x{serializedLength}</div>
       <br />
       <div>Values: {values.map((value) => {return `${value}, `})}</div>
       <br />
-       <div>Chunks: {serials.map((chunk) => {return (<div>{chunk}</div>)})}</div> 
+       <div>Chunks: ({chunk_count}) {serials.map((chunk) => {return (<div>{chunk}</div>)})}</div> 
       <br />
       <div>Root: 0x{root(serials).toString('hex')}</div>
       <br/>
