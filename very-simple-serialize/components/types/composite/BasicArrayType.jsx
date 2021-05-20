@@ -9,6 +9,7 @@ import Tree from '../../Tree';
 export default function BasicArrayType({...props}) {
     
   const basicArrayType = props.basicArrayType
+  const basicArrayRoot = props.basicArrayRoot;
   const elementType = "Basic";
   const vectorType = props.vectorType;
   const valueType = props.valueType;
@@ -21,6 +22,8 @@ export default function BasicArrayType({...props}) {
   const getMinLength = props.getMinLength;
   const tree_getLength = props.tree_getLength;
   const _deserializeFromBytes = props.deserializeFromBytes;
+  const chunk_count = props.chunk_count
+  const fullChunks = props.fullChunks;
 
   // const getSerializedLength = (value) => {
   //     return props.getSerializedLength() * getLength(value);
@@ -266,6 +269,7 @@ export default function BasicArrayType({...props}) {
   return (
       <ArrayType
       arrayType={"BasicArrayType"}
+      arrayRoot={basicArrayRoot}
       basicArrayType={basicArrayType}
       elementType={elementType}
       uintType={uintType}
@@ -295,6 +299,7 @@ export default function BasicArrayType({...props}) {
       bytes_getVariableOffsets={bytes_getVariableOffsets}
       tree_readonlyIterateValues={tree_readonlyIterateValues}
       tree_iterateValues={tree_iterateValues}
+      fullChunks={fullChunks}
 
 
       >

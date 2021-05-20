@@ -6,8 +6,7 @@ export default function ArrayType({...props}) {
 
     const type = "ArrayType";
     const arrayType = props.arrayType;
-    const basicArrayType = props.basicArrayType;
-    const compositeArrayType = props.compositeArrayType;
+    const arrayRoot = props.arrayRoot;
     const vectorType = props.vectorType;
     const elementType = props.elementType;
     const uintType = props.uintType;
@@ -38,13 +37,16 @@ export default function ArrayType({...props}) {
     const bytes_getVariableOffsets= props.bytes_getVariableOffsets;
     const tree_readonlyIterateValues= props.tree_readonlyIterateValues;
     const tree_iterateValues= props.tree_iterateValues;
+    const chunk_count = props.chunk_count;
+    const fullChunks = props.fullChunks
 
     return (
         <CompositeType
+        chunk_count={chunk_count}
+        fullChunks={fullChunks}
         type={type}
+        compositeTypeRoot={arrayRoot}
         arrayType={arrayType}
-        basicArrayType={basicArrayType}
-        compositeArrayType={compositeArrayType}
         vectorType={vectorType}
         elementType={elementType}
         uintType={uintType}

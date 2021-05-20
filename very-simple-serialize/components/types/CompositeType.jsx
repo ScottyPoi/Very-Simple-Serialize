@@ -10,6 +10,9 @@ const isBackedValue = (value) => {
 export default function CompositeType({...props}) {
 
     const type = props.type;
+    const chunk_count = props.chunk_count;
+    const compositeTypeRoot = props.compositeTypeRoot;
+    const fullChunks = props.fullChunks
     const arrayType = props.arrayType;
     const basicArrayType = props.basicArrayType;
     const compositeArrayType = props.compositeArrayType;
@@ -84,8 +87,8 @@ export default function CompositeType({...props}) {
     //     return fromBytes(data, 0, data.length)
     // };
 
-    const serialize = (values, output) => {
-        return serializeToBytes(values, output)
+    const serialize = (values) => {
+        return serializeToBytes(values)
     }
 
     // const toBytes = (value) => {
@@ -342,6 +345,7 @@ export default function CompositeType({...props}) {
         <DisplayCompositeType
         values={values}
         length={length}
+        root={compositeTypeRoot}
         chunkDepth={chunkDepth}
         treeDefaultValue={treeDefaultValue}
         assertValidValue={assertValidValue}
@@ -390,6 +394,8 @@ export default function CompositeType({...props}) {
         treeDefaultValue={treeDefaultValue}
         treeClone={treeClone}
         bytesClone={bytesClone}
+        chunk_count={chunk_count}
+        fullChunks={fullChunks}
         >{props.children}</DisplayCompositeType>
     )
 }
