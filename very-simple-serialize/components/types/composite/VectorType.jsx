@@ -3,6 +3,8 @@ import CompositeVectorType from "../composite/CompositeVectorType";
 
 export default function VectorType({ ...props }) {
   const values = props.values;
+  const vectorRoot = props.vectorRoot;
+  const fullChunks = props.fullChunks;
   const vectorType = props.vectorType;
   const elementType = props.elementType;
   const elementSize = props.elementSize;
@@ -14,7 +16,7 @@ export default function VectorType({ ...props }) {
   const getSerializedVectorLength = props.getSerializedVectorLength;
   const getMinSerializedLength = props.getMinLength;
   const bytesValidate = props.bytesValidate;
-
+  const chunk_count = props.chunk_count;
   const assertValidValue = props.assertValidValue;
   const fromJson = props.fromJson;
   const treeDeserializedFromBytes = props.treeDeserializedFromBytes;
@@ -46,6 +48,8 @@ export default function VectorType({ ...props }) {
         elementType={elementType}
         uintType={uintType}
         vectorType={vectorType}
+        fullChunks={fullChunks}
+        basicArrayRoot={vectorRoot}
         // getSerializedValue={getSerializedValue}
         // getSerializedElementLength={getSerializedElementLength}
         // getSerializedVectorLength={getSerializedVectorLength}

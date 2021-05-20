@@ -11,9 +11,9 @@ export default function First() {
   return (
     <div className="container">
       <div className="row">
-        <UintNType value={1122} offset={0} uintType={"Uint256"} />
+        <UintNType value={1122} offset={0} uintType={"Uint32"} />
         {/* <BooleanType value={true} offset={0} /> */}
-        <BasicVectorType values={[1122, 3344, 4455]} elementType={"uintN"} uintType={"uint32"} length={3} byteLength={4}></BasicVectorType>
+        <BasicVectorType values={[255,254,123,132,103, 245, 245, 254, 246]} elementType={"uintN"} uintType={"uint32"} length={9} byteLength={4}></BasicVectorType>
       </div>
     </div>
   );
