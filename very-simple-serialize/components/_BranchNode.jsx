@@ -1,7 +1,7 @@
-import Node from './Node';
+import Node from './_Node';
 import {useState} from 'node';
 
-export default function BranchNode({...props, ...children}) {
+export default function BranchNode({...props}) {
 
     const root = props.root;
     const [left, setLeft] = useState(props.left);
@@ -45,8 +45,6 @@ export default function BranchNode({...props, ...children}) {
         )
     }
 
-
-
     return (
         <Node
         getRoot={getRoot}
@@ -55,7 +53,7 @@ export default function BranchNode({...props, ...children}) {
         getRight={getRight}
         rebindLeft={rebindLeft}
         rebindRight={rebindRight}>
-            {children}
+            {props.children}
         </Node>
     )
 }
