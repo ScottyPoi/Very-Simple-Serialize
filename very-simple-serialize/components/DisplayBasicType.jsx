@@ -1,4 +1,5 @@
 import { createHash } from 'crypto';
+import LeafNode from './persistent/LeafNode';
 export default function DisplayBasicType({ ...props }) {
   const value = props.value;
   const uintType = props.uintType;
@@ -37,8 +38,13 @@ export default function DisplayBasicType({ ...props }) {
   let hex = toHexString(serialized)
   let hexroot = toHexString(root);
   let hash = createHash('sha256');
-  hash.update(root)
-  hash = hash.digest('hex')
+  hash.update(root);
+  hash = hash.digest('hex');
+
+
+
+
+
   return (
     <>
       <div>Type: {uintType ? uintType : type}</div>

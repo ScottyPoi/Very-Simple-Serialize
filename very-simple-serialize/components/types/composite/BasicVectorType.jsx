@@ -1,7 +1,7 @@
 import VectorType from "./VectorType";
-import Node from "../../Node";
+import Node from "../../persistent/Node";
 import subtreeFillToLength from "../../subtreeFillToLength";
-import Tree from "../../Tree";
+import Tree from "../../persistent/Tree";
 import ZeroNode from "../../ZeroNode";
 import { useState } from "react";
 import {
@@ -63,7 +63,7 @@ export default function BasicVectorType({ ...props }) {
 
   const BasicVectorRoot = (chunks) => {
     let hashes = [];
-    for (let i = 0; i < chunks.length; i++) {
+    for (let i=0; i<chunks.length; i+= 2) {
       let hash = createHash("sha256");
       hash.update(chunks[i]);
       hash = hash.digest();
