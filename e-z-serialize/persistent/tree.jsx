@@ -10,7 +10,7 @@ const ERR_PARAM_LT_ZERO = "Param must be >= 0";
 const ERR_COUNT_GT_DEPTH = "Count extends beyond depth limit";
 
 export class Tree {
-  constructor(node, hook) {
+  constructor(node) {
     this._node = node;
   }
 

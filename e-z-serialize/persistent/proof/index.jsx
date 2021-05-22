@@ -1,5 +1,5 @@
 import {Gindex} from "../gindex";
-import {Node} from "../node2";
+import {Node} from "../node";
 import {createNodeFromSingleProof, createSingleProof} from "./single";
 import {
   computeTreeOffsetProofSerializedLength,

@@ -1,10 +1,15 @@
 import ArrayType from './ArrayType';
 import LeafNode from '../../persistent/LeafNode';
-import Gindex from '../../persistent/Gindex';
-import iterateAtDepth from '../../IterateAtDepth';
-import Node from '../../persistent/Node';
-import subtreeFillToContents from '../../subtreeFillToContents'
-import Tree from '../../persistent/Tree';
+import {
+  concatGindices,
+  Gindex,
+  iterateAtDepth,
+  LeafNode,
+  Node,
+  subtreeFillToContents,
+  toGindex,
+  Tree,
+} from '../components/persistent'
 
 export default function BasicArrayType({...props}) {
     
