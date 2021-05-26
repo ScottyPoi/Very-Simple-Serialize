@@ -6,6 +6,7 @@ import Node from '../../persistent/Node';
 import subtreeFillToContents from '../../subtreeFillToContents'
 import Tree from '../../persistent/Tree';
 
+
 export default function BasicArrayType({...props}) {
     
   const basicArrayType = props.basicArrayType
