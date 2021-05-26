@@ -1,8 +1,8 @@
 import VectorType from "./VectorType";
-import Node from "../../persistent/Node";
-import subtreeFillToLength from "../../subtreeFillToLength";
-import Tree from "../../persistent/Tree";
-import ZeroNode from "../../ZeroNode";
+// import Node from "../../persistent/Node";
+// import subtreeFillToLength from "../../subtreeFillToLength";
+// import Tree from "../../persistent/Tree";
+// import ZeroNode from "../../ZeroNode";
 import { useState } from "react";
 import {
   deserializeUintFromBytes,

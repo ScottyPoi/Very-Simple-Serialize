@@ -1,5 +1,5 @@
 import { createHash } from 'crypto';
-import LeafNode from './persistent/LeafNode';
+// import { LeafNode } from '../e-z-serialize/persistent/node';
 export default function DisplayBasicType({ ...props }) {
   const value = props.value;
   const uintType = props.uintType;

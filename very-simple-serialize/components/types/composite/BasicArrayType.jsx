@@ -11,6 +11,7 @@ import {
   Tree,
 } from '../components/persistent'
 
+
 export default function BasicArrayType({...props}) {
     
   const basicArrayType = props.basicArrayType
