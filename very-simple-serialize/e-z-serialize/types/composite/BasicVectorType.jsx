@@ -7,7 +7,7 @@ import { useState } from "react";
 import {
   deserializeUintFromBytes,
   serializeUintToBytes,
-} from "../../math/UintMath";
+} from "../../../components/math/UintMath";
 import { createHash } from "crypto";
 
 export default function BasicVectorType({ ...props }) {

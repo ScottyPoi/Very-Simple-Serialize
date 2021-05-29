@@ -10,8 +10,8 @@ import {
 } from "./treeOffset";
 
 export const ProofType = {
-  single = "single",
-  treeOffset = "treeOffset",
+  single: "single",
+  treeOffset: "treeOffset",
 }
 
 /**

@@ -1,4 +1,4 @@
-import DisplayArrayType from '../../DisplayCompositeType';
+import DisplayArrayType from '../../../components/DisplayCompositeType';
 import CompositeType from '../CompositeType';
 
 export default function ArrayType({...props}) {

@@ -1,7 +1,7 @@
-import UintNType from "../components/types/basic/UintNType";
-import BooleanType from "../components/types/basic/BooleanType";
+import UintNType from "../e-z-serialize/types/basic/UintNType";
+import BooleanType from "../e-z-serialize/types/basic/BooleanType";
 // import ContainerType from "../components/types/composite/ContainerType";
-import BasicVectorType from "../components/types/composite/BasicVectorType";
+import BasicVectorType from "../e-z-serialize/types/composite/BasicVectorType";
 // import CompositeVectorType from '../components/types/composite/CompositeVectorType'
 // import ListType from "../components/types/composite/ListType";
 // import ByteVectorType from "../components/types/composite/ByteVectorType";

@@ -1,4 +1,4 @@
-import DisplayBasicType from '../DisplayBasicType';
+import DisplayBasicType from '../../components/DisplayBasicType';
 import { useState } from 'react';
 export default function BasicType({ ...props }) {
 

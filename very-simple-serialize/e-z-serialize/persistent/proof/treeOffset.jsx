@@ -1,6 +1,6 @@
 import {Gindex, GindexBitstring} from "../gindex";
-import {BranchNode, LeafNode, Node} from "../_Node";
-import {computeMultiProofBitstrings} from "./util";
+import {BranchNode, LeafNode, Node} from "../node";
+import {computeMultiProofBitstrings} from "./utils";
 
 /**
  * Compute offsets and leaves of a tree-offset proof

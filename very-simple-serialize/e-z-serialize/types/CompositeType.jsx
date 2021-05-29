@@ -1,6 +1,6 @@
-import DisplayBasicType from '../DisplayBasicType';
-import DisplayCompositeType from '../DisplayCompositeType';
-import CreateTreeBacked from '../CreateTreeBacked';
+import DisplayBasicType from '../../components/DisplayBasicType';
+import DisplayCompositeType from '../../components/DisplayCompositeType';
+import CreateTreeBacked from '../../components/CreateTreeBacked';
 import BasicArrayType from './composite/BasicArrayType';
 // import isBackedValue from '../isBackedValue';
 

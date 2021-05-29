@@ -1,14 +1,10 @@
-import {
-    concatGindices,
-    Gindex,
-    iterateAtDepth,
-    LeafNode,
-    Node,
-    subtreeFillToContents,
-    toGindex,
-    Tree,
-  } from '../components/persistent'
-
+import SimpleTree from "../components/trees/SimpleTree";
 export default function TreePage(props) {
-      
+
+
+  return (
+    <div>
+<SimpleTree />
+    </div>
+  )
 }

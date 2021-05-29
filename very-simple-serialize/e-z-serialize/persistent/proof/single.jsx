@@ -1,4 +1,4 @@
-import {BranchNode, LeafNode, Node} from "../_Node";
+import {BranchNode, LeafNode, Node} from "../node";
 import {Gindex, gindexIterator} from "../gindex";
 
 export const ERR_INVALID_NAV = "Invalid tree navigation";

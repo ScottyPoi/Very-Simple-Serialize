@@ -1,8 +1,5 @@
-import {assert} from "chai";
-import {describe, it} from "mocha";
-
-import {booleanType} from "../e-z-serialize/ssz/src/types/basic/boolean";
-import {byteType} from "../e-z-serialize/ssz/src/types/basic/wellKnown";
+import {booleanType} from "../ssz/src/types/basic/boolean";
+import {byteType} from "../ssz/src/types/basic/wellKnown";
 
 import {
   ArrayObject,
@@ -27,7 +24,8 @@ import {
   SimpleObject,
 } from "./objects";
 
-describe("serialize", () => {
+export default function SerializedTest(props) {
+
   const testCases = [
     {value: true, type: booleanType, expected: "01"},
     {value: false, type: booleanType, expected: "00"},
@@ -50,45 +48,64 @@ describe("serialize", () => {
     {value: 0x01n, type: bigint64Type, expected: "0100000000000000"},
     {value: 0x1000000000000000n, type: bigint64Type, expected: "0000000000000010"},
     {value: 0xffffffffffffffffn, type: bigint64Type, expected: "ffffffffffffffff"},
-    {
-      value: 0xffffffffffffffffffffffffffffffffn,
-      type: bigint128Type,
-      expected: "ffffffffffffffffffffffffffffffff",
-    },
-    {
-      value: 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
-      type: bigint256Type,
-      expected: "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-    },
-    {value: Buffer.from("deadbeef", "hex"), type: bytes4Type, expected: "deadbeef"},
-    {value: Buffer.from("deadbeef", "hex"), type: bytes4Type, expected: "deadbeef"},
-    {value: {b: 0, a: 0}, type: SimpleObject, expected: "000000"},
-    {value: {b: 2, a: 1}, type: SimpleObject, expected: "020001"},
-    {value: {v: 3, subV: {v: 6}}, type: OuterObject, expected: "030600"},
-    {
-      value: {
-        v: [
-          {b: 2, a: 1},
-          {b: 4, a: 3},
-        ],
-      },
-      type: ArrayObject,
-      expected: "04000000020001040003",
-    },
-    {
-      value: [
-        {v: 3, subV: {v: 6}},
-        {v: 5, subV: {v: 7}},
-      ],
-      type: ArrayObject2,
-      expected: "030600050700",
-    },
-    {value: [], type: ArrayObject2, expected: ""},
+    // {
+    //   value: 0xffffffffffffffffffffffffffffffffn,
+    //   type: bigint128Type,
+    //   expected: "ffffffffffffffffffffffffffffffff",
+    // },
+    // {
+    //   value: 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn,
+    //   type: bigint256Type,
+    //   expected: "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    // },
+    // {value: Buffer.from("deadbeef", "hex"), type: bytes4Type, expected: "deadbeef"},
+    // {value: Buffer.from("deadbeef", "hex"), type: bytes4Type, expected: "deadbeef"},
+    // {value: {b: 0, a: 0}, type: SimpleObject, expected: "000000"},
+    // {value: {b: 2, a: 1}, type: SimpleObject, expected: "020001"},
+    // {value: {v: 3, subV: {v: 6}}, type: OuterObject, expected: "030600"},
+    // {
+    //   value: {
+    //     v: [
+    //       {b: 2, a: 1},
+    //       {b: 4, a: 3},
+    //     ],
+    //   },
+    //   type: ArrayObject,
+    //   expected: "04000000020001040003",
+    // },
+    // {
+    //   value: [
+    //     {v: 3, subV: {v: 6}},
+    //     {v: 5, subV: {v: 7}},
+    //   ],
+    //   type: ArrayObject2,
+    //   expected: "030600050700",
+    // },
+    // {value: [], type: ArrayObject2, expected: ""},
   ];
+
+  let results = [];
+
+
   for (const {type, value, expected} of testCases) {
-    it(`should correctly serialize ${type.constructor.name}`, () => {
       const actual = Buffer.from(type.serialize(value)).toString("hex");
-      assert.equal(actual, expected);
-    });
+      let result = {type: type, value:  value,actual: actual, expected: expected}
+      results.push( result );
   }
-});
+
+  return (
+    <>
+    {results.map(({type, value, expected, result}) => {
+      return (
+        <div>
+          type: {type}
+          value: {value}
+          expected: {expected}
+          result: {result}
+        </div>
+      )
+    })}
+  </>
+  )
+
+}

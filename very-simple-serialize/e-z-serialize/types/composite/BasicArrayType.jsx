@@ -1,15 +1,6 @@
 import ArrayType from './ArrayType';
-import LeafNode from '../../persistent/LeafNode';
-import {
-  concatGindices,
-  Gindex,
-  iterateAtDepth,
-  LeafNode,
-  Node,
-  subtreeFillToContents,
-  toGindex,
-  Tree,
-} from '../components/persistent'
+import LeafNode from '../../persistent/node';
+
 
 
 export default function BasicArrayType({...props}) {

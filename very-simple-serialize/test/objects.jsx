@@ -1,23 +1,23 @@
 // Adapted from https://github.com/prysmaticlabs/prysm/blob/master/shared/ssz/encode_test.go#L296
-import { BigIntUintType } from "../e-z-serialize/ssz/src/types/basic/uint.js";
+import { BigIntUintType } from "../ssz/src/types/basic/uint";
 
-import { BitVectorType } from "../e-z-serialize/ssz/src/types/composite/bitVector.js";
+import { BitVectorType } from "../ssz/src/types/composite/bitVector.js";
 
-import { BitListType } from "../e-z-serialize/ssz/src/types/composite/bitList.js";
+import { BitListType } from "../ssz/src/types/composite/bitList.js";
 
-import { ByteVectorType } from "../e-z-serialize/ssz/src/types/composite/byteVector.js";
+import { ByteVectorType } from "../ssz/src/types/composite/byteVector.js";
 
-import { ContainerType } from "../e-z-serialize/ssz/src/types/composite/container.js";
+import { ContainerType } from "../ssz/src/types/composite/container.js";
 
-import { NumberUintType } from "../e-z-serialize/ssz/src/types/basic/uint.js";
+import { NumberUintType } from "../ssz/src/types/basic/uint.js";
 
-import { byteType } from "../e-z-serialize/ssz/src/types/basic/wellKnown.js";
+import { byteType } from "../ssz/src/types/basic/wellKnown.js";
 
-import { ListType } from "../e-z-serialize/ssz/src/types/composite/list.js";
+import { ListType } from "../ssz/src/types/composite/list.js";
 
-import { VectorType } from "../e-z-serialize/ssz/src/types/composite/vector.js";
+import { VectorType } from "../ssz/src/types/composite/vector.js";
 
-import { BooleanType } from "../e-z-serialize/ssz/src/types/basic/boolean.js";
+import { BooleanType } from "../ssz/src/types/basic/boolean.js";
 
 export const bytes2Type = new ByteVectorType({
   length: 2,
