@@ -1,6 +1,6 @@
-import {booleanType} from "../ssz/src/types/basic/boolean";
+import * as booleanType from "../ssz/src/types/basic/boolean";
 import {byteType} from "../ssz/src/types/basic/wellKnown";
-
+import * as type from '../ssz/src/types/type'
 import {
   ArrayObject,
   ArrayObject2,
@@ -29,25 +29,25 @@ export default function SerializedTest(props) {
   const testCases = [
     {value: true, type: booleanType, expected: "01"},
     {value: false, type: booleanType, expected: "00"},
-    {value: 0, type: byteType, expected: "00"},
-    {value: 1, type: byteType, expected: "01"},
-    {value: 255, type: byteType, expected: "ff"},
-    {value: 2 ** 8, type: number16Type, expected: "0001"},
-    {value: 2 ** 12 - 1, type: number16Type, expected: "ff0f"},
-    {value: 2 ** 12, type: number16Type, expected: "0010"},
-    {value: 2 ** 16 - 1, type: number16Type, expected: "ffff"},
-    {value: 2 ** 16, type: number32Type, expected: "00000100"},
-    {value: 2 ** 28 - 1, type: number32Type, expected: "ffffff0f"},
-    {value: 2 ** 28, type: number32Type, expected: "00000010"},
-    {value: 2 ** 32 - 1, type: number32Type, expected: "ffffffff"},
-    {value: 2 ** 32, type: number64Type, expected: "0000000001000000"},
-    {value: 2 ** 52 - 1, type: number64Type, expected: "ffffffffffff0f00"},
-    {value: 2 ** 32, type: number64Type, expected: "0000000001000000"},
-    {value: 2 ** 52 - 1, type: number64Type, expected: "ffffffffffff0f00"},
-    {value: Infinity, type: number64Type, expected: "ffffffffffffffff"},
-    {value: 0x01n, type: bigint64Type, expected: "0100000000000000"},
-    {value: 0x1000000000000000n, type: bigint64Type, expected: "0000000000000010"},
-    {value: 0xffffffffffffffffn, type: bigint64Type, expected: "ffffffffffffffff"},
+    // {value: 0, type: byteType, expected: "00"},
+    // {value: 1, type: byteType, expected: "01"},
+    // {value: 255, type: byteType, expected: "ff"},
+    // {value: 2 ** 8, type: number16Type, expected: "0001"},
+    // {value: 2 ** 12 - 1, type: number16Type, expected: "ff0f"},
+    // {value: 2 ** 12, type: number16Type, expected: "0010"},
+    // {value: 2 ** 16 - 1, type: number16Type, expected: "ffff"},
+    // {value: 2 ** 16, type: number32Type, expected: "00000100"},
+    // {value: 2 ** 28 - 1, type: number32Type, expected: "ffffff0f"},
+    // {value: 2 ** 28, type: number32Type, expected: "00000010"},
+    // {value: 2 ** 32 - 1, type: number32Type, expected: "ffffffff"},
+    // {value: 2 ** 32, type: number64Type, expected: "0000000001000000"},
+    // {value: 2 ** 52 - 1, type: number64Type, expected: "ffffffffffff0f00"},
+    // {value: 2 ** 32, type: number64Type, expected: "0000000001000000"},
+    // {value: 2 ** 52 - 1, type: number64Type, expected: "ffffffffffff0f00"},
+    // {value: Infinity, type: number64Type, expected: "ffffffffffffffff"},
+    // {value: 0x01n, type: bigint64Type, expected: "0100000000000000"},
+    // {value: 0x1000000000000000n, type: bigint64Type, expected: "0000000000000010"},
+    // {value: 0xffffffffffffffffn, type: bigint64Type, expected: "ffffffffffffffff"},
     // {
     //   value: 0xffffffffffffffffffffffffffffffffn,
     //   type: bigint128Type,

@@ -1,4 +1,5 @@
-import {BranchNode, Node} from "./node";
+import BranchNode from './BranchNode'
+import Node from "./node";
 import {zeroNode} from "./zeroNode";
 
 const ERR_NAVIGATION = "Navigation error";
@@ -9,7 +10,7 @@ const ERR_TOO_MANY_NODES = "Too many nodes";
 export function subtreeFillToDepth(bottom, depth) {
   let node = bottom;
   while (depth > 0) {
-    node = new BranchNode(node, node);
+    node = <BranchNode left={node} right={node}/>;
     depth--;
   }
   return node;
@@ -26,17 +27,17 @@ export function subtreeFillToLength(bottom, depth, length) {
   }
 
   if (depth === 1) {
-    return new BranchNode(bottom, length > 1 ? bottom : zeroNode(0));
+    return <BranchNode left={bottom} right={length}/> > 1 ? bottom : zeroNode(0);
   }
 
   const pivot = maxLength >> 1;
   if (length <= pivot) {
-    return new BranchNode(subtreeFillToLength(bottom, depth - 1, length), zeroNode(depth - 1));
+    return <BranchNode left={subtreeFillToLength(bottom, depth - 1, length)} right={zeroNode(depth - 1)} />;
   } else {
-    return new BranchNode(
-      subtreeFillToDepth(bottom, depth - 1),
-      subtreeFillToLength(bottom, depth - 1, length - pivot)
-    );
+    return <BranchNode left={
+      subtreeFillToDepth(bottom, depth - 1)} right={
+      subtreeFillToLength(bottom, depth - 1, length - pivot)}
+    />;
   }
 }
 
@@ -51,16 +52,16 @@ export function subtreeFillToContents(nodes, depth) {
 
   if (depth === 1) {
     if (!nodes.length) return zeroNode(1);
-    return new BranchNode(nodes[0], nodes[1] || zeroNode(0));
+    return <BranchNode left={nodes[0]} right={nodes[1] || zeroNode(0)}/>;
   }
 
   const pivot = Math.floor(maxLength / 2);
   if (nodes.length <= pivot) {
-    return new BranchNode(subtreeFillToContents(nodes, depth - 1), zeroNode(depth - 1));
+    return <BranchNode left={subtreeFillToContents(nodes, depth - 1)} right={zeroNode(depth - 1)}/>;
   } else {
-    return new BranchNode(
-      subtreeFillToContents(nodes.slice(0, Number(pivot)), depth - 1),
-      subtreeFillToContents(nodes.slice(Number(pivot)), depth - 1)
-    );
+    return <BranchNode left={
+      subtreeFillToContents(nodes.slice(0, Number(pivot)), depth - 1)} right = {
+      subtreeFillToContents(nodes.slice(Number(pivot)), depth - 1)}
+    />;
   }
 }

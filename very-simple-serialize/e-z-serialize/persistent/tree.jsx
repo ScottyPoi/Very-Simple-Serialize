@@ -9,29 +9,26 @@ const ERR_INVALID_TREE = "Invalid tree operation";
 const ERR_PARAM_LT_ZERO = "Param must be >= 0";
 const ERR_COUNT_GT_DEPTH = "Count extends beyond depth limit";
 
-export class Tree {
-  constructor(node) {
-    this._node = node;
+export default function Tree(props) {
+  
+  const [rootNode, set_rootNode] = useState(props._node)
+  
+
+  function createFromProof(proof) {
+    return <Tree _node={createNodeFromProof(proof)}/>;
   }
 
-  createFromProof(proof) {
-    return new Tree(createNodeFromProof(proof));
+  function get_rootNode() {
+    return rootNode;
   }
 
-  get rootNode() {
-    return this._node;
+
+  function get_root() {
+    return rootNode.root;
   }
 
-  set rootNode(n) {
-    this._node = n;
-  }
-
-  get root() {
-    return this.rootNode.root;
-  }
-
-  getNode(index) {
-    let node = this.rootNode;
+  function getNode(index) {
+    let node = rootNode;
     for (const i of gindexIterator(index)) {
       if (i) {
         if (node.isLeaf()) throw new Error(ERR_INVALID_TREE);
@@ -44,9 +41,9 @@ export class Tree {
     return node;
   }
 
-  setter(index, expand = false) {
+  function setter(index, expand = false) {
     let link = identity;
-    let node = this.rootNode;
+    let node = rootNode;
     const iterator = gindexIterator(index);
     for (const i of iterator) {
       if (i) {
@@ -54,7 +51,7 @@ export class Tree {
           if (!expand) throw new Error(ERR_INVALID_TREE);
           else {
             const child = zeroNode(iterator.remainingBitLength() - 1);
-            node = new BranchNode(child, child);
+            node = <BranchNode left={child} right={child}/>;
           }
         }
         link = compose(node.rebindRight.bind(node), link);
@@ -64,7 +61,7 @@ export class Tree {
           if (!expand) throw new Error(ERR_INVALID_TREE);
           else {
             const child = zeroNode(iterator.remainingBitLength() - 1);
-            node = new BranchNode(child, child);
+            node = <BranchNode left={child} right={child}/>;
           }
         }
         link = compose(node.rebindLeft.bind(node), link);
@@ -74,32 +71,32 @@ export class Tree {
     return compose(identity, link);
   }
 
-  setNode(index, n, expand = false) {
-    this.rootNode = this.setter(index, expand)(n);
+  function setNode(index, n, expand = false) {
+    set_rootNode(setter(index, expand)(n));
   }
 
-  getRoot(index) {
-    return this.getNode(index).root;
+  function getRoot(index) {
+    return getNode(index).root;
   }
 
-  setRoot(index, root, expand = false) {
-    this.setNode(index, new LeafNode(root), expand);
+  function setRoot(index, root, expand = false) {
+    setNode(index, <LeafNode _root={root}/>, expand);
   }
 
-  getSubtree(index) {
-    return new Tree(this.getNode(index), (v) => this.setNode(index, v.rootNode));
+  function getSubtree(index) {
+    return <Tree _node={getNode(index)}/>, (v) => setNode(index, v.rootNode);
   }
 
-  setSubtree(index, v, expand = false) {
-    this.setNode(index, v.rootNode, expand);
+  function setSubtree(index, v, expand = false) {
+    setNode(index, v.rootNode, expand);
   }
 
-  clone() {
-    return new Tree(this.rootNode);
+  function clone() {
+    return <Tree _node={rootNode}/>
   }
 
-  getSingleProof(index) {
-    return createSingleProof(this.rootNode, index)[1];
+  function getSingleProof(index) {
+    return createSingleProof(rootNode, index)[1];
   }
 
   /**
@@ -108,7 +105,7 @@ export class Tree {
    * starting from the `startIndex`-indexed node
    * iterating through `count` nodes
    */
-  *iterateNodesAtDepth(depth, startIndex, count) {
+   function *iterateNodesAtDepth(depth, startIndex, count) {
     // Strategy:
     // First nagivate to the starting Gindex node,
     // At each level record the tuple (current node, the navigation direction) in a list (Left=0, Right=1)
@@ -135,11 +132,11 @@ export class Tree {
     }
 
     if (depth === 0) {
-      yield this.rootNode;
+      yield rootNode;
       return;
     }
 
-    let node = this.rootNode;
+    let node = rootNode;
     let currCount = 0;
     const startGindex = toGindexBitstring(depth, BigInt(startIndex));
     const nav = [];
@@ -182,7 +179,7 @@ export class Tree {
     }
   }
 
-  getProof(input) {
-    return createProof(this.rootNode, input);
+  function getProof(input) {
+    return createProof(rootNode, input);
   }
 }
