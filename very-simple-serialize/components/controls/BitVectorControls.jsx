@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
+
+import * as BitVector from '../../ssz/src/types/composite/bitVector';
 export default function BitVectorControls(props) {
   const [length, setLength] = useState("1");
   const [values, setValues] = useState([false]);
+  const [serialized, setSerialized] = useState(new Uint8Array(32))
 
   useEffect(() => {
     let values = [];
@@ -12,6 +15,21 @@ export default function BitVectorControls(props) {
     }
     setValues(values);
   }, [length]);
+
+
+
+  function serialize(values) {
+    let vals = values;
+    let output = new Uint8Array(32)
+    output = Uint8Array.from(serialized);
+    output = BitVector.serialize(vals, output)
+    return output
+  }
+
+  useEffect(() => {
+    setSerialized(serialize(values))
+  }, [values])
+
 
   return (
     <>
@@ -36,7 +54,10 @@ export default function BitVectorControls(props) {
           );
         })}
         ]
-      </p>
+      </p> <br/>
+      <p>obj = [{(values.map((value) => { return `${value.toString()}, `}) )}]</p><br/>
+      <p>obj = [{values.map((value) => {return value ? 1 : 0 })}]</p><br/>
+      <p>serialized: {serialized.toString(16)}</p>
     </>
   );
 }

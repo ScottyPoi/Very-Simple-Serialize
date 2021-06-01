@@ -1,5 +1,19 @@
 import { useState } from "react";
 import BasicType from "../BasicType";
+
+export function serialize(value, output, offset, byteLength) {
+  let array = new Uint8Array(32);
+  array = Uint8Array.from(output);
+  let val = value;
+  const MAX_BYTE = 0xff;
+  for (let i = 0; i < byteLength; i++) {
+    array[offset + i] = val & MAX_BYTE;
+    val = Math.floor(val / 256);
+  }
+  return array.slice(0, byteLength);
+};
+
+
 export default function UintNType({ ...props }) {
   const value = props.value;
   const offset = props.offset;
@@ -41,15 +55,8 @@ export default function UintNType({ ...props }) {
   };
 
   const serializeToBytes = (value, output, offset) => {
-    let array = new Uint8Array(32);
-    array = Uint8Array.from(output);
-    let val = value;
-    const MAX_BYTE = 0xff;
-    for (let i = 0; i < byteLength; i++) {
-      array[offset + i] = val & MAX_BYTE;
-      val = Math.floor(val / 256);
-    }
-    return array;
+    
+    return serialize(value, output, offset, byteLength);
   };
 
   const deserializeFromBytes = (data, offset) => {
@@ -72,7 +79,6 @@ export default function UintNType({ ...props }) {
   };
 
   return (
-    <div className="col">
       <BasicType
         value={value}
         type={"Uint"}
@@ -87,6 +93,5 @@ export default function UintNType({ ...props }) {
       >
         {props.children}
       </BasicType>
-    </div>
   );
 }

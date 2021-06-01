@@ -1,23 +1,23 @@
 // Adapted from https://github.com/prysmaticlabs/prysm/blob/master/shared/ssz/encode_test.go#L296
-import { BigIntUintType } from "../ssz/src/types/basic/uint";
+import  BigIntUintType  from "../ssz/src/types/basic/uint";
 
-import { BitVectorType } from "../ssz/src/types/composite/bitVector.js";
+import  BitVectorType  from "../ssz/src/types/composite/bitVector";
 
-import { BitListType } from "../ssz/src/types/composite/bitList.js";
+import  BitListType  from "../ssz/src/types/composite/bitList";
 
-import { ByteVectorType } from "../ssz/src/types/composite/byteVector.js";
+import  ByteVectorType  from "../ssz/src/types/composite/byteVector";
 
-import { ContainerType } from "../ssz/src/types/composite/container.js";
+import ContainerType  from "../ssz/src/types/composite/container";
 
-import { NumberUintType } from "../ssz/src/types/basic/NumberUintType";
+import  NumberUintType  from "../ssz/src/types/basic/NumberUintType";
 
-import { byteType } from "../ssz/src/types/basic/wellKnown.js";
+import  byteType  from "../ssz/src/types/basic/wellKnown";
 
-import { ListType } from "../ssz/src/types/composite/list.js";
+import  ListType  from "../ssz/src/types/composite/list";
 
-import { VectorType } from "../ssz/src/types/composite/vector.js";
+import  VectorType  from "../ssz/src/types/composite/vector";
 
-import { BooleanType } from "../ssz/src/types/basic/boolean.js";
+import  BooleanType  from "../ssz/src/types/basic/boolean";
 
 export const bytes2Type = <ByteVectorType
   length={2} />;
