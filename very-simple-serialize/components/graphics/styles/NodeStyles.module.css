@@ -1,0 +1,16 @@
+.node {
+    display: inline-block;
+    width: 25px;
+    overflow-x: hidden;
+    height: auto;
+    outline: solid black;
+}
+
+.empty {
+
+    background-color: gray;
+}
+
+.full {
+    background-color: chartreuse;
+}
