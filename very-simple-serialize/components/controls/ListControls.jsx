@@ -81,22 +81,12 @@ export default function ListControls(props) {
       <br />
       <br />
       <p>
-        obj: List[{elementType}, {limit}] = [ <br />{" "}
+        obj: List[{elementType}, {limit}] = [ 
         {values.map((value, idx) => {
-          return (
-            <div>
-              <p>{`val${idx}: ${elementType} = ${value}, `}</p>
-              <br />
-            </div>
-          );
+          return `${value}, `
         })}
         {numEmpty.map((empty, idx) => {
-          return (
-            <div>
-              <p>{`val${idx + length}: empty `}</p>
-              <br />
-            </div>
-          );
+          return `_______, `
         })}
         ]
       </p>

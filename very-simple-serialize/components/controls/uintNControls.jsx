@@ -8,7 +8,7 @@ import DisplayTreeValue from "../display/DisplayTreeValue";
 export default function UintNControls(props) {
   const [uintSize, setUintSize] = useState(8);
   const [_value, setValue] = useState(0);
-  const [_serialized, setSerialized] = useState(new Uint8Array(32));
+  const [_serialized, setSerialized] = useState(new Uint8Array(8));
   const [_asBytes32, setAsBytes32] = useState(new Uint8Array(32))
 
   function serialize() {
