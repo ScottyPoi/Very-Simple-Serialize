@@ -1,3 +1,6 @@
+import BitVectorText from "../graphics/text/BitVectorText";
+import styles from "../graphics/styles/UintText.module.css";
+
 export default function DisplayBitVector(props) {
   let serialized = props.serialized;
   let values = props.values;
@@ -11,60 +14,66 @@ export default function DisplayBitVector(props) {
       .join("");
   }
 
-//   const chunks = toHexString(serialized[0]);
+  function chunks() {
+    let chunks = serialized.map((chunk, idx) => {
+      return (
+        <div
+          className="row overflow-auto"
+          key={idx}
+          id={`chunk${idx}`}
+        >
+          <div className="col"> Chunk {`${idx}`}: </div>
+          <div className="col">
+            [
+            <BitVectorText
+              chunk={chunk}
+              length={length}
+              idx={idx}
+              num={serialized.length}
+            />
+            ]{" "}
+          </div>
+        </div>
+      );
+    });
+    return chunks;
+  }
 
-//   const fullchunks = serialiized.length
-//   totalschunks = getnextpoweroftwo(fullchunks)
-//   emptychunks = totalschunks - fullchunks
-//   //   5 nodes needss 8 leafs
+  //   const chunks = toHexString(serialized[0]);
 
-//   total leafs = totalschunkns
-//   total nodes = leafs * 2 - 1
+  //   const fullchunks = serialiized.length
+  //   totalschunks = getnextpoweroftwo(fullchunks)
+  //   emptychunks = totalschunks - fullchunks
+  //   //   5 nodes needss 8 leafs
 
-//   branch nodes = leafts * 2 - 2 - leafs
-//   root = gethashtreeroot(serialized)
-//   treelevels = 3 + getnextpoweroftwo(totalshulnks)//8
+  //   total leafs = totalschunkns
+  //   total nodes = leafs * 2 - 1
 
+  //   branch nodes = leafts * 2 - 2 - leafs
+  //   root = gethashtreeroot(serialized)
+  //   treelevels = 3 + getnextpoweroftwo(totalshulnks)//8
 
   return (
     <>
-      <div className="overflow-auto row">
-        <div className="col">
-          <div className="row"></div>
-          <div className="row"></div>
-          <div className="row"></div>
-          <div className="row">
-            {serialized.map((chunk) => {
-                return (
-                     <div className="col chunkNode"></div>
-                )
-            })}
-           
-          </div>
+      <div className='conatiner'>
+        <div className='row' >
+          serialized: 
         </div>
-      </div>
-      <div>
-        serialized:{" "}
-        {serialized.map((chunk, idx) => {
-          return (
-            <div className="overflow-auto">
-              Chunk {idx}: 0x
-              {chunk.map((bit) => {
-                return bit;
-              })}
-            </div>
-          );
-        })}
-      </div>
-
+        <div className='row' >
+          
+        {chunks()}</div>
       <br />
       <p>
         obj: BitVector[{length}] = [
+        
+        <div className={styles.hex}>
         {values.map((value) => {
-          return value ? "true, " : "false, ";
+          return `${value}, `
         })}
+        </div>
         ]
       </p>
+    </div>
     </>
   );
 }
