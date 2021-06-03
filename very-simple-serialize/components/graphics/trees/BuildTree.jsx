@@ -1,5 +1,6 @@
 import Node from "../nodes/Node";
 import { useEffect, useState } from "react";
+import styles from '../styles/NodeStyles.module.css'
 
 export default function BuildTree(props) {
 
@@ -10,13 +11,13 @@ export default function BuildTree(props) {
     let numberEmpty = numberLeaves - NUMBER_OF_VALUES;
     let tree = build(NUMBER_OF_VALUES);
 
-  function rowOfNodes(number, type, empty=false) {
+  function rowOfNodes(number, type, level, empty=false) {
     //   let leaves = getNextPowerOfTwo(number);
     let row = [];
     for (let i = 0; i < number; i++) {
       row.push(
         <div key={`${type}node${i}`} id={`${type}node${i}`} className="col p-1">
-          <Node idx={i + 1} type={type} empty={empty}/>
+          <Node idx={i + 1} type={type} empty={empty} level={level}/>
         </div>
       );
     }
@@ -80,7 +81,7 @@ export default function BuildTree(props) {
         className="row row-cols-auto justify-content-around"
       >
         <div className="col p-1">
-          <Node idx={1} type="R" />
+          <Node type="R" level='root'/>
         </div>
       </div>
     );
@@ -113,8 +114,8 @@ export default function BuildTree(props) {
         id={"leaves"}
         className="row row-cols-auto justify-content-around"
       >
-        {rowOfNodes(number, "L")}
-        {rowOfNodes(empties, "EL", true)}
+        {rowOfNodes(number, "L", 'leaf')}
+        {rowOfNodes(empties, "EL", 'leaf', true)}
       </div>
     );
     return tree;

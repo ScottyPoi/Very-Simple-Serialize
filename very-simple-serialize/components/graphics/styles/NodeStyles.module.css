@@ -3,7 +3,6 @@
     width: 25px;
     overflow-x: hidden;
     height: auto;
-    outline: solid black;
 }
 
 .empty {
@@ -13,4 +12,12 @@
 
 .full {
     background-color: chartreuse;
+}
+
+.leaf {
+    outline: solid black
+}
+
+.root {
+    outline: solid red
 }

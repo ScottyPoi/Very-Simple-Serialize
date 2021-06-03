@@ -1,0 +1,19 @@
+.bitmask {
+    color: black;
+}
+
+.hex {
+    color: green;
+}
+
+.padding {
+    color: red;
+}
+
+.bytes32 {
+    border: solid black;
+}
+
+.hash {
+    border: solid red;
+}

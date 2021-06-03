@@ -15,9 +15,9 @@ export default function Display() {
         selectType={selectType}
         type={type} />
         </div>
-        <div className="col">Structural</div>
+        {/* <div className="col">Structural</div>
         <div className="col">Tree</div>
-        <div className="col">Serialized</div>
+        <div className="col">Serialized</div> */}
       </div>
     </div>
   );
