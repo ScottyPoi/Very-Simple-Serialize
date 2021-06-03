@@ -6,6 +6,7 @@ export default function BuildTree(props) {
 
     const NUMBER_OF_VALUES = props.NUMBER_OF_VALUES
 
+
     
     let numberLeaves = getNextPowerOfTwo(NUMBER_OF_VALUES);
     let numberEmpty = numberLeaves - NUMBER_OF_VALUES;
@@ -17,7 +18,7 @@ export default function BuildTree(props) {
     for (let i = 0; i < number; i++) {
       row.push(
         <div key={`${type}node${i}`} id={`${type}node${i}`} className="col p-1">
-          <Node idx={i + 1} type={type} empty={empty} level={level}/>
+          <Node idx={i + 1} type={type} empty={empty} level={level} chunkIdx={i} numChunks={NUMBER_OF_VALUES}/>
         </div>
       );
     }
@@ -103,8 +104,8 @@ export default function BuildTree(props) {
           id={"hash"}
           className="row row-cols-auto justify-content-around"
         >
-          {rowOfNodes(number, "H")}
-          {rowOfNodes(empties, "EH", true)}
+          {rowOfNodes(number, "H", 'branch')}
+          {rowOfNodes(empties, "EH", 'branch', true)}
         </div>
       );
     }

@@ -1,5 +1,6 @@
 import BitVectorText from "../graphics/text/BitVectorText";
 import styles from "../graphics/styles/UintText.module.css";
+import BuildTree from "../graphics/trees/BuildTree";
 
 export default function DisplayBitVector(props) {
   let serialized = props.serialized;
@@ -17,26 +18,32 @@ export default function DisplayBitVector(props) {
   function chunks() {
     let chunks = serialized.map((chunk, idx) => {
       return (
-        <div
-          className="row overflow-auto"
-          key={idx}
-          id={`chunk${idx}`}
-        >
-          <div className="col"> Chunk {`${idx}`}: </div>
-          <div className="col">
-            [
-            <BitVectorText
+        <div className="row overflow-auto" key={idx} id={`chunk${idx}`}>
+          Chunk {`${idx}`}:
+             <BitVectorText
               chunk={chunk}
               length={length}
               idx={idx}
               num={serialized.length}
-            />
-            ]{" "}
-          </div>
+            /> 
         </div>
       );
     });
     return chunks;
+  }
+
+  function _values() {
+    let numChunks = serialized.length;
+    let valueChunks = [];
+    for (let i = 0; i < numChunks; i++) {
+      let startIdx = i * 256;
+      let endIdx =
+        startIdx + 255 > serialized.length
+          ? startIdx + 256
+          : serialized.length - 1;
+      valueChunks.push(values.slice(startIdx, endIdx));
+    }
+    return valueChunks;
   }
 
   //   const chunks = toHexString(serialized[0]);
@@ -55,25 +62,32 @@ export default function DisplayBitVector(props) {
 
   return (
     <>
-      <div className='conatiner'>
-        <div className='row' >
-          serialized: 
-        </div>
-        <div className='row' >
-          
-        {chunks()}</div>
-      <br />
-      <p>
-        obj: BitVector[{length}] = [
-        
-        <div className={styles.hex}>
-        {values.map((value) => {
-          return `${value}, `
-        })}
-        </div>
-        ]
-      </p>
-    </div>
+      <div className="container">
+      <BuildTree NUMBER_OF_VALUES={Math.floor(length / 256 + 1)} />
+
+        <div className="row">serialized:</div>
+        {chunks()}
+        <br />
+        <p>
+          obj: BitVector[{length}] = [
+          <div className={`row text-break`} >
+            {_values().map((valueChunk, idx) => {
+              let red = idx + 1 == _values().length ? 0 : idx % 2 == 0 ? 256 : 0
+              let green = idx + 1 == _values().length ? 200 : 0
+              let blue = idx + 1 == _values().length ? 0 : idx % 2 == 1 ? 256 : 150
+              let color = `rgb(${red},${green},${blue})`
+              return (
+                <div style={{ color: color}}>
+                  {valueChunk.map((value) => {
+                    return `${value}, `;
+                  })}
+                </div>
+              );
+            })}
+          </div>
+          ]
+        </p>
+      </div>
     </>
   );
 }
