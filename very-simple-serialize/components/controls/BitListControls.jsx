@@ -81,7 +81,8 @@ export default function BitListControls(props) {
       serialized={serialized}
       limit={limit}
       numEmpty={numEmpty}
-      values={values}>
+      values={values}
+    length={length}>
         {props.children}
       </DisplayBitList>
 

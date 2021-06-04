@@ -7,6 +7,27 @@ export default function DisplayBitVector(props) {
   let values = props.values;
   let length = props.length;
 
+  let NUMBER_OF_VALUES = Math.floor(length / 256 + 1)
+
+  function getNextPowerOfTwo(number) {
+    if (number <= 1) {
+      return 1;
+    } else {
+      let i = 2;
+      while (i < Infinity) {
+        if (number <= i) {
+          return i;
+        } else {
+          i *= 2;
+        }
+      }
+    }
+  }
+
+  let numberOfLeaves = getNextPowerOfTwo(NUMBER_OF_VALUES);
+
+  let emptyLeaves = numberOfLeaves - NUMBER_OF_VALUES;
+
   function toHexString(byteArray) {
     return Array.prototype.map
       .call(byteArray, function (byte) {
@@ -17,18 +38,25 @@ export default function DisplayBitVector(props) {
 
   function chunks() {
     let chunks = serialized.map((chunk, idx) => {
-      return (
-        <div className="row overflow-auto" key={idx} id={`chunk${idx}`}>
-          Chunk {`${idx}`}:
+      return ( 
              <BitVectorText
+             key={idx} 
+             id={`chunk${idx}`}
               chunk={chunk}
               length={length}
               idx={idx}
               num={serialized.length}
             /> 
-        </div>
-      );
-    });
+      
+    );
+          });
+    
+    for (let i=0; i<emptyLeaves; i++) {
+      chunks.push(
+        <div className='col' style={{ border: "solid gray"}}>EMPTY</div>
+      )
+    }
+
     return chunks;
   }
 
@@ -60,17 +88,25 @@ export default function DisplayBitVector(props) {
   //   root = gethashtreeroot(serialized)
   //   treelevels = 3 + getnextpoweroftwo(totalshulnks)//8
 
+
+
   return (
     <>
       <div className="container">
-      <BuildTree NUMBER_OF_VALUES={Math.floor(length / 256 + 1)} />
+        <div className='row'>
+          <div className='col-10'>
+      <BuildTree NUMBER_OF_VALUES={NUMBER_OF_VALUES} />
 
-        <div className="row">serialized:</div>
+        <div className={`row row-cols-${numberOfLeaves} text-break`}>
         {chunks()}
+        </div>
         <br />
-        <p>
+        </div>
+         
+          <div className='col'>
+            <p> 
           obj: BitVector[{length}] = [
-          <div className={`row text-break`} >
+          <div className={`row  text-break`} >
             {_values().map((valueChunk, idx) => {
               let red = idx + 1 == _values().length ? 0 : idx % 2 == 0 ? 256 : 0
               let green = idx + 1 == _values().length ? 200 : 0
@@ -78,7 +114,7 @@ export default function DisplayBitVector(props) {
               let color = `rgb(${red},${green},${blue})`
               return (
                 <div style={{ color: color}}>
-                  {valueChunk.map((value) => {
+                  {valueChunk.reverse().map((value) => {
                     return `${value}, `;
                   })}
                 </div>
@@ -86,7 +122,10 @@ export default function DisplayBitVector(props) {
             })}
           </div>
           ]
-        </p>
+          </p>
+      </div>
+    
+      </div>
       </div>
     </>
   );

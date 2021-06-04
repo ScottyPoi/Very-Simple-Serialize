@@ -1,27 +1,37 @@
 .bitmask {
-    color: black;
+  color: black;
 }
 
 .hex {
-    color: green;
+  color: green;
 }
 
 .padding {
-    color: red;
+  color: red;
 }
 
 .bytes32 {
-    border: solid black;
+  border: solid black;
 }
 
 .hash {
-    border: solid red;
+  border: solid red;
 }
 
 .valueChunk0 {
-    color: green
+  color: green;
 }
 
 .valueChunk1 {
-    color: blue;
+  color: blue;
+}
+
+.delimeter {
+  color: Gold;
+  background-color: black;
+}
+
+.empties {
+    color: purple;
+    background-color: lightgray;
 }
