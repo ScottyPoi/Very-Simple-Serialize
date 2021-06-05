@@ -26,11 +26,9 @@ export default function BitListControls(props) {
 
   useEffect(() => {
     let empties = [];
-    if (limit > length) {
-      for (let i = length; i < limit; i++) {
+      for (let i = 0; i < limit - length; i++) {
         empties.push("empty");
       }
-    }
     setNumEmpty(empties);
     }, [length, limit]);
 
@@ -57,6 +55,15 @@ export default function BitListControls(props) {
     setSerialized(_chunks);
   }
 
+  // let empties = [];
+  //     for (let i = length; i < limit; i++) {
+  //       empties.push("empty");
+  //     }
+
+  function getEmpties() {
+    return numEmpty
+  };
+
   return (
     <>
       <div>ListControls</div>
@@ -80,7 +87,7 @@ export default function BitListControls(props) {
       <DisplayBitList
       serialized={serialized}
       limit={limit}
-      numEmpty={numEmpty}
+      numEmpty={getEmpties()}
       values={values}
     length={length}>
         {props.children}

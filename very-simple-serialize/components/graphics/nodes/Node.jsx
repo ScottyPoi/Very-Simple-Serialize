@@ -12,6 +12,8 @@ export default function Node(props) {
     ? ""
     : props.level === "leaf" && props.chunkIdx == props.numChunks - 1
     ? styles.green
+    : props.level === "leaf" && props.limit - 1 == props.chunkIdx
+    ? styles.limit
     : props.level === "leaf" && props.chunkIdx % 2 == 0
     ? styles.blue
     : props.level === "leaf" && props.chunkIdx % 2 == 1

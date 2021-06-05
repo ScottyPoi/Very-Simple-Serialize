@@ -1,18 +1,44 @@
 import BitListText from '../graphics/text/BitListText'
-import styles from '../graphics/styles/UintText.module.css'
+import styles from '../graphics/styles/UintText.module.css';
+import BuildListTree from '../graphics/trees/BuildListTree'
+import { serialize } from '../../ssz/src/types/basic/NumberUintType';
 export default function DisplayBitList(props) {
 let serialized = props.serialized;
 let limit = props.limit;
 let values = props.values;
 let length = props.length;
-let numEmpty = new Array(limit - length);
+let numEmpty = props.numEmpty;
+let numberOfChunks = serialized.length;
+let numberOfLeaves = getNextPowerOfTwo(numberOfChunks)
+let emptyLeaves = numberOfLeaves - numberOfChunks
+// let emp = new Array(numEmpty);
+
+function getNextPowerOfTwo(number) {
+  if (number <= 1) {
+    return 1;
+  } else {
+    let i = 2;
+    while (i < Infinity) {
+      if (number <= i) {
+        return i;
+      } else {
+        i *= 2;
+      }
+    }
+  }
+}
+
+let leaves = getNextPowerOfTwo(serialized.length)
+
+
 function chunks() {
-  
   let chunks = serialized.map((chunk, idx) => {
-    let multiplier = idx + 1
-    let empty = limit > multiplier * 256 && length < multiplier * 256 ? true : false
+    let chunk_count = serialized.length;
+    let empties = numEmpty.length
+    let empty = limit > (idx + 1) * 256 && length < idx * 256 ? true: false;
+
     return (
-      <div className="row overflow-auto" key={idx} id={`chunk${idx}`}>
+      <div className='col' key={idx} id={`chunk${idx}`}>
         Chunk {`${idx}`}: {`[`}
            <BitListText
             chunk={chunk}
@@ -21,34 +47,100 @@ function chunks() {
             idx={idx}
             num={serialized.length}
             empty={empty}
+            chunk_count={chunk_count}
+            empties={empties}
           /> 
       </div>
     );
   });
+
+  for (let i=0; i<emptyLeaves; i++) {
+    chunks.push(
+      <div className='col' style={{ border: "solid gray"}}>EMPTY</div>
+    )
+  }
+
   return chunks;
 }
+
+function emptyVal(number) {
+  for (let i=0; i<number; i++) {
+    return `_____, `
+  }
+}
+
+function _values() {
+  let numChunks = serialized.length;
+  let valueChunks = [];
+  for (let i = 0; i < numChunks; i++) {
+    let startIdx = i * 256;
+    let endIdx =
+      startIdx + 255 > serialized.length
+        ? startIdx + 256
+        : serialized.length - 1;
+    valueChunks.push(values.slice(startIdx, endIdx));
+  }
+  return valueChunks;
+}
+
+let green = {r: 0, g: 200, b: 0};
+let blue = {r: 0, g: 0, b: 256};
+let magenta = {r: 256, g: 0, b: 150}
+
+function color(color) {
+  let r = color.r;
+  let g = color.g;
+  let b = color.b;
+  return `rgb(${r},${g},${b})`
+}
+
+
     
 
     return (
-        <div>
-      serialized:{chunks()}
-      {/* {serialized.map((chunk) => {
-        return (
-          <div>
-            0x{chunk}
-          </div>)
-      })} */}
+      <>
+            <div className="container">
+        <div className='row'>
+          <div className='col-10'>
+      <BuildListTree 
+      limit={limit}
+      chunks={serialized.length}
+      length={length}
+      
+      />
+      
+      <div className={`row row-cols-${leaves}`}>
+      {chunks()}
+      </div>
       <br />
-      <p>
-        obj: BitList[{limit}] = [
-        {values.map((value, idx) => {
-          return `${value}, `;
-        })}
+      </div>
+      <div className='col'>
+      <p>        
+        obj: BitList[{limit}] = {`[`}
+        <div className={'row text-break'} >
+        {_values().map((valueChunk, idx) => {
+
+              let valueColor =  idx == Math.floor(length/256) ? green : idx % 2 == 0 ? blue : magenta
+
+              let vColor = color(valueColor)
+              return (
+                <div style={{ color: vColor}}>
+                  {valueChunk.map((value) => {
+                    return `${value}, `;
+                  })}
+                </div>
+              );
+            })}
+        <span className={styles.empties}>
         {numEmpty.map((empty, idx) => {
-          return <span className={styles.empties}>{`_____, `}</span>;
-        })}
-        ]
-      </p>
+          return `_____, `
+        })}</span>
         </div>
+        {`]`}
+        </p>
+      </div>
+      </div>
+      </div>
+        </>
     )
 }
