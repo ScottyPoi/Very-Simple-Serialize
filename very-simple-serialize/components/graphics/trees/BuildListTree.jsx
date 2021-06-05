@@ -76,14 +76,44 @@ export default function BuildtListTree(props) {
     let leaves = getNextPowerOfTwo(number);
     let empties = leaves - number;
     let levels = numberOfLevels(leaves);
+    tree.push(<div
+        key={`merkleroot`}
+        id={`merkleroot`}
+        className="row row-cols-auto justify-content-evenly"
+    >
+                <div className="col p-1">
+             <div style={{display: "inline-block", width:"25px", height: "auto"}} />
+        </div>
+        <div className="col p-1">
+        <div style={{display: "inline-block", width:"25px", height: "auto"}} />
+        </div>
+        <div className="col p-1">
+        <Node type="M" level='merkle'/>
+
+          </div>
+    </div>)
     tree.push(
       <div
         key={`hashtreeroot`}
         id={`hashtreeroot`}
-        className="row row-cols-auto justify-content-around"
+        className="row row-cols-auto justify-content-between"
       >
         <div className="col p-1">
-          <Node type="R" level='root'/>
+        <div style={{display: "inline-block", width:"25px", height: "auto"}} />
+        </div>
+        <div className="col p-1">
+        <div style={{display: "inline-block", width:"25px", height: "auto"}} />
+        </div>
+        <div className="col p-1">
+        <Node type="R" level='root'/>
+
+          </div>
+          <div className="col p-1">
+          <div style={{display: "inline-block", width:"25px", height: "auto"}} />
+        </div>
+          <div className="col p-1">
+          <Node type="L" level='length'/>
+
         </div>
       </div>
     );

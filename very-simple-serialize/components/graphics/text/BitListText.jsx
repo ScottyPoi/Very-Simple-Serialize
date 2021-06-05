@@ -30,10 +30,10 @@ export default function BitListText(props) {
           >
             <text className={`${styles.hex}`}>
               {fulls.reverse().toString()},
+              <span className={`${styles.delimeter}`}>1,</span>
               <span className={`${styles.empties}`}>
                 {empties.reverse().toString()}
               </span>
-              <span className={`${styles.delimeter}`}>1,</span>
               <span className={`${styles.padding}`}>
                 {pads.reverse().toString()}{" "}
               </span>
@@ -62,11 +62,10 @@ export default function BitListText(props) {
             style={{ border: `solid red`, display: `block` }}
           >
             <text className={`${styles.hex}`}>
-              {_length >= _idx * 256 ? fulls.reverse().toString() : null},
+              {_length >= _idx * 256 ? `${fulls.reverse().toString()},` : null}
               <span className={`${styles.empties}`}>
-                {empties.reverse().toString()}
+                {empties.reverse().toString()},
               </span>
-              <span className={`${styles.delimeter}`}>1,</span>
               <span className={`${styles.padding}`}>
                 {pads.reverse().toString()}{" "}
               </span>
@@ -96,10 +95,11 @@ export default function BitListText(props) {
           >
             <text className={`${styles.hex}`}>
               {_length >= _idx * 256 ? fulls.reverse().toString() : null},
+              <span className={`${styles.delimeter}`}>1****,</span>
+
               <span className={`${styles.empties}`}>
                 {empties.reverse().toString()}
               </span>
-              <span className={`${styles.delimeter}`}>1,</span>
               <span className={`${styles.padding}`}>
                 {pads.reverse().toString()}{" "}
               </span>
@@ -125,10 +125,10 @@ export default function BitListText(props) {
           >
             <text className={`${styles.hex}`}>
               {_length >= _idx * 256 ? fulls.reverse().toString() : null},
+
               <span className={`${styles.empties}`}>
                 {empties.reverse().toString()}
               </span>
-              <span className={`${styles.delimeter}`}>1,</span>
               <span className={`${styles.padding}`}>
                 {pads.reverse().toString()}{" "}
               </span>
@@ -137,7 +137,11 @@ export default function BitListText(props) {
           </div>
         </div>
       );
-    } else if (_idx < chunk_count && chunk_count > 1 && _length > (_idx + 1) * 256) {
+    } else if (
+      _idx < chunk_count &&
+      chunk_count > 1 &&
+      _length > (_idx + 1) * 256
+    ) {
       let split = 256 - (_limit % 256);
       let split2 = _length < 256 ? 255 - _length : 255;
       let bits = _chunk.slice(split);
@@ -152,8 +156,9 @@ export default function BitListText(props) {
             className="col"
             style={{ border: `solid  ${color}`, display: `block` }}
           >
-            <text className={`${styles.hex}`}>
+            <text style={{color: color}}>
               {fulls.reverse().toString()},
+
               <span className={`${styles.empties}`}>
                 {empties.reverse().toString()}
               </span>
@@ -178,6 +183,8 @@ export default function BitListText(props) {
           >
             <text className={`${styles.hex}`}>
               {fulls.reverse().toString()},
+              <span className={`${styles.delimeter}`}>1****,</span>
+
               <span className={`${styles.empties}`}>
                 {empties.reverse().toString()}
               </span>
@@ -190,7 +197,7 @@ export default function BitListText(props) {
         <div className="row text-break ">
           <div
             className="col"
-            style={{ border: `solid ${color}`, display: `block` }}
+            style={{ border: `solid ${color}`, display: `block`, color: color }}
           >
             <text className={`${styles.hex}`}>
               <span className={`${styles.empties}`}>
@@ -216,6 +223,8 @@ export default function BitListText(props) {
           >
             <text className={`${styles.hex}`}>
               {fulls.reverse().toString()},
+              <span className={`${styles.delimeter}`}>1************</span>
+
               <span className={`${styles.empties}`}>
                 {empties.reverse().toString()}
               </span>
@@ -228,9 +237,9 @@ export default function BitListText(props) {
         <div className="row text-break ">
           <div
             className="col"
-            style={{ border: `solid ${color}`, display: `block` }}
+            style={{ border: `solid ${color}`, display: `block`, color: color }}
           >
-            <text className={`${styles.hex}`}>
+            <text >
               {_chunk.reverse().toString()},
             </text>
             {`]`}1

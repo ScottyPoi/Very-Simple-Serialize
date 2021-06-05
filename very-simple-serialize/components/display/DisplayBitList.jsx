@@ -39,7 +39,6 @@ function chunks() {
 
     return (
       <div className='col' key={idx} id={`chunk${idx}`}>
-        Chunk {`${idx}`}: {`[`}
            <BitListText
             chunk={chunk}
             limit={limit}
@@ -100,7 +99,7 @@ function color(color) {
     return (
       <>
             <div className="container">
-        <div className='row'>
+            <div className='row'>
           <div className='col-10'>
       <BuildListTree 
       limit={limit}
@@ -114,32 +113,39 @@ function color(color) {
       </div>
       <br />
       </div>
+      </div>
+            <div className='row'>
       <div className='col'>
       <p>        
         obj: BitList[{limit}] = {`[`}
-        <div className={'row text-break'} >
+        <div className={'d-flex flex-row text-break'} >
+          <span>
         {_values().map((valueChunk, idx) => {
 
               let valueColor =  idx == Math.floor(length/256) ? green : idx % 2 == 0 ? blue : magenta
 
               let vColor = color(valueColor)
               return (
-                <div style={{ color: vColor}}>
+                <span style={{ color: vColor}}>
                   {valueChunk.map((value) => {
                     return `${value}, `;
                   })}
-                </div>
+                </span>
               );
             })}
         <span className={styles.empties}>
+          <span style={{backgroundColor: "black", color: "yellow"}}>__1__</span>,
         {numEmpty.map((empty, idx) => {
           return `_____, `
         })}</span>
+        </span>
         </div>
         {`]`}
         </p>
       </div>
       </div>
+
+      
       </div>
         </>
     )

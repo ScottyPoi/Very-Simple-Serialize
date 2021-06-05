@@ -10,12 +10,19 @@
     background-color: gray;
 }
 
-.full {
-    
+.length {
+    outline: solid gold;
+    background-color: black;
+    color: gold;
 }
 
 .leaf {
     outline: solid black
+}
+
+.merkle {
+    background-color: lime;
+    outline: solid red;
 }
 
 .branch {

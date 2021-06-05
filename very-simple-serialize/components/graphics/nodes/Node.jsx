@@ -3,8 +3,12 @@ import styles from "../styles/NodeStyles.module.css";
 export default function Node(props) {
   const empty = props.empty ? styles.empty : styles.full;
   const level =
-    props.level === "root"
+  props.level === 'merkle'
+  ? styles.merkle
+:    props.level === "root"
       ? styles.root
+      :props.level === "length"
+      ? styles.length
       : props.level === "branch"
       ? styles.branch
       : styles.leaf;
