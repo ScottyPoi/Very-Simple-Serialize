@@ -4,6 +4,9 @@ export default function VectorText(props) {
   let _chunk = props.chunk;
   let _length = props.length;
   let _idx = props.idx;
+  let numberOfLeaves = props.numberOfLeaves;
+  let numberOfChunks = props.numberOfChunks;
+  let emptyLeaves = props.emptyLeaves
 
   const chunk_count = props.numberOfChunks;
   let values_per_chunk = 256 / props.size;
@@ -15,66 +18,55 @@ export default function VectorText(props) {
   let blue = _idx + 1 == chunk_count ? 0 : _idx % 2 == 0 ? 256 : 180;
   let color = `rgb(${red},${green},${blue})`;
 
-  function getNextPowerOfTwo(number) {
-    if (number <= 1) {
-      return 1;
-    } else {
-      let i = 2;
-      while (i < Infinity) {
-        if (number <= i) {
-          return i;
-        } else {
-          i *= 2;
-        }
-      }
-    }
-  }
+  function getLength() {
+      return props.length
+  };
 
-  function toHexString(byteArray) {
-    return Array.prototype.map
-      .call(byteArray, function (byte) {
-        return ("0" + (byte & 0xff).toString(16)).slice(-2);
-      })
-      .join("");
-  }
+  function getSize() {
+      return props.size
+  };
 
-  let numberOfLeaves = getNextPowerOfTwo(chunk_count);
 
-  let emptyLeaves = numberOfLeaves - chunk_count;
 
   let valueBlocks = [];
 
-  for (let i = 0; i < _chunk.length; i += size) {
-    valueBlocks.push(_chunk.slice(i, i + size));
-  }
+
 
   function parseChunk() {
+
+       let valueBlocks = [];
+       for (let i=0; i<_chunk.length; i+=size/4) {
+           valueBlocks.push(_chunk.substring(i, i+size/4))
+       }
+
     if (_idx === chunk_count - 1) {
-      let hex = Array.from(toHexString(_chunk));
-      let bits = hex.slice(0, (_length * size) / 2);
+ 
+        let len = getLength();
+        let size = getSize();
+      let bits = valueBlocks.slice(0, (len%(256/size)));
       let bitBlocks = [];
-      let pads = hex.slice((_length * size) / 2);
+      let pads = valueBlocks.slice((len%(256/size))+1, valueBlocks.length-1);
       let lengthBit = pads[0];
       bits = bits.reverse();
-      for (let i = 0; i < bits.length; i += 4) {
-        bitBlocks.push([bits.slice(i, i + 4)]);
+      for (let i = 0; i < bits.length; i += size/4) {
+        bitBlocks.push([bits.slice(i, i + size/4)]);
       }
       return (
         <div className="col" style={{ border: "dotted green" }}>
           <text className={`${styles.hex}`}>
-            <span
+            0x<span
               style={{ border: "solid black" }}
               className={`${styles.padding}`}
             >
-              {pads.reverse()}
+              {pads}
             </span>
             <span style={{ backgroundColor: "black", color: "gold" }}>
-              0001
+              {valueBlocks[(len%values_per_chunk)]}
             </span>
-            {bitBlocks.map((bitBlock) => {
+            {bits.map((bit) => {
               return (
                 <span style={{ color: "green", border: "solid green 1px" }}>
-                  {bitBlock}
+                  {bit}
                 </span>
               );
             })}
@@ -85,9 +77,11 @@ export default function VectorText(props) {
       return (
         <div
           className="col"
-          style={{ border: `solid ${color}`, display: `block` }}
+          style={{ border: `solid ${color}`, display: `inline-block` }}
         >
-          {toHexString(_chunk.reverse())}
+          0x{(valueBlocks.map((value) => {
+              return <span style={{ border: `solid ${color} 1px`, display: "inline-block"}}>{value}</span>
+          }))}
           {/* {valueBlocks.reverse().map((block) => {
             return (
               <div style={{ color: color, border: `solid ${color}`, display: 'inline-block' }}>

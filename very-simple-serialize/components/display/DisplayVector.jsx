@@ -1,19 +1,27 @@
 import BuildTree from '../graphics/trees/BuildTree'
 import VectorText from '../graphics/text/VectorText';
-import { serialize } from '../../ssz/src/types/basic/NumberUintType';
+import * as NumberUintType from '../../ssz/src/types/basic/NumberUintType';
 export function DisplayVector(props) {
     let serialized = props.serialized;
     let values = props.values;
     let length = props.length;
     let size = props.size;
 
-    let numberOfChunks =  Math.floor(((length) / (256/size)) + 1)
+    let numberOfChunks =  Math.floor(length / (256/size)) + 1 
 
     let NUMBER_OF_VALUES = numberOfChunks;
 
     let numberOfLeaves = getNextPowerOfTwo(NUMBER_OF_VALUES);
 
     let emptyLeaves = numberOfLeaves - NUMBER_OF_VALUES;
+
+    function toHexString(byteArray) {
+        return Array.prototype.map
+          .call(byteArray, function (byte) {
+            return ("0" + (byte & 0xff).toString(16)).slice(-2);
+          })
+          .join("");
+      }
 
     function getNextPowerOfTwo(number) {
         if (number <= 1) {
@@ -30,13 +38,24 @@ export function DisplayVector(props) {
         }
       }
 
+
+
       function chunks() {
         let chunks = serialized.map((chunk, idx) => {
-          return ( 
+            
+
+            let _output = toHexString(chunk);
+
+            
+          
+          
+            return ( 
                  <VectorText
+                 numberOfLeaves={numberOfLeaves}
+                 emptyLeaves={emptyLeaves}
                  key={idx} 
                  id={`chunk${idx}`}
-                  chunk={chunk}
+                  chunk={_output}
                   length={length}
                   size={size}
                   idx={idx}
