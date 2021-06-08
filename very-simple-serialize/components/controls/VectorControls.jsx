@@ -68,11 +68,11 @@ export default function VectorControls(props) {
     let offset = size / 8 - 1;
     for (let c = 0; c < numChunks; c++) {
       let output = new Uint8Array(32);
-      for (let i = 0; i < valuesPerChunk; i++) {
+      for (let i = 0; i < 32; i++) {
         output = serializer.serialize(
-          vector[c * valuesPerChunk + i],
+          vector[(c * valuesPerChunk) + i], 
           output,
-          i,
+          i*(size/8),
           size
         );
       }
