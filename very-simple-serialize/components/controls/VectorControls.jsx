@@ -17,46 +17,12 @@ export default function VectorControls(props) {
 
   const [valueSet, setValueSet] = useState([]);
 
-  useEffect(() => {
-    if (elementType === "Uint8") {
-      setMaxValue(255)
-      setSize(8)
-      setValuesPerChunk(32);
-    } else if (elementType === "Uint16") {
-      setMaxValue(255)
-      setSize(16)
-      setValuesPerChunk(16);
-    } else if (elementType === "Uint32") {
-      setMaxValue(255)
-      setSize(32)
-      setValuesPerChunk(8);
-    } else if (elementType === "Uint64") {
-      setMaxValue(255)
-      setSize(64)
-      setValuesPerChunk(4);
-    } else if (elementType === "Uint128") {
-      setMaxValue(255)
-      setSize(128)
-      setValuesPerChunk(2);
-    } else if (elementType === "Uint256") {
-      setMaxValue(255)
-      setSize(256)
-      setValuesPerChunk(1);
-    }
-
-
-    let valueSet = [];
-    for (let i = 0; i < 256; i++) {
-      let val = Math.floor(Math.random() * maxValue);
-      valueSet.push(val);
-    }
-    setValueSet(valueSet);
-  }, [elementType]);
+ 
 
   useEffect(() => {
     setNumChunks(Math.floor(length / valuesPerChunk + 1));
-    setValues(valueSet.slice(0,length));
-  }, [length, size]);
+    setValues(valueSet.slice(0, length));
+  }, [length, elementType]);
 
   useEffect(() => {
     _serialize(values);
@@ -68,6 +34,52 @@ export default function VectorControls(props) {
 
   function getSize() {
     return size;
+  }
+
+  function getElementType() {
+    return elementType;
+  }
+
+  function handleTypeChange(type) {
+    let mv = 0;
+    let sz = 0;
+    let vpc = 0;
+
+    if (type === "Uint8") {
+      mv = 255;
+      sz = 8;
+      vpc = 32;
+    } else if (type === "Uint16") {
+      mv = 2 ** 16 - 1;
+      sz = 16;
+      vpc = 16;
+    } else if (type === "Uint32") {
+      mv = 2 ** 32 - 1;
+      sz = 32;
+      vpc = 8;
+    } else if (type === "Uint64") {
+      mv = 2 ** 64 - 1;
+      sz = 64;
+      vpc = 4;
+    } else if (type === "Uint128") {
+      mv = 2 ** 128 - 1;
+      sz = 128;
+      vpc = 2;
+    } else if (type === "Uint256") {
+      mv = 2 ** 256 - 1;
+      sz = 256;
+      vpc = 1;
+    }
+    let valueSet = [];
+    for (let i = 0; i < 16*vpc; i++) {
+      let val = Math.floor(Math.random() * mv);
+      valueSet.push(val);
+    }
+    setValueSet(valueSet);
+    setMaxValue(mv);
+    setSize(sz);
+    setValuesPerChunk(vpc);
+    setElementType(type)
   }
 
   function _serialize(vector) {
@@ -105,7 +117,7 @@ export default function VectorControls(props) {
       <select
         className="form-select"
         aria-label="Select ElementType"
-        onChange={(e) => setElementType(e.target.value)}
+        onChange={(e) => handleTypeChange(e.target.value)}
       >
         <option selected>Uint8</option>
         <option value="Uint16">Uint16</option>
