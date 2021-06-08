@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { DisplayVector } from "../display/DisplayVector";
 import * as BooleanType from "../../ssz/src/types/basic/boolean";
 import * as NumberUintType from "../../ssz/src/types/basic/NumberUintType";
-import * as BigIntUintType from '../../ssz/src/types/basic/BigIntUintType';
+import * as BigIntUintType from "../../ssz/src/types/basic/BigIntUintType";
 // import * as Array from '../../ssz/src/types/composite/array';
 export default function VectorControls(props) {
   const [elementType, setElementType] = useState("Uint8");
@@ -12,48 +12,55 @@ export default function VectorControls(props) {
   const [serialized, setSerialized] = useState([]);
   const [numChunks, setNumChunks] = useState(1);
   const [size, setSize] = useState(8);
-  const [valuesPerChunk, setVPC] = useState(32);
-  const [serializer, setSerializer] = useState(NumberUintType)
+  const [valuesPerChunk, setValuesPerChunk] = useState(32);
+  const [serializer, setSerializer] = useState(NumberUintType);
+
+  const [valueSet, setValueSet] = useState([]);
 
   useEffect(() => {
-    elementType === "Uint8"
-      ? setMaxValue(255)
-      : elementType === "Uint16"
-      ? setMaxValue(2 ** 16 - 1)
-      : elementType === "Uint32"
-      ? setMaxValue(2 ** 32 - 1)
-      : elementType === "Uint64"
-      ? setMaxValue(2 ** 64 - 1)
-      : elementType === "Uint128"
-      ? setMaxValue(2 ** 128 - 1)
-      : setMaxValue(2 ** 256 - 1);
-    elementType === "Uint8"
-      ? setSize(8)
-      : elementType === "Uint16"
-      ? setSize(16)
-      : elementType === "Uint32"
-      ? setSize(32)
-      : elementType === "Uint64"
-      ? setSize(64)
-      : elementType === "Uint128"
-      ? setSize(128)
-      : setSize(256);
-    elementType === "Uint8" || elementType === "Uint16" || elementType === "Uint32"
-      ? setSerializer(NumberUintType)
-      : setSerializer(BigIntUintType)
+    if (elementType === "Uint8") {
+      setMaxValue(255)
+      setSize(8)
+      setValuesPerChunk(32);
+    } else if (elementType === "Uint16") {
+      setMaxValue(255)
+      setSize(16)
+      setValuesPerChunk(16);
+    } else if (elementType === "Uint32") {
+      setMaxValue(255)
+      setSize(32)
+      setValuesPerChunk(8);
+    } else if (elementType === "Uint64") {
+      setMaxValue(255)
+      setSize(64)
+      setValuesPerChunk(4);
+    } else if (elementType === "Uint128") {
+      setMaxValue(255)
+      setSize(128)
+      setValuesPerChunk(2);
+    } else if (elementType === "Uint256") {
+      setMaxValue(255)
+      setSize(256)
+      setValuesPerChunk(1);
+    }
+
+
+    let valueSet = [];
+    for (let i = 0; i < 256; i++) {
+      let val = Math.floor(Math.random() * maxValue);
+      valueSet.push(val);
+    }
+    setValueSet(valueSet);
   }, [elementType]);
 
   useEffect(() => {
-    let values = [];
-    for (let i = 0; i < length; i++) {
-      let val = Math.floor(Math.random() * maxValue);
-      values.push(val);
-    }
-    setValues(values);
     setNumChunks(Math.floor(length / valuesPerChunk + 1));
-    setVPC(256 / size);
-    _serialize(values);
+    setValues(valueSet.slice(0,length));
   }, [length, size]);
+
+  useEffect(() => {
+    _serialize(values);
+  }, [values]);
 
   function getLength() {
     return length;
@@ -69,18 +76,18 @@ export default function VectorControls(props) {
     for (let c = 0; c < numChunks; c++) {
       let output = new Uint8Array(32);
       for (let i = 0; i < 32; i++) {
-        output = serializer.serialize(
-          vector[(c * valuesPerChunk) + i], 
+        output = NumberUintType.serialize(
+          vector[c * valuesPerChunk + i],
           output,
-          i*(size/8),
+          i * (size / 8),
           size
         );
       }
       if (c + 1 == numChunks) {
-        output = serializer.serialize(
+        output = NumberUintType.serialize(
           1,
           output,
-          (vector.length * (size/8) + offset) % (valuesPerChunk*(size/8)),
+          (vector.length * (size / 8) + offset) % (valuesPerChunk * (size / 8)),
           size
         );
       }
