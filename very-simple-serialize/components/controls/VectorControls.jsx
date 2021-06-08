@@ -14,7 +14,7 @@ export default function VectorControls(props) {
   const [size, setSize] = useState(8);
   const [valuesPerChunk, setValuesPerChunk] = useState(32);
   const [serializer, setSerializer] = useState(NumberUintType);
-
+  const [maxLength, setMaxLength] = useState(32*16 - 1)
   const [valueSet, setValueSet] = useState([]);
 
  
@@ -79,7 +79,9 @@ export default function VectorControls(props) {
     setMaxValue(mv);
     setSize(sz);
     setValuesPerChunk(vpc);
-    setElementType(type)
+    setElementType(type);
+    setLength(vpc);
+    setMaxLength(vpc * 16 - 1)
   }
 
   function _serialize(vector) {
@@ -131,7 +133,7 @@ export default function VectorControls(props) {
         value={length}
         type="number"
         min={1}
-        max={maxValue}
+        max={maxLength}
         onChange={(e) => setLength(e.target.value)}
       />
       <br />

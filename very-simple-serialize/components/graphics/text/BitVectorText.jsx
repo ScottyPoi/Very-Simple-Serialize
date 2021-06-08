@@ -35,12 +35,13 @@ export default function BitVectorText(props) {
 
   function parseChunk() {
     if (_idx === chunk_count - 1) {
-      let bits = _chunk.splice(256 - split);
-      let pads = _chunk.splice(0, 256 - split);
+      let bits = _chunk.slice(256 - split);
+      let lengthBit = _chunk[256-split]
+      let pads = _chunk.slice(1, 256 - split);
       return (
         <div className="col" style={{ border: "solid green"}}>
           <text className={`${styles.hex}`}>
-            {bits.toString()},<span className={`${styles.padding}`}>{pads.toString()} </span>
+            {bits.toString()},<span style={{ backgroundColor: "black", color: "gold"}}>{lengthBit}</span><span className={`${styles.padding}`}>{pads.toString()} </span>
           </text>{`]`}
         </div>
       );
