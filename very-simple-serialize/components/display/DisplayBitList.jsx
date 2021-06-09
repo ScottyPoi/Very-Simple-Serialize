@@ -13,6 +13,13 @@ let numberOfLeaves = getNextPowerOfTwo(numberOfChunks)
 let emptyLeaves = numberOfLeaves - numberOfChunks
 // let emp = new Array(numEmpty);
 
+function toHexString(byteArray) {
+  return Array.prototype.map
+    .call(byteArray, function (byte) {
+      return ("0" + (byte & 0xff).toString(16)).slice(-2);
+    })
+    .join("");
+}
 function getNextPowerOfTwo(number) {
   if (number <= 1) {
     return 1;
@@ -33,21 +40,20 @@ let leaves = getNextPowerOfTwo(serialized.length)
 
 function chunks() {
   let chunks = serialized.map((chunk, idx) => {
-    let chunk_count = serialized.length;
-    let empties = numEmpty.length
-    let empty = limit > (idx + 1) * 256 && length < idx * 256 ? true: false;
+
+
+
+
+    let _output =  `${toHexString(chunk)}`
 
     return (
       <div className='col' key={idx} id={`chunk${idx}`}>
            <BitListText
-            chunk={chunk}
+            chunk={_output}
             limit={limit}
             length={length}
             idx={idx}
-            num={serialized.length}
-            empty={empty}
-            chunk_count={chunk_count}
-            empties={empties}
+            chunk_count={numberOfChunks}
           /> 
       </div>
     );

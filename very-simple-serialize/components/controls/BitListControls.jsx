@@ -1,55 +1,59 @@
 import { useEffect, useState } from "react";
 import * as BooleanType from "../../ssz/src/types/basic/boolean";
-import DisplayBitList from '../display/DisplayBitList';
+import DisplayBitList from "../display/DisplayBitList";
+
+let valueSet = [];
+for (let i = 0; i < 256 * 16; i++) {
+  let val = Math.random();
+  let bool = val > 0.5 ? false : true;
+  valueSet.push(bool);
+}
 export default function BitListControls(props) {
-  const [length, setLength] = useState(1);
-  const [limit, setLimit] = useState(1);
-  const [values, setValues] = useState([false]);
+  const [length, setLength] = useState(0);
+  const [limit, setLimit] = useState(256);
+  const [values, setValues] = useState([]);
   const [numEmpty, setNumEmpty] = useState([]);
   const [serialized, setSerialized] = useState([]);
-
-  useEffect(() => {
-    let values = [];
-    for (let i = 0; i < length; i++) {
-      let val = Math.random();
-      let bool = val < 0.5 ? false : true;
-      values.push(bool);
-    }
-    setValues(values);
-  }, [length]);
+  const [numChunks, setNumChunks] = useState(1);
 
   useEffect(() => {
     if (limit < length) {
-      setLength(limit);
+      setLength(limit - 1);
     }
+    let nc = Math.floor(limit / 256);
+    setNumChunks(nc);
+
   }, [limit]);
 
-  useEffect(() => {
-    let empties = [];
-      for (let i = 0; i < limit - length; i++) {
-        empties.push("empty");
-      }
-    setNumEmpty(empties);
-    }, [length, limit]);
+
+
+  function handleChangeLength(length) {
+    let vals = valueSet.slice(0, length);
+    setLength(length);
+    setValues(vals);
+  };
 
   useEffect(() => {
     _serialize(values);
-  }, [length, limit])
+  }, [values]);
+
 
   function _serialize(bitlist) {
-    let count_chunks = Math.floor((Number(limit) + 255) / 256);
     let _chunks = [];
-    for (let i = 0; i < count_chunks; i++) {
-      let output = new Array(256);
-      output.fill(0)
+    for (let i = 0; i < numChunks; i++) {
+      let output = new Uint16Array(256);
+      output.fill(0);
       for (let j = 0; j < 256; j++) {
         output = BooleanType.struct_serializeToBytes(
           bitlist[i * 256 + j],
           output,
-          255 - j
+          j
         );
       }
-      if (i == count_chunks - 1) {output = BooleanType.struct_serializeToBytes(true, output, 255 - (limit % 256))}
+      if (i == Math.floor(length/256)) {
+        output = BooleanType.struct_serializeToBytes(true, output, length%256);
+      }
+
       _chunks.push(output);
     }
     setSerialized(_chunks);
@@ -61,8 +65,8 @@ export default function BitListControls(props) {
   //     }
 
   function getEmpties() {
-    return numEmpty
-  };
+    return numEmpty;
+  }
 
   return (
     <>
@@ -72,7 +76,9 @@ export default function BitListControls(props) {
       <input
         value={limit}
         type="number"
-        min={1}
+        min={256}
+        step={256}
+        max={256 * 16}
         onChange={(e) => setLimit(e.target.value)}
       />
       <div>Length: {length}</div>
@@ -80,22 +86,19 @@ export default function BitListControls(props) {
         value={length}
         type="number"
         min={0}
-        max={limit}
-        onChange={(e) => setLength(e.target.value)}
+        max={limit-1}
+        onChange={(e) => handleChangeLength(e.target.value)}
       />
       <br />
       <DisplayBitList
-      serialized={serialized}
-      limit={limit}
-      numEmpty={getEmpties()}
-      values={values}
-    length={length}>
+        serialized={serialized}
+        limit={limit}
+        numEmpty={getEmpties()}
+        values={values}
+        length={length}
+      >
         {props.children}
       </DisplayBitList>
-
-
-
-
     </>
   );
 }
