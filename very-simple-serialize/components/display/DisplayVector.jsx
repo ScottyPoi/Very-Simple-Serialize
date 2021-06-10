@@ -113,7 +113,7 @@ export function DisplayVector(props) {
                   let color = `rgb(${red},${green},${blue})`
                   return (
                     <div style={{ color: color}}>
-                      {valueChunk.reverse().map((value) => {
+                      {valueChunk.map((value) => {
                         return `${value}, `;
                       })}
                     </div>

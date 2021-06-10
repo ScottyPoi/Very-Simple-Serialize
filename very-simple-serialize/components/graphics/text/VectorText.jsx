@@ -47,29 +47,31 @@ export default function VectorText(props) {
       let bitBlocks = [];
       let pads = valueBlocks.slice((len%(256/size))+1, valueBlocks.length-1);
       let lengthBit = pads[0];
-      bits = bits.reverse();
+      bits = bits;
       for (let i = 0; i < bits.length; i += size/4) {
         bitBlocks.push([bits.slice(i, i + size/4)]);
       }
       return (
         <div className="col" style={{ border: "dotted green" }}>
           <text className={`${styles.hex}`}>
-            0x<span
-              style={{ border: "solid black" }}
-              className={`${styles.padding}`}
-            >
-              {pads}
-            </span>
-            <span style={{ backgroundColor: "black", color: "gold" }}>
-              {valueBlocks[(len%values_per_chunk)]}
-            </span>
+            0x
+
             {bits.map((bit) => {
               return (
                 <span style={{ color: "green", border: "solid green 1px" }}>
                   {bit}
                 </span>
               );
-            })}
+            })}            
+            <span style={{ backgroundColor: "black", color: "gold" }}>
+              {valueBlocks[(len%values_per_chunk)]}
+            </span>
+            <span
+              style={{ border: "solid black" }}
+              className={`${styles.padding}`}
+            >
+              {pads}
+            </span>
           </text>
         </div>
       );
