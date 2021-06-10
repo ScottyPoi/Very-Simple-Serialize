@@ -225,7 +225,7 @@ export default function ListText(props) {
       return (
         <div className="row text-break ">
           <div className="col">
-          <div className="row justify-content-center" ><div className='col d-inline-flex p-0' style={{justifyContent: 'center' ,border: `solid green 1px`, color: 'gold', backgroundColor: 'green'}}>0x{_chunk}</div>          </div>
+          <div className="row justify-content-center" ><div className='col d-inline-flex p-0' style={{justifyContent: 'center' ,border: `solid green 1px`, color: 'gold', backgroundColor: `${_length < valuesPerChunk ? 'green' : color}`}}>0x{_chunk}</div>          </div>
 <div className='row'>
           <div
             className="col p-0"
@@ -270,7 +270,7 @@ export default function ListText(props) {
     ) {
       let split = ((_length*digits) % (valuesPerChunk*digits));
       // let fulls = _chunk.slice(split).reverse();
-      let bits = _chunk.slice(0, split);
+      let bits =  _chunk.substring(0, split)
       let lengthBit = _chunk.substring(split, split+digits);
       let pads = _chunk.substring((split+digits))
       return (
@@ -311,18 +311,29 @@ export default function ListText(props) {
           </div>
         </div></div></div>
       );
-    } else {
+    } else if (_idx > _length/valuesPerChunk) {
       return (
         <div className="row text-break">
           <div className="col">
-          <div className="row justify-content-center" ><div className='col d-inline-flex p-0' style={{justifyContent: 'center' ,border: `solid red 2px`, color: 'gold', backgroundColor: color}}>0x{_chunk}</div>          </div>
+          <div className="row justify-content-center" ><div className='col d-inline-flex p-0' style={{justifyContent: 'center' ,border: `solid red 2px`, color: 'gold', backgroundColor: 'red'}}>0x{_chunk}</div>          </div>
 <div className='row'>
           <div className='col p-0' style={{ color: "red", border: `solid ${color}` }}>                {pair(_chunk).map((pair) => {
                 return <span style={{ border: `solid ${color} 1px`}}>{pair}</span>
               })}</div>
         </div></div></div>
       );
-    }
+    } else  {
+        return (
+          <div className="row text-break">
+            <div className="col">
+            <div className="row justify-content-center" ><div className='col d-inline-flex p-0' style={{justifyContent: 'center' ,border: `solid red 2px`, color: 'gold', backgroundColor: color}}>0x{_chunk}</div>          </div>
+  <div className='row'>
+            <div className='col p-0' style={{ color: "red", border: `solid ${color}` }}>                {pair(_chunk).map((pair) => {
+                  return <span style={{ border: `solid ${color} 1px`}}>{pair}</span>
+                })}</div>
+          </div></div></div>
+        );
+      }
   }
   const parsed = parseChunk();
 
