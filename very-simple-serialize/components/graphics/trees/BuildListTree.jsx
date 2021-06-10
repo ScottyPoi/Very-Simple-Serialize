@@ -6,7 +6,8 @@ export default function BuildtListTree(props) {
 
     const chunks = props.chunks;
     const length = props.length;
-    let activeChunk = Math.ceil(props.length/256)
+    const valuesPerChunk = props.valuesPerChunk
+    let activeChunk = Math.floor((length)/valuesPerChunk) + 1
 
     
     let numberLeaves = getNextPowerOfTwo(chunks);
