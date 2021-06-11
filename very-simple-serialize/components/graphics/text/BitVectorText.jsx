@@ -1,6 +1,6 @@
 import styles from "../styles/UintText.module.css";
-import * as BitVector from '../../../ssz/src/types/composite/bitVector'
-import * as BigInt from '../../../ssz/src/types/basic/BigIntUintType'
+import * as BitVector from "../../../ssz/src/types/composite/bitVector";
+import * as BigInt from "../../../ssz/src/types/basic/BigIntUintType";
 export default function BitVectorText(props) {
   let _chunk = props.chunk;
   let _length = props.length;
@@ -12,7 +12,7 @@ export default function BitVectorText(props) {
   let red = _idx + 1 == chunk_count ? 0 : _idx % 2 == 1 ? 240 : 0;
   let green = _idx + 1 == chunk_count ? 160 : 0;
   let blue = _idx + 1 == chunk_count ? 0 : _idx % 2 == 0 ? 256 : 180;
-  let color = `rgb(${red},${green},${blue})`;
+  let color = props.emtpy ? 'gray' : `rgb(${red},${green},${blue})`;
 
   function toHexString(byteArray) {
     return Array.prototype.map
@@ -43,40 +43,58 @@ export default function BitVectorText(props) {
 
   function parseChunk() {
     if (_idx == chunk_count - 1) {
-      let bits = _chunk.slice(0, split)
+      let bits = _chunk.slice(0, split);
       let lengthBit = _chunk.slice(split, split + 2);
       let pads = _chunk.slice(split + 2);
-     let big = parseInt(props.array.reverse().join(''), 2)
-     let serial = new Uint16Array(64);
-     serial = BigInt.serialize(big, serial, 0, 32)
+
       return (
-        <div className="col" >
-          <div className='row' style={{ border: 'solid black 2px', color: 'gold', backgroundColor: 'green'}}>
-            0x{toHexString(serial)}
+        <div className="col">
+          <div
+            className="row"
+            style={{
+              border: "solid black 2px",
+              color: "gold",
+              backgroundColor: "green",
+            }}
+          >
+            0x{props.hex}
           </div>
-          <div className='row' style={{ border: "solid green" }} >
-          <text className={`${styles.hex}`}>
-            {bits.toString()}
-            <span style={{ backgroundColor: "black", color: "gold" }}>
-              {lengthBit}
-            </span>
-            <span className={`${styles.padding}`}>{pads.toString()} </span>
-          </text>
-        </div>
+          <div className="row" style={{ border: "solid green" }}>
+            <text className={`${styles.hex}`}>
+              {bits.toString()}
+              <span style={{ backgroundColor: "black", color: "gold" }}>
+                {lengthBit}
+              </span>
+              <span className={`${styles.padding}`}>{pads.toString()} </span>
+            </text>
+          </div>
         </div>
       );
     } else {
       return (
-        <div
-          className="col"
-          style={{ border: `solid ${color}`, display: `block` }}
-        >
-          <div style={{ color: color }}>{_chunk.toString()}</div>
+        <div className="col">
+          <div
+            className="row"
+            style={{
+              border: "solid black 2px",
+              color: "gold",
+              backgroundColor: color,
+            }}
+          >
+            0x{props.hex}
+          </div>
+          <div
+            className="row"
+            style={{ border: `solid ${color}`, display: `block` }}
+          >
+            <div style={{ color: color }}>{_chunk.toString()}</div>
+          </div>
         </div>
       );
     }
   }
   const parsed = parseChunk();
 
-  return parsed;
+  return (
+    <div>{parsed}</div>);
 }
