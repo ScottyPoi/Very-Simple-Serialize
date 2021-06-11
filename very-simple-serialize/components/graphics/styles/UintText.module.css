@@ -11,11 +11,19 @@
 }
 
 .bytes32 {
-  border: solid black;
+  border: solid green;
+  display: inline-block;
+  height: auto;
+  width: 200px;
+  
 }
 
 .hash {
-  border: solid red;
+  border: solid black;
+  background-color: gold;
+  display: inline-block;
+  height: auto;
+  width: 200px;
 }
 
 .valueChunk0 {

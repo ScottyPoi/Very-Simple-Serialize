@@ -9,7 +9,7 @@ export default function UintText(props) {
     let bitmask = serialized.slice(0, 2);
     let hex = serialized.slice(2);
     return (
-      <div className={`d-flex flex-row justify-content-start`}>
+      <div className={`col`}>
         <div className={`p-0 text-end ${styles.bitmask}`}>{bitmask}</div>{" "}
         <div className={`p-0  ${styles.hex}`}>{hex}</div>
       </div>
@@ -21,18 +21,17 @@ export default function UintText(props) {
     let zeroes = asBytes32.slice(2, padding);
     let hex = asBytes32.slice(padding);
     return (
-      <div className={`d-inline-flex flex-row justify-content-start ${styles.bytes32}`}>
-        <div className={`text-end p-0 ${styles.bitmask}`}>{bitmask}</div>{" "}
-        <div className={`text-center p-0 ${styles.padding}`}>{zeroes}</div>
-        <div className={`p-0 ${styles.hex}`}>{hex}</div>
+      <div className='col '>
+        <text><span style={{color: "black"}}>{bitmask}</span><span style={{color: 'red'}}>{zeroes}</span><span style={{color: 'green'}}>{hex}</span></text>
+
       </div>
+      
     );
   }
 
   return (
-    <>
-      Serialized: {parseSerial()}
-      As Bytes32: {parseBytes32()}<br/>
-    </>
+    <div className={`d-flex flex-row text-break  ${styles.bytes32}`}>
+      {parseBytes32()}<br/>
+    </div>
   );
 }

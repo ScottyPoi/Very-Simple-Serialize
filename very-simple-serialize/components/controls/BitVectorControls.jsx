@@ -28,7 +28,7 @@ export default function BitVectorControls(props) {
 
   function handleChangeLength(length) {
     let nc = Math.floor((Number(length) + 255) / 256);
-    let vals = valueSet.slice(0,length).reverse();
+    let vals = valueSet.slice(0,length)
     setNumChunks(nc);
     setValues(vals);
     setLength(length)
@@ -44,13 +44,13 @@ export default function BitVectorControls(props) {
         output = BooleanType.struct_serializeToBytes(
           bitvector[c * 256 + i],
           output,
-          255 - i
+          i
         );
       if (c + 1 == numChunks) {
         output = BooleanType.struct_serializeToBytes(
           true,
           output,
-          (length%256)-length
+          (length%256)
         );
       }  
       }
