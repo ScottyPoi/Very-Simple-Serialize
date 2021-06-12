@@ -84,27 +84,29 @@ export default function UintNControls(props) {
 
   return (
     <div className="row">
-                <div className="col">
-            <UintNDisplay
-              type={NumberUintType.NUMBER_UINT_TYPE}
-              value={getvalue()}
-              byteLength={uintSize}
-              serialized={serialized()}
-              asBytes32={bytes()}
-            >
-              {props.children}
-            </UintNDisplay>
-          </div>
+      <div className="col">
+        <UintNDisplay
+          type={NumberUintType.NUMBER_UINT_TYPE}
+          value={getvalue()}
+          byteLength={uintSize}
+          serialized={serialized()}
+          asBytes32={bytes()}
+        >
+          {props.children}
+        </UintNDisplay>
+      </div>
       <div className="col">
         <div className="d-flex flex-row">
-          <div className="d-flex flex-col">
-            <h3>Uint[</h3>
+          <div className="d-flex flex-col align-items-center">
+            <h1>Uint[</h1>
           </div>
-          <div className="d-flex flex-col">
+          <div className="d-flex flex-col align-items-center">
             <select
               className="form-select"
+              size={6}
               aria-label="Select Byte Size"
               onChange={(e) => setBytes(e)}
+              style={{ scrollbarWidth: "none", fontWeight: "bold" }}
             >
               <option selected>8</option>
               <option value="16">16</option>
@@ -113,13 +115,45 @@ export default function UintNControls(props) {
               <option value="128">128</option>
               <option value="256">256</option>
             </select>
-            <h3>]</h3></div>
-        </div>
-        <div className="d-flex flex-row">
-          <div className="flex-col">
-            <button onClick={() => randomValue(size_of())}>Change Value</button>
+            <h1>]</h1>
           </div>
+          <div className="d-flex flex-col align-items-center">
+            <button
+              className="btn-success"
+              onClick={() => randomValue(size_of())}
+            >
+              Change Value
+            </button>
+          </div>
+        </div>
+        <div className="d-flex flex-row"></div>
+        <div className="row justify-content-center ">
+          <div className="col">
+            <div className="card">
+              <div className="card-body" style={{ textAlign: "center" }}>
+                <h4 className="card-title">Uint{size_of()}</h4>
+                <h4 className="card-title">{size_of()} Bytes</h4>
 
+                <p className="card-text">
+                  <div className="container">
+                    <div className="row justify-content-center text-break">
+                      <h5>0x
+                      {new Array(size_of() / 4).fill(0).map((o) => {
+                        return `X`;
+                      })}</h5>
+                    </div>
+                    <div className="row justify-content-center text-break">
+                      <h5>MerkleTree - Depth 1</h5>
+                    </div>
+                    <div className="row justify-content-center text-break">
+                      The hash of the 32 Byte padded chunk is the hash_tree_root
+                      of the simple object
+                    </div>
+                  </div>
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div className="col">
@@ -128,32 +162,66 @@ export default function UintNControls(props) {
             <div className="row">
               <div className="col">
                 <div className="row">
-                  <h3>Type:<br/>Uint{uintSize}</h3> <br></br>
-                </div>
-                <div className="row text-break">
-                  <h3>Value:<br/>{getvalue().toString()} </h3>
+                  <h3>
+                    Type:
+                    <br />
+                    Uint{uintSize}
+                  </h3>{" "}
                   <br></br>
                 </div>
                 <div className="row text-break">
                   <h3>
-                    toBytes:<br/>
-                    <span style={{border: 'solid black 2px', display: 'inline-block', width: '300px'}}>0x<span style={{color: "green"}}>{toHexString(serialized()).slice(0, uintSize / 4)}</span></span>
+                    Value:
+                    <br />
+                    {getvalue().toString()}{" "}
+                  </h3>
+                  <br></br>
+                </div>
+                <div className="row text-break">
+                  <h3>
+                    toBytes:
+                    <br />
+                    <span
+                      style={{
+                        border: "solid black 2px",
+                        display: "inline-block",
+                        width: "300px",
+                      }}
+                    >
+                      0x
+                      <span style={{ color: "green" }}>
+                        {toHexString(serialized()).slice(0, uintSize / 4)}
+                      </span>
+                    </span>
                   </h3>
                 </div>
                 <div className="d-flex flex-row align-items-center">
-                <div className="col-9 mx-2"><h4>Padded to Bytes32:</h4></div>
-                <div className="col-3 mx-2"><Node className="" chunkIdx={0} numChunks={1} level="leaf" type="32" /></div>
+                  <div className="col-9 mx-2">
+                    <h4>Padded to Bytes32:</h4>
+                  </div>
+                  <div className="col-3 mx-2">
+                    <Node
+                      className=""
+                      chunkIdx={0}
+                      numChunks={1}
+                      level="leaf"
+                      type="32"
+                    />
+                  </div>
                   <br></br>
                 </div>
                 <div className="d-flex flex-row">
-                <div className="col-9 mx-2"><h4>hash_tree_root:</h4></div>
-                <div className="col-3 mx-2"><Node chunkIdx={0} numChunks={1} level="root" type="R" /></div>
+                  <div className="col-9 mx-2">
+                    <h4>hash_tree_root:</h4>
+                  </div>
+                  <div className="col-3 mx-2">
+                    <Node chunkIdx={0} numChunks={1} level="root" type="R" />
+                  </div>
                   <br></br>
                 </div>
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
