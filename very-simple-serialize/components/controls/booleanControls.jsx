@@ -39,26 +39,6 @@ export default function BooleanControls(props) {
         </DisplayBoolean>
       </div>
       <div className="col">
-        <div className="d-flex flex-row justify-content-center">
-          <div className="d-flex flex-col">
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={() => setValue(false)}
-            >
-              false
-            </button>
-          </div>
-          <div className="d-flex flex-col">
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={() => setValue(true)}
-            >
-              true
-            </button>
-          </div>
-        </div>
         <div className="row justify-content-center ">
           <div className="col">
             <div className="card">
@@ -67,17 +47,21 @@ export default function BooleanControls(props) {
                 <h5 className="card-title">1 BIT</h5>
 
                 <p className="card-text">
-                  <div className='container'>
-                    <div className='row'>
-                      <div className='col'>
-                          FALSE<br/>
-                          0<br/>
-                          0x00<br/>
+                  <div className="container">
+                    <div className="row">
+                      <div className="col">
+                        FALSE
+                        <br />
+                        0<br />
+                        0x00
+                        <br />
                       </div>
-                      <div className='col'>
-                          TRUE<br/>
-                          1<br/>
-                          0x01<br/>
+                      <div className="col">
+                        TRUE
+                        <br />
+                        1<br />
+                        0x01
+                        <br />
                       </div>
                     </div>
                   </div>
@@ -86,12 +70,26 @@ export default function BooleanControls(props) {
                   The hash of the 32 Byte padded chunk is the hash_tree_root of
                   the simple object
                 </p>
-                <button href="#" className="btn btn-primary">
-                  Go somewhere
-                </button>
-                <button href="#" className="btn btn-primary">
-                  Go somewhere
-                </button>
+                <div className="d-flex flex-row justify-content-evenly">
+                  <div className="d-flex flex-col">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={() => setValue(false)}
+                    >
+                      false
+                    </button>
+                  </div>
+                  <div className="d-flex flex-col">
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={() => setValue(true)}
+                    >
+                      true
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -113,6 +111,7 @@ export default function BooleanControls(props) {
           </h3>
           <br></br>
         </div>
+        
         <div className="row text-break">
           <h3>
             toBytes:

@@ -96,6 +96,34 @@ export default function UintNControls(props) {
         </UintNDisplay>
       </div>
       <div className="col">
+      <div className="row justify-content-center ">
+          <div className="col">
+            <div className="card">
+              <div className="card-body" style={{ textAlign: "center" }}>
+                <h4 className="card-title">Uint{size_of()}</h4>
+                <h4 className="card-title">{size_of()} Bytes</h4>
+
+                <p className="card-text">
+                  <div className="container">
+                    <div className="row justify-content-center text-break">
+                      <h5>0x
+                      {new Array(size_of() / 4).fill(0).map((o) => {
+                        return `X`;
+                      })}</h5>
+                    </div>
+                    <div className="row justify-content-center text-break">
+                      <h5>MerkleTree - Depth 1</h5>
+                    </div>
+                    <div className="row justify-content-center text-break">
+                      The hash of the 32 Byte padded chunk is the hash_tree_root
+                      of the simple object
+                    </div>
+                  </div>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="d-flex flex-row">
           <div className="d-flex flex-col align-items-center">
             <h1>Uint[</h1>
@@ -127,34 +155,7 @@ export default function UintNControls(props) {
           </div>
         </div>
         <div className="d-flex flex-row"></div>
-        <div className="row justify-content-center ">
-          <div className="col">
-            <div className="card">
-              <div className="card-body" style={{ textAlign: "center" }}>
-                <h4 className="card-title">Uint{size_of()}</h4>
-                <h4 className="card-title">{size_of()} Bytes</h4>
 
-                <p className="card-text">
-                  <div className="container">
-                    <div className="row justify-content-center text-break">
-                      <h5>0x
-                      {new Array(size_of() / 4).fill(0).map((o) => {
-                        return `X`;
-                      })}</h5>
-                    </div>
-                    <div className="row justify-content-center text-break">
-                      <h5>MerkleTree - Depth 1</h5>
-                    </div>
-                    <div className="row justify-content-center text-break">
-                      The hash of the 32 Byte padded chunk is the hash_tree_root
-                      of the simple object
-                    </div>
-                  </div>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
       <div className="col">
         <div className="row">

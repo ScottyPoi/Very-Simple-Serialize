@@ -1,13 +1,13 @@
 import BitVectorText from "../graphics/text/BitVectorText";
 import styles from "../graphics/styles/UintText.module.css";
-import BuildTree from "../graphics/trees/BuildTree";
+import BuildVectorTree from "../graphics/trees/BuildVectorTree";
 import * as BitVector from "../../ssz/src/types/composite/bitVector.jsx";
-import * as BigInt from "../../ssz/src/types/basic/BigIntUintType";
+import * as BigUInt from "../../ssz/src/types/basic/BigIntUintType";
 import HashRootText from "../graphics/text/HashRootText";
 import hash from "../../e-z-serialize/persistent/hash";
 import { createHash } from "crypto";
 import { useState } from "react";
-import {merkleize} from '../../ssz/src/util/merkleize';
+import { merkleize } from "../../ssz/src/util/merkleize";
 
 export default function DisplayBitVector(props) {
   let serialized = props.serialized;
@@ -35,21 +35,20 @@ export default function DisplayBitVector(props) {
   let numberOfLeaves = getNextPowerOfTwo(NUMBER_OF_VALUES);
   let emptyLeaves = numberOfLeaves - NUMBER_OF_VALUES;
   let numberOfLevels = Math.log2(numberOfLeaves);
-  
+
   function getValues() {
-    return props.values
-  };
+    return props.values;
+  }
   function getLength() {
-    return props.length
-  };
+    return props.length;
+  }
 
   function getNumberOfEmptyLeaves() {
-    let NUMBER_OF_VALUES = Math.floor((getLength() / 256) + 1);
+    let NUMBER_OF_VALUES = Math.floor(getLength() / 256 + 1);
     let numberOfLeaves = getNextPowerOfTwo(NUMBER_OF_VALUES);
     let emptyLeaves = numberOfLeaves - NUMBER_OF_VALUES;
-    return emptyLeaves
-
-  };
+    return emptyLeaves;
+  }
 
   function toHexString(byteArray) {
     return Array.prototype.map
@@ -61,9 +60,9 @@ export default function DisplayBitVector(props) {
 
   function chunks() {
     let chunks = serialized.map((chunk, idx) => {
-      let big = parseInt(chunk.slice().reverse().join(""), 2);
+      let big = BigInt(parseInt(chunk.slice().reverse().join(""), 2));
       let serial = new Uint16Array(64);
-      serial = BigInt.serialize(big, serial, 0, 32);
+      serial = BigUInt.serialize(big, serial, 0, 32);
       let hex = toHexString(serial);
       return (
         <BitVectorText
@@ -81,23 +80,23 @@ export default function DisplayBitVector(props) {
     for (let i = 0; i < emptyLeaves; i++) {
       let empty = new Uint16Array(64);
       empty.fill(0);
-      empty = BigInt.serialize(0, empty, 0, 32)
+      empty = BigUInt.serialize(0, empty, 0, 32);
       chunks.push(
-        <BitVectorText 
-        key={serialized.length + i}
-        id={`emptyChunk${i}`}
-        chunk={toHexString(empty)}
-        length={length}
-        idx={serialized.length + i}
-        num={serialized.length}
-        array={empty}
-        hex={toHexString(empty)}
-        emtpy={true}
+        <BitVectorText
+          key={serialized.length + i}
+          id={`emptyChunk${i}`}
+          chunk={toHexString(empty)}
+          length={length}
+          idx={serialized.length + i}
+          num={serialized.length}
+          array={empty}
+          hex={toHexString(empty)}
+          emtpy={true}
         />
       );
     }
 
-    return chunks
+    return chunks;
   }
 
   function _values() {
@@ -127,9 +126,6 @@ export default function DisplayBitVector(props) {
   //   branch nodes = leafts * 2 - 2 - leafs
   //   root = gethashtreeroot(serialized)
   //   treelevels = 3 + getnextpoweroftwo(totalshulnks)//8
-
-
-
 
   let leaves = serialized.map((chunk) => {
     let hash = createHash("sha256");
@@ -164,7 +160,7 @@ export default function DisplayBitVector(props) {
   //   }
   // }
 
-  // let hashRoot = hashTree(leaves);
+  let hashRoot = merkleize(leaves);
 
   return (
     <>
@@ -172,18 +168,56 @@ export default function DisplayBitVector(props) {
         <div className="row">
           <div className="col-10">
             <div className="row justify-content-center">
-              {/* <HashRootText hash={hashRoot} /> */}
-              0x{merkleize(leaves)}
+              <HashRootText hash={hashRoot} />
             </div>
             <div className="row">
-              <BuildTree NUMBER_OF_VALUES={NUMBER_OF_VALUES} />
+              <BuildVectorTree NUMBER_OF_VALUES={NUMBER_OF_VALUES} />
             </div>
 
             <div
               className={`row justify-content-center row-cols-${numberOfLeaves} text-break`}
             >
-              {chunks()}
+              {numberOfLeaves < 5 ? (
+                chunks()
+              ) : (
+                <div>
+                  <button
+                    className="btn btn-primary"
+                    type="button"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasBottom"
+                    aria-controls="offcanvasBottom"
+                  >
+                    Show Chunks
+                  </button>
+
+                  <div
+                    className="offcanvas offcanvas-bottom"
+                    tabindex="-1"
+                    id="offcanvasBottom"
+                    aria-labelledby="offcanvasBottomLabel"
+                  >
+                    <div className="offcanvas-header">
+                      <h5 className="offcanvas-title" id="offcanvasBottomLabel">
+                        Chunks
+                      </h5>
+                      <button
+                        type="button"
+                        className="btn-close text-reset"
+                        data-bs-dismiss="offcanvas"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div className="offcanvas-body small">
+                      <div className="container">
+                        <div className={`row row-cols-${numberOfLeaves}`}>{chunks()}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
+
             <br />
           </div>
 

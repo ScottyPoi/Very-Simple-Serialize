@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import * as BitVectorType from "../../ssz/src/types/composite/bitVector";
 import * as BooleanType from "../../ssz/src/types/basic/boolean";
 import DisplayBitVector from '../display/DisplayBitVector'
+import * as math from '../../ssz/src/util/math'
 
 let valueSet = [false];
 for (let i = 0; i < 256*16; i++) {
@@ -18,7 +19,17 @@ export default function BitVectorControls(props) {
   const [serialized, setSerialized] = useState([]);
   const [numChunks, setNumChunks] = useState(1);
 
-  
+  function getNextPowerOfTwo(x) {
+    if ( x<= 1) {
+      return 1
+    }
+    else if ( x == 2) {
+      return 2
+    }
+    else {
+      return 2 * getNextPowerOfTwo(Math.floor((x+1)/2))
+    }
+  }
 
   
   
@@ -76,26 +87,62 @@ export default function BitVectorControls(props) {
   // }
 
   return (
-    <>
-      <div>BitVectorControls</div>
-      <div>Length: {length}</div>
-      <div>
-        <p>ChunkCount: {numChunks}</p>
-      </div>
-      <input
-        value={length}
-        type="number"
-        min={1}
-        onChange={(e) => handleChangeLength(e.target.value)}
-      />
-      <br />
-      <br />
+    <div className='row'>
+      <div className='col'>
       <DisplayBitVector
       serialized={serialized}
       values={values}
       length={length}
       >{props.children}</DisplayBitVector>
+      </div>
+      <div className="col">
+        <div className="row justify-content-center ">
+          <div className="col">
+            <div className="card">
+              <div className="card-body" style={{ textAlign: "center" }}>
+                <h4 className="card-title">BitVector</h4>
+                <h4 className="card-title">Length: {length}</h4>
+
+                <p className="card-text">
+                  <div className="container">
+                  <div className="row justify-content-center text-break">
+                      <h5>Bytes32 Chunks: {numChunks}</h5>
+                    </div>
+                    <div className="row justify-content-center text-break">
+                      <h5>MerkleTree - Depth {length < 256 ? "1" : length < 512 ? "2" : length < 1024 ? "3" : "4"}</h5>
+                    </div>
+                    <div className="row justify-content-center text-break">
+                      256 Boolean Values pack into each 32 Byte Chunk
+                    </div>
+                    <div className="row justify-content-center text-break">
+                      An addition "1" bit is added at the length index
+                    </div>
+                    <div className="row justify-content-center text-break">
+                      Chunks that are not full are packed with zeros
+                    </div>
+                    <div className="row justify-content-center text-break">
+                      If the total chunks is not a power of 2, <br/>
+                      The Merkle_Tree is filled in with zero-nodes
+                    </div>
+                  </div>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className='row'>
+        <div className='col'>
+      <div>Length: {length}</div>
+      <div>
+        <p>ChunkCount: {numChunks}</p>
+      </div>
+      <label for="length" className="form-label">Length</label>
+<input type="range" value={length} className="form-range" onChange={(e) => handleChangeLength(e.target.value)} min={1} max={2047} id="length"></input>
+      </div>
+        </div>
+      </div>
       
-    </>
+      
+    </div>
   );
 }

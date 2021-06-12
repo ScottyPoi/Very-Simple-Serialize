@@ -60,9 +60,9 @@ export default function BitVectorText(props) {
             0x{props.hex}
           </div>
           <div className="row" style={{ border: "solid green" }}>
-            <text className={`${styles.hex}`}>
+            <text  className={`${styles.hex} p-0`}>
               {bits.toString()}
-              <span style={{ backgroundColor: "black", color: "gold" }}>
+              <span style={{ backgroundColor: "black", color: "gold"}}>
                 {lengthBit}
               </span>
               <span className={`${styles.padding}`}>{pads.toString()} </span>
@@ -81,13 +81,13 @@ export default function BitVectorText(props) {
               backgroundColor: color,
             }}
           >
-            0x{props.hex}
+            <text className='p-0'>0x{props.hex}</text>
           </div>
           <div
             className="row"
             style={{ border: `solid ${color}`, display: `block` }}
           >
-            <div style={{ color: color }}>{_chunk.toString()}</div>
+            <div className='p-0' style={{ color: color }}>{_chunk.toString()}</div>
           </div>
         </div>
       );
@@ -95,6 +95,5 @@ export default function BitVectorText(props) {
   }
   const parsed = parseChunk();
 
-  return (
-    <div>{parsed}</div>);
+  return parsed
 }
