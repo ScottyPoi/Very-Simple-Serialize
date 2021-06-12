@@ -4,6 +4,13 @@ import * as BooleanType from "../../ssz/src/types/basic/boolean";
 import * as NumberUintType from "../../ssz/src/types/basic/NumberUintType";
 import * as BigIntUintType from "../../ssz/src/types/basic/BigIntUintType";
 // import * as Array from '../../ssz/src/types/composite/array';
+
+let _valueSet = [];
+for (let i = 0; i < 16 * 256; i++) {
+  let val = Math.floor(Math.random() * 255);
+  _valueSet.push(val);
+}
+
 export default function VectorControls(props) {
   const [elementType, setElementType] = useState("Uint8");
   const [length, setLength] = useState(1);
@@ -14,10 +21,8 @@ export default function VectorControls(props) {
   const [size, setSize] = useState(8);
   const [valuesPerChunk, setValuesPerChunk] = useState(32);
   const [serializer, setSerializer] = useState(NumberUintType);
-  const [maxLength, setMaxLength] = useState(32*16 - 1)
-  const [valueSet, setValueSet] = useState([]);
-
- 
+  const [maxLength, setMaxLength] = useState(32 * 16 - 1);
+  const [valueSet, setValueSet] = useState(_valueSet);
 
   useEffect(() => {
     setNumChunks(Math.floor(length / valuesPerChunk + 1));
@@ -28,19 +33,7 @@ export default function VectorControls(props) {
     _serialize(values);
   }, [values]);
 
-  function getLength() {
-    return length;
-  }
-
-  function getSize() {
-    return size;
-  }
-
-  function getElementType() {
-    return elementType;
-  }
-
-  function handleTypeChange(type) {
+  function handleChangeType(type) {
     let mv = 0;
     let sz = 0;
     let vpc = 0;
@@ -71,7 +64,7 @@ export default function VectorControls(props) {
       vpc = 1;
     }
     let valueSet = [];
-    for (let i = 0; i < 16*vpc; i++) {
+    for (let i = 0; i < 16 * vpc; i++) {
       let val = Math.floor(Math.random() * mv);
       valueSet.push(val);
     }
@@ -80,8 +73,8 @@ export default function VectorControls(props) {
     setSize(sz);
     setValuesPerChunk(vpc);
     setElementType(type);
-    setLength(vpc);
-    setMaxLength(vpc * 16 - 1)
+    setLength(1);
+    setMaxLength(vpc * 16 - 1);
   }
 
   function _serialize(vector) {
@@ -114,39 +107,180 @@ export default function VectorControls(props) {
 
   return (
     <>
-      <div>VectorControls</div>
-      <div>Element Type:</div>
-      <select
-        className="form-select"
-        aria-label="Select ElementType"
-        onChange={(e) => handleTypeChange(e.target.value)}
-      >
-        <option selected>Uint8</option>
-        <option value="Uint16">Uint16</option>
-        <option value="Uint32">Uint32</option>
-        <option value="Uint64">Uint64</option>
-        <option value="Uint128">Uint128</option>
-        <option value="Uint256">Uint256</option>
-      </select>
-      <div>Length: {length}</div>
-      <input
-        value={length}
-        type="number"
-        min={1}
-        max={maxLength}
-        onChange={(e) => setLength(e.target.value)}
-      />
-      <br />
-      <br />
-      <DisplayVector
-        serialized={serialized}
-        values={values}
-        length={length}
-        type={elementType}
-        size={size}
-      >
-        {props.children}
-      </DisplayVector>
+      <div className="row">
+        <div className="col">
+          <DisplayVector
+            serialized={serialized}
+            values={values}
+            length={length}
+            type={elementType}
+            size={size}
+          >
+            {props.children}
+          </DisplayVector>
+        </div>
+        <div className="col">
+          
+          <div className="row justify-content-center ">
+            <div className="col">
+              <div className="card">
+                <div className="card-body" style={{ textAlign: "center" }}>
+                  <h4 className="card-title">
+                    Vector[{elementType}, {length}]
+                  </h4>
+                  <h4 className="card-title">Type: {elementType}</h4>
+
+                  <h4 className="card-title">Fixed Length: {length}</h4>
+
+                  <p className="card-text">
+                    <div className="container">
+                      <div className="row justify-content-center text-break">
+                        <h5>Bytes32 Chunks: {numChunks}</h5>
+                      </div>
+                      <div className="row justify-content-center text-break">
+                        <h5>
+                          MerkleTree - Depth{" "}
+                          {length < 256
+                            ? "1"
+                            : length < 512
+                            ? "2"
+                            : length < 1024
+                            ? "3"
+                            : "4"}
+                        </h5>
+                      </div>
+                      <div className="row justify-content-center text-break">
+                        {valuesPerChunk} {elementType} Values pack into each 32
+                        Byte Chunk
+                      </div>
+                      <div className="row justify-content-center text-break">
+                        An addition "1" is added at the length index
+                      </div>
+                      <div className="row justify-content-center text-break">
+                        Chunks that are not full are packed with zeros
+                      </div>
+                      <div className="row justify-content-center text-break">
+                        If the total chunks is not a power of 2, <br />
+                        The Merkle_Tree is filled in with zero-nodes
+                      </div>
+                    </div>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="d-flex flex-row ">
+            <div className="col">
+              <ul className="nav nav-pills" id="typeTab" role="tablist">
+                <li className="nav-item" role="presentation">
+                  <button
+                    id="uint8-tab"
+                    type="button"
+                    role="tab"
+                    aria-selected="true"
+                    aria-controls="true"
+                    className="active btn btn-secondary"
+                    data-bs-toggle="tab"
+                    data-bs-target="#uint8"
+                    onClick={() => handleChangeType("Uint8")}
+                  >
+                    Uint8
+                  </button>
+                </li>
+                <li className="nav-item" role="presentation">
+                  <button
+                    id="uint16-tab"
+                    type="button"
+                    role="tab"
+                    aria-selected="true"
+                    aria-controls="true"
+                    className="btn btn-primary"
+                    data-bs-toggle="tab"
+                    data-bs-target="#uint16"
+                    onClick={() => handleChangeType("Uint16")}
+                  >
+                    Uint16
+                  </button>
+                </li>
+                <li className="nav-item" role="presentation">
+                  <button
+                    id="uint32-tab"
+                    type="button"
+                    role="tab"
+                    aria-selected="true"
+                    aria-controls="true"
+                    className="btn btn-success"
+                    data-bs-toggle="tab"
+                    data-bs-target="#uint32"
+                    onClick={() => handleChangeType("Uint32")}
+                  >
+                    Uint32
+                  </button>
+                </li>
+                <li className="nav-item" role="presentation">
+                  <button
+                    id="uint64-tab"
+                    type="button"
+                    role="tab"
+                    aria-selected="true"
+                    aria-controls="true"
+                    className="btn btn-warning"
+                    data-bs-toggle="tab"
+                    data-bs-target="#uint64"
+                    onClick={() => handleChangeType("Uint64")}
+                  >
+                    Uint64
+                  </button>
+                </li>
+                <li className="nav-item" role="presentation">
+                  <button
+                    id="uint128-tab"
+                    type="button"
+                    role="tab"
+                    aria-selected="true"
+                    aria-controls="true"
+                    className="btn btn-danger"
+                    data-bs-toggle="tab"
+                    data-bs-target="#uint128"
+                    onClick={() => handleChangeType("Uint128")}
+                  >
+                    Uint128
+                  </button>
+                </li>
+                <li className="nav-item" role="presentation">
+                  <button
+                    id="uint8-tab"
+                    type="button"
+                    role="tab"
+                    aria-selected="true"
+                    aria-controls="true"
+                    className="btn btn-info"
+                    data-bs-toggle="tab"
+                    data-bs-target="#uint256"
+                    onClick={() => handleChangeType("Uint256")}
+                  >
+                    Uint256
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <label for="length" className="form-label">
+            <h3>Type: {elementType} Length: {length}</h3>
+          </label>
+          <input
+            type="range"
+            value={length}
+            className="form-range"
+            onChange={(e) => setLength(e.target.value)}
+            min={1}
+            max={8 * valuesPerChunk - 1}
+            id="length"
+          ></input>
+          <br />
+          <br />
+        </div>
+      </div>
     </>
   );
 }

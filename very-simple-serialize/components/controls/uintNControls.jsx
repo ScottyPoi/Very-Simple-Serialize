@@ -96,7 +96,7 @@ export default function UintNControls(props) {
         </UintNDisplay>
       </div>
       <div className="col">
-      <div className="row justify-content-center ">
+        <div className="row justify-content-center ">
           <div className="col">
             <div className="card">
               <div className="card-body" style={{ textAlign: "center" }}>
@@ -106,10 +106,12 @@ export default function UintNControls(props) {
                 <p className="card-text">
                   <div className="container">
                     <div className="row justify-content-center text-break">
-                      <h5>0x
-                      {new Array(size_of() / 4).fill(0).map((o) => {
-                        return `X`;
-                      })}</h5>
+                      <h5>
+                        0x
+                        {new Array(size_of() / 4).fill(0).map((o) => {
+                          return `X`;
+                        })}
+                      </h5>
                     </div>
                     <div className="row justify-content-center text-break">
                       <h5>MerkleTree - Depth 1</h5>
@@ -155,7 +157,6 @@ export default function UintNControls(props) {
           </div>
         </div>
         <div className="d-flex flex-row"></div>
-
       </div>
       <div className="col">
         <div className="row">

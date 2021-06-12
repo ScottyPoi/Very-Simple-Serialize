@@ -1,141 +1,178 @@
-import BuildTree from '../graphics/trees/BuildTree'
-import VectorText from '../graphics/text/VectorText';
-import * as NumberUintType from '../../ssz/src/types/basic/NumberUintType';
+import BuildTree from "../graphics/trees/BuildTree";
+import VectorText from "../graphics/text/VectorText";
+import * as NumberUintType from "../../ssz/src/types/basic/NumberUintType";
+import HashRootText from "../graphics/text/HashRootText";
+import { merkleize } from "../../ssz/src/util/merkleize";
+import { createHash } from "crypto";
+
 export function DisplayVector(props) {
-    let serialized = props.serialized;
-    let values = props.values;
-    let length = props.length;
-    let size = props.size;
+  let serialized = props.serialized;
+  let values = props.values;
+  let length = props.length;
+  let size = props.size;
 
-    let numberOfChunks =  Math.floor(length / (256/size)) + 1 
+  let numberOfChunks = Math.floor(length / (256 / size)) + 1;
 
-    let NUMBER_OF_VALUES = numberOfChunks;
+  let NUMBER_OF_VALUES = numberOfChunks;
 
-    let numberOfLeaves = getNextPowerOfTwo(NUMBER_OF_VALUES);
+  let numberOfLeaves = getNextPowerOfTwo(NUMBER_OF_VALUES);
 
-    let emptyLeaves = numberOfLeaves - NUMBER_OF_VALUES;
+  let emptyLeaves = numberOfLeaves - NUMBER_OF_VALUES;
 
-    function toHexString(byteArray) {
-        return Array.prototype.map
-          .call(byteArray, function (byte) {
-            return ("0" + (byte & 0xff).toString(16)).slice(-2);
-          })
-          .join("");
-      }
+  function toHexString(byteArray) {
+    return Array.prototype.map
+      .call(byteArray, function (byte) {
+        return ("0" + (byte & 0xff).toString(16)).slice(-2);
+      })
+      .join("");
+  }
 
-    function getNextPowerOfTwo(number) {
-        if (number <= 1) {
-          return 1;
+  function getNextPowerOfTwo(number) {
+    if (number <= 1) {
+      return 1;
+    } else {
+      let i = 2;
+      while (i < Infinity) {
+        if (number <= i) {
+          return i;
         } else {
-          let i = 2;
-          while (i < Infinity) {
-            if (number <= i) {
-              return i;
-            } else {
-              i *= 2;
-            }
-          }
+          i *= 2;
         }
       }
+    }
+  }
 
-
-
-      function chunks() {
-        let chunks = serialized.map((chunk, idx) => {
-            
-
-            let _output = toHexString(chunk);
-
-            
-          
-          
-            return ( 
-                 <VectorText
-                 numberOfLeaves={numberOfLeaves}
-                 emptyLeaves={emptyLeaves}
-                 key={idx} 
-                 id={`chunk${idx}`}
-                  chunk={_output}
-                  length={length}
-                  size={size}
-                  idx={idx}
-                  numberOfChunks={numberOfChunks}
-                /> 
-          
-        );
-              });
-        
-        for (let i=0; i<emptyLeaves; i++) {
-          chunks.push(
-            <div className='col' style={{ border: "solid gray"}}>EMPTY</div>
-          )
-        }
-    
-        return chunks;
-      }
-
-      function _values() {
-        let numChunks = numberOfChunks;
-        let valueChunks = [];
-        for (let i = 0; i < numChunks; i++) {
-          let startIdx = i * 256/size;
-          let endIdx =
-            startIdx + 256/size - 1 > serialized.length
-              ? startIdx + 256/size
-              : serialized.length - 1;
-          valueChunks.push(values.slice(startIdx, endIdx));
-        }
-        return valueChunks;
-      }
-
+  function chunks() {
+    let chunks = serialized.map((chunk, idx) => {
+      let _output = toHexString(chunk);
 
       return (
-        <>
-          <div className="container">
-            <div className='row'>
-              <div className='col-10'>
-          <BuildTree NUMBER_OF_VALUES={NUMBER_OF_VALUES} />
-    
+        <VectorText
+          numberOfLeaves={numberOfLeaves}
+          emptyLeaves={emptyLeaves}
+          key={idx}
+          id={`chunk${idx}`}
+          chunk={_output}
+          length={length}
+          size={size}
+          idx={idx}
+          numberOfChunks={numberOfChunks}
+        />
+      );
+    });
+
+    for (let i = 0; i < emptyLeaves; i++) {
+      chunks.push(
+        <div className="col" style={{ border: "solid gray" }}>
+          EMPTY
+        </div>
+      );
+    }
+
+    return chunks;
+  }
+
+  function _values() {
+    let numChunks = numberOfChunks;
+    let valueChunks = [];
+    for (let i = 0; i < numChunks; i++) {
+      let startIdx = (i * 256) / size;
+      let endIdx =
+        startIdx + 256 / size - 1 > serialized.length
+          ? startIdx + 256 / size
+          : serialized.length - 1;
+      valueChunks.push(values.slice(startIdx, endIdx));
+    }
+    return valueChunks;
+  }
+
+  let leaves = serialized.map((chunk) => {
+    let hash = createHash("sha256");
+    hash.update(chunk);
+    return hash.digest();
+  });
+
+  let hashRoot = merkleize(leaves);
+
+  return (
+    <>
+      <div className="container">
+        <div className="row">
+          <div className="col-10">
+            <div className="row justify-content-center">
+              <HashRootText hash={hashRoot} />
+            </div>
+            <div className="row">
+              <BuildTree NUMBER_OF_VALUES={NUMBER_OF_VALUES} />
+            </div>
             <div className={`row row-cols-${numberOfLeaves} text-break`}>
-            {chunks()}
+              {numberOfLeaves < 5 ? (
+                chunks()
+              ) : (
+                <div>
+                  <button
+                    className="btn btn-primary"
+                    type="button"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasBottom"
+                    aria-controls="offcanvasBottom"
+                  >
+                    Show Chunks
+                  </button>
+
+                  <div
+                    className="offcanvas offcanvas-bottom"
+                    tabindex="-1"
+                    id="offcanvasBottom"
+                    aria-labelledby="offcanvasBottomLabel"
+                  >
+                    <div className="offcanvas-header">
+                      <h5 className="offcanvas-title" id="offcanvasBottomLabel">
+                        Chunks
+                      </h5>
+                      <button
+                        type="button"
+                        className="btn-close text-reset"
+                        data-bs-dismiss="offcanvas"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div className="offcanvas-body small">
+                      <div className="container">
+                        <div className={`row row-cols-${numberOfLeaves}`}>
+                          {chunks()}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
             <br />
-            </div>
-             
-              <div className='col'>
-                <p> 
+            <p>
               obj: Vector[{length}] = [
-              <div className={`row  text-break`} >
+              <div className={`row  text-break`}>
                 {_values().map((valueChunk, idx) => {
-                  let red = idx + 1 == _values().length ? 0 : idx % 2 == 1 ? 256 : 0
-                  let green = idx + 1 == _values().length ? 200 : 0
-                  let blue = idx + 1 == _values().length ? 0 : idx % 2 == 0 ? 256 : 150
-                  let color = `rgb(${red},${green},${blue})`
+                  let red =
+                    idx + 1 == _values().length ? 0 : idx % 2 == 1 ? 256 : 0;
+                  let green = idx + 1 == _values().length ? 200 : 0;
+                  let blue =
+                    idx + 1 == _values().length ? 0 : idx % 2 == 0 ? 256 : 150;
+                  let color = `rgb(${red},${green},${blue})`;
                   return (
-                    <div style={{ color: color}}>
+                    <div style={{ color: color }}>
                       {valueChunk.map((value) => {
                         return `${value}, `;
                       })}
                     </div>
-                  )
+                  );
                 })}
-                                    <div style={{ color: "green"}}>0x01(LEN)</div>
-
               </div>
               ]
-              </p>
+            </p>
           </div>
-        
-          </div>
-          </div>
-        </>
-      );
-
-
-
-
-
-
-
-
+        </div>
+      </div>
+    </>
+  );
 }
