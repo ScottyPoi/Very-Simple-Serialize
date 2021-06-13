@@ -133,33 +133,6 @@ export default function DisplayBitVector(props) {
     return hash.digest();
   });
 
-  // for (let i = 0; i < getNumberOfEmptyLeaves(); i++) {
-  //   let empty = new Uint16Array(64);
-  //   empty.fill(0);
-  //   empty = BigInt.serialize(0, empty, 0, 32)
-  //   let hash = createHash("sha256");
-  //   hash.update(empty);
-  //   leaves.push(hash.digest())
-  // }
-
-  // function hashTree(leaves) {
-  //   if (leaves.length > 1) {
-  //     let hashes = [];
-  //     for (let i = 0; i < leaves.length; i += 2) {
-  //       let hash = createHash("sha256");
-  //       hash.update(Buffer.concat([leaves[i], leaves[i+1]]));
-  //       hashes.push(hash.digest());
-  //     }
-  //     if (hashes.length > 1) {
-  //       return hashTree(hashes);
-  //     } else {
-  //       return hashes;
-  //     }
-  //   } else {
-  //     return leaves
-  //   }
-  // }
-
   let hashRoot = merkleize(leaves);
 
   return (

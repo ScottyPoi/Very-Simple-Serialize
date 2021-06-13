@@ -113,7 +113,7 @@ export default function BuildtListTree(props) {
           <div style={{display: "inline-block", width:"25px", height: "auto"}} />
         </div>
           <div className="col p-1">
-          <Node type="L" level='length'/>
+          <Node type={props.limit} level='length'/>
 
         </div>
       </div>

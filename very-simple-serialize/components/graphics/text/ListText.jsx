@@ -11,7 +11,7 @@ export default function ListText(props) {
   let _limit = props.limit;
   let valuesPerChunk = props.valuesPerChunk
     let size = props.size;
-    let digits = size/4
+    let digits = props.size/4
   const chunk_count = props.chunk_count;
 
   function pair(bits) {
@@ -187,13 +187,13 @@ export default function ListText(props) {
       chunk_count > 1 &&
       _length > (_idx + 1) * valuesPerChunk
     ) {
-      let split = valuesPerChunk - (_limit % valuesPerChunk);
-      let split2 = _length < valuesPerChunk ? 255 - _length : 255;
-      let bits = _chunk.slice(split);
-      let delimeter = _chunk[split];
-      let empties = _length < valuesPerChunk ? _chunk.slice(0, split2) : [];
-      let fulls = _length < valuesPerChunk ? _chunk.slice(split2) : _chunk;
-      let pads = _chunk.slice(0, split - 1);
+      // let split = valuesPerChunk - (_limit % valuesPerChunk);
+      // let split2 = _length < valuesPerChunk ? 255 - _length : 255;
+      // let bits = _chunk.slice(split);
+      // let delimeter = _chunk[split];
+      // let empties = _length < valuesPerChunk ? _chunk.slice(0, split2) : [];
+      // let fulls = _length < valuesPerChunk ? _chunk.slice(split2) : _chunk;
+      // let pads = _chunk.slice(0, split - 1);
 
       return (
         <div className="row text-break ">
