@@ -32,7 +32,7 @@ export default function UintNDisplay(props) {
       <div className='row'>
         <div className="col">
           <div className={`row justify-content-center text-break`}>
-            <HashRootText hash={hash} />
+            <HashRootText hash={hash} displaySize='x-large'/>
           </div>
           <div className="row justify-content-center">
             <BuildTree NUMBER_OF_VALUES={1} />

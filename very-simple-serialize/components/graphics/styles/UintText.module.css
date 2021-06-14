@@ -14,16 +14,31 @@
   border: solid green;
   display: inline-block;
   height: auto;
-  width: 200px;
+  width: 40%;
+  padding-right: 0px;
+  
   
 }
 
 .hash {
+  animation-name: loader 3s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
   border: solid black;
   background-color: gold;
   display: inline-block;
   height: auto;
-  width: 200px;
+  width: 40%;
+}
+
+@keyframes loader {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1
+  }
+
 }
 
 .valueChunk0 {

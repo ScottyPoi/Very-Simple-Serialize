@@ -58,6 +58,20 @@ export default function UintNControls(props) {
     setUintSize(event.target.value);
   }
 
+  function sizeUp() {
+    let size = uintSize;
+    size < 256
+      ? setUintSize(size * 2)
+      : alert("256 bits is the maximum Uint size");
+  }
+
+  function sizeDown() {
+    let size = uintSize;
+    size > 8
+      ? setUintSize(size / 2)
+      : alert("8 bits is the smallest Uint Size");
+  }
+
   useEffect(() => {
     randomValue(uintSize);
   }, [uintSize]);
@@ -112,13 +126,92 @@ export default function UintNControls(props) {
                           return `X`;
                         })}
                       </h5>
+                      <h4>
+                        <span
+                          style={{
+                            border: "solid black 2px",
+                            display: "inline-block",
+                            width: "300px",
+                          }}
+                        >
+                          0x
+                          <span style={{ color: "green" }}>
+                            {toHexString(serialized()).slice(0, uintSize / 4)}
+                          </span>
+                        </span>
+                      </h4>
                     </div>
-                    <div className="row justify-content-center text-break">
-                      <h5>MerkleTree - Depth 1</h5>
+
+{uintSize == 256 ? (                    <div className="row justify-content-center text-break">
+                      <h5>
+                      This 256 Bit unsigned integer occupies the entire Bytes32 chunk
+                      </h5>
+                    </div>) : (                    <div className="row justify-content-center text-break">
+                      <h5>
+                        Unsigned integers occupying less than 32 Bytes are{" "}
+                        <span style={{ color: "red" }}>padded with zeros</span>{" "}
+                        to fill a Bytes32 chunk
+                      </h5>
+                    </div>)
+}                    <div className="row justify-content-center text-break">
+                      <h5>
+                        The hash of the{" "}
+                        <span
+                          style={{
+                            width: "auto",
+                            display: "inline-block",
+                            border: "solid green 1px",
+                            backgroundColor: "lightgreen",
+                          }}
+                        >
+                          Bytes32 (Padded) Chunk
+                        </span>
+                        <br />
+                        is the
+                        <br />
+                        <span
+                          style={{
+                            width: "auto",
+                            display: "inline-block",
+                            border: "solid black 1px",
+                            backgroundColor: "gold",
+                          }}
+                        >
+                          hash_tree_root
+                        </span>
+                        <br />
+                        of the simple object
+                      </h5>
                     </div>
-                    <div className="row justify-content-center text-break">
-                      The hash of the 32 Byte padded chunk is the hash_tree_root
-                      of the simple object
+
+                    <div className="d-flex flex-row">
+                      <div className="col-9 mx-2">
+                        <h4>hash_tree_root:</h4>
+                      </div>
+                      <div className="col-3 mx-2">
+                        <Node
+                          chunkIdx={0}
+                          numChunks={1}
+                          level="root"
+                          type="R"
+                        />
+                      </div>
+                      <br></br>
+                    </div>
+                    <div className="d-flex flex-row align-items-center">
+                      <div className="col-9 mx-2">
+                        <h4>Padded to Bytes32:</h4>
+                      </div>
+                      <div className="col-3 mx-2">
+                        <Node
+                          className=""
+                          chunkIdx={0}
+                          numChunks={1}
+                          level="leaf"
+                          type="32"
+                        />
+                      </div>
+                      <br></br>
                     </div>
                   </div>
                 </p>
@@ -126,36 +219,7 @@ export default function UintNControls(props) {
             </div>
           </div>
         </div>
-        <div className="d-flex flex-row">
-          <div className="d-flex flex-col align-items-center">
-            <h1>Uint[</h1>
-          </div>
-          <div className="d-flex flex-col align-items-center">
-            <select
-              className="form-select"
-              size={6}
-              aria-label="Select Byte Size"
-              onChange={(e) => setBytes(e)}
-              style={{ scrollbarWidth: "none", fontWeight: "bold" }}
-            >
-              <option selected>8</option>
-              <option value="16">16</option>
-              <option value="32">32</option>
-              <option value="64">64</option>
-              <option value="128">128</option>
-              <option value="256">256</option>
-            </select>
-            <h1>]</h1>
-          </div>
-          <div className="d-flex flex-col align-items-center">
-            <button
-              className="btn-success"
-              onClick={() => randomValue(size_of())}
-            >
-              Change Value
-            </button>
-          </div>
-        </div>
+
         <div className="d-flex flex-row"></div>
       </div>
       <div className="col">
@@ -163,23 +227,93 @@ export default function UintNControls(props) {
           <div className="col">
             <div className="row">
               <div className="col">
-                <div className="row">
-                  <h3>
-                    Type:
-                    <br />
-                    Uint{uintSize}
-                  </h3>{" "}
-                  <br></br>
+                <div className="d-flex flex-row">
+                  {/* <div className="d-flex flex-col align-items-center">
+                    <h1>Uint[</h1>
+                  </div>
+                  <div className="d-flex flex-col align-items-center">
+                    <select
+                      className="form-select"
+                      size={6}
+                      aria-label="Select Byte Size"
+                      onChange={(e) => setBytes(e)}
+                      style={{ scrollbarWidth: "none", fontWeight: "bold" }}
+                    >
+                      <option selected>8</option>
+                      <option value="16">16</option>
+                      <option value="32">32</option>
+                      <option value="64">64</option>
+                      <option value="128">128</option>
+                      <option value="256">256</option>
+                    </select>
+                    <h1>]</h1>
+                  </div> */}
+                  <div className="col">
+                    <div className="row">
+                      <button className="btn" style={{boxShadow:"none"}} onClick={() => sizeUp()}>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="auto"
+                          height="64"
+                          fill="currentColor"
+                          class="bi bi-chevron-up"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                    <div className="d-flex flex-row justify-content-center">
+                      <div className="d-flex flex-col">
+                        <h1>Uint[{uintSize}]</h1>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <button className="btn" style={{boxShadow:"none"}} onClick={() => sizeDown()}>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="auto"
+                          height="64"
+                          fill="currentColor"
+                          class="bi bi-chevron-down"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                <div className="row text-break">
-                  <h3>
-                    Value:
-                    <br />
-                    {getvalue().toString()}{" "}
-                  </h3>
-                  <br></br>
+                <div className="d-flex flex-row justify-content-center">
+                  <div className="d-flex flex-col">
+                    <button
+                    style={{boxShadow:"none"}}
+                      className="btn-success"
+                      onClick={() => randomValue(size_of())}
+                    >
+                      <h5>Change Value</h5>
+                    </button>
+                  </div>
                 </div>
-                <div className="row text-break">
+                <br />
+                <div className="d-flex flex-row justify-content-center align-items-center">
+                  <div className="flex-col p-2">
+                    <h3>Value:</h3>
+                  </div>
+                  <div
+                    style={{ border: "solid green 2px" }}
+                    className="flex-col text-break "
+                  >
+                    <h3>{getvalue().toString()}</h3>
+                  </div>
+                </div>
+                {/* <div className="row text-break">
                   <h3>
                     toBytes:
                     <br />
@@ -196,31 +330,7 @@ export default function UintNControls(props) {
                       </span>
                     </span>
                   </h3>
-                </div>
-                <div className="d-flex flex-row align-items-center">
-                  <div className="col-9 mx-2">
-                    <h4>Padded to Bytes32:</h4>
-                  </div>
-                  <div className="col-3 mx-2">
-                    <Node
-                      className=""
-                      chunkIdx={0}
-                      numChunks={1}
-                      level="leaf"
-                      type="32"
-                    />
-                  </div>
-                  <br></br>
-                </div>
-                <div className="d-flex flex-row">
-                  <div className="col-9 mx-2">
-                    <h4>hash_tree_root:</h4>
-                  </div>
-                  <div className="col-3 mx-2">
-                    <Node chunkIdx={0} numChunks={1} level="root" type="R" />
-                  </div>
-                  <br></br>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

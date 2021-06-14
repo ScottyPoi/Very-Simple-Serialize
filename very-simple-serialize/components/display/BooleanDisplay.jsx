@@ -21,7 +21,7 @@ export default function BooleanDisplay(props) {
   return (
     <div className="col">
       <div className={`row justify-content-center text-break`}>
-        <HashRootText hash={hash} />
+        <HashRootText hash={hash} displaySize='xx-large' />
       </div>
       <div className="row justify-content-center">
             <BuildTree NUMBER_OF_VALUES={1} />
