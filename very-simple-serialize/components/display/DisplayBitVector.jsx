@@ -141,7 +141,7 @@ export default function DisplayBitVector(props) {
         <div className="row">
           <div className="col-10">
             <div className="row justify-content-center">
-              <HashRootText hash={hashRoot} />
+              <HashRootText hash={hashRoot} displaySize={numberOfLeaves == 1 ? 'xx-large' : 'large'} width={'100%'}/>
             </div>
             <div className="row">
               <BuildVectorTree NUMBER_OF_VALUES={NUMBER_OF_VALUES} />
@@ -190,34 +190,19 @@ export default function DisplayBitVector(props) {
                 </div>
               )}
             </div>
+            
 
             <br />
           </div>
 
-          <div className="col">
-            <p>
-              obj: BitVector[{length}] = [
-              <div className={`row  text-break`}>
-                {_values().map((valueChunk, idx) => {
-                  let red =
-                    idx + 1 == _values().length ? 0 : idx % 2 == 1 ? 256 : 0;
-                  let green = idx + 1 == _values().length ? 200 : 0;
-                  let blue =
-                    idx + 1 == _values().length ? 0 : idx % 2 == 0 ? 256 : 150;
-                  let color = `rgb(${red},${green},${blue})`;
-                  return (
-                    <div style={{ color: color }}>
-                      {valueChunk.map((value) => {
-                        return `${value}, `;
-                      })}
-                    </div>
-                  );
-                })}
-              </div>
-              ]
-            </p>
-          </div>
         </div>
+        <div
+              className={`row justify-content-center row-cols-${numberOfLeaves} text-break`}
+            >
+              {numberOfLeaves < 5 ? (
+                <></>
+              ) : (<></>)}
+            </div>
       </div>
     </>
   );

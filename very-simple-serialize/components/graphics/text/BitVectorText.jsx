@@ -14,6 +14,8 @@ export default function BitVectorText(props) {
   let blue = _idx + 1 == chunk_count ? 0 : _idx % 2 == 0 ? 256 : 180;
   let color = props.emtpy ? 'gray' : `rgb(${red},${green},${blue})`;
 
+  let fontSize = chunk_count < 2 ? 'medium' : chunk_count < 5 ? 'small' : 'x-small'
+
   function toHexString(byteArray) {
     return Array.prototype.map
       .call(byteArray, function (byte) {
@@ -60,7 +62,7 @@ export default function BitVectorText(props) {
             0x{props.hex}
           </div>
           <div className="row" style={{ border: "solid green" }}>
-            <text  className={`${styles.hex} p-0`}>
+            <text style={{fontSize: fontSize}}  className={`${styles.hex} p-0`}>
               {bits.toString()}
               <span style={{ backgroundColor: "black", color: "gold"}}>
                 {lengthBit}
@@ -87,7 +89,7 @@ export default function BitVectorText(props) {
             className="row"
             style={{ border: `solid ${color}`, display: `block` }}
           >
-            <div className='p-0' style={{ color: color }}>{_chunk.toString()}</div>
+            <div className='p-0' style={{ color: color, fontSize:'x-small' }}>{_chunk.toString()}</div>
           </div>
         </div>
       );
