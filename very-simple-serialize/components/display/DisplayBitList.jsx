@@ -47,7 +47,7 @@ function chunks() {
     let _output =  `${toHexString(chunk)}`
 
     return (
-      <div className='col' key={idx} id={`chunk${idx}`}>
+      <div key={`chunk${idx}`} className='col' key={idx} id={`chunk${idx}`}>
            <BitListText
             chunk={_output}
             limit={limit}
@@ -61,7 +61,7 @@ function chunks() {
 
   for (let i=0; i<emptyLeaves; i++) {
     chunks.push(
-      <div className='col' style={{ border: "solid gray"}}>EMPTY</div>
+      <div key={`Echunk${i}`} className='col' style={{ border: "solid gray"}}>EMPTY</div>
     )
   }
 
@@ -114,8 +114,49 @@ function color(color) {
       
       />
       
-      <div className={`row row-cols-${leaves}`}>
-      {chunks()}
+      <div className={`row row-cols-${numberOfLeaves}`}>
+      {numberOfChunks < 5 ? ( 
+        chunks()
+        ) : (
+          <div>
+          <button
+            className="btn btn-primary"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasBottom"
+            aria-controls="offcanvasBottom"
+          >
+            Show Chunks
+          </button>
+
+          <div
+            className="offcanvas offcanvas-bottom"
+            tabindex="-1"
+            id="offcanvasBottom"
+            aria-labelledby="offcanvasBottomLabel"
+          >
+            <div className="offcanvas-header">
+              <h5 className="offcanvas-title" id="offcanvasBottomLabel">
+                Chunks
+              </h5>
+              <button
+                type="button"
+                className="btn-close text-reset"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="offcanvas-body small">
+              <div className="container">
+                <div className={`row row-cols-${numberOfLeaves}`}>
+                  {chunks()}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        )
+      }
       </div>
       <br />
       </div>
@@ -132,7 +173,7 @@ function color(color) {
 
               let vColor = color(valueColor)
               return (
-                <span style={{ color: vColor}}>
+                <span key={`valuechunk${idx}`} style={{ color: vColor}}>
                   {valueChunk.map((value) => {
                     return `${value}, `;
                   })}

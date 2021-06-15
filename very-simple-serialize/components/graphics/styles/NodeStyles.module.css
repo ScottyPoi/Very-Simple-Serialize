@@ -55,5 +55,6 @@
 }
 
 .limit {
-    background-color: red
+    background-color: red;
+    outline: solid black
 }

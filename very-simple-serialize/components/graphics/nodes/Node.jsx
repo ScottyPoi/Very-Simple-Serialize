@@ -11,6 +11,8 @@ export default function Node(props) {
       ? styles.length
       : props.level === "branch"
       ? styles.branch
+      : props.level === 'limit'
+      ? styles.limit 
       : styles.leaf;
   const chunkIdx = props.empty
     ? ""

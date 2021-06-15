@@ -64,21 +64,21 @@ export default function ListText(props) {
               className="row"
               style={{ border: `solid ${color}`, display: `block` }}
             >
-              <text className={`${styles.hex}`}>
+              <span className={`${styles.hex}`}>
                 {bits.map((value, idx) => {
                   return (
-                    <span style={{ border: "solid green 1px" }}>{value}</span>
+                    <span key={idx} style={{ border: "solid green 1px" }}>{value}</span>
                   );
                 })}
                 ,<span className={`${styles.delimeter}`}>{lengthBit}A</span>
                 <span className={`${styles.padding}`}>
-                  {pad.map((value) => {
+                  {pad.map((value, idx) => {
                     return (
-                      <span style={{ border: "solid green 1px" }}>{value}</span>
+                      <span key={idx} style={{ border: "solid green 1px" }}>{value}</span>
                     );
                   })}
                 </span>
-              </text>
+              </span>
             </div>
           </div>
         </div>
@@ -104,14 +104,14 @@ export default function ListText(props) {
             className="col p-0"
             style={{ border: `solid red`}}
           >
-            <text className={`${styles.hex}`}>
+            <span className={`${styles.hex}`}>
 
               <span className={`${styles.padding}`}>
-                {pair(_chunk).map((pair) => {
-                  return <span style={{border: 'solid red 1px'}}>{pair}</span>
+                {pair(_chunk).map((pair, idx) => {
+                  return <span key={idx} style={{border: 'solid red 1px'}}>{pair}</span>
                 })}
               </span>
-            </text>
+            </span>
           </div>
           </div>
           </div>
@@ -136,17 +136,17 @@ export default function ListText(props) {
             className="col p-0"
             style={{ border: `solid green`, display: `block` }}
           >
-            <text className={`${styles.hex}`}>
-              {pair(bits).map((pair) => {
-                return <span style={{ border: 'solid green 1px'}}>{pair}</span>
+            <span className={`${styles.hex}`}>
+              {pair(bits).map((pair, idx) => {
+                return <span key={idx} style={{ border: 'solid green 1px'}}>{pair}</span>
               })}
               <span style={{ backgroundColor: "black", color: "gold"}}>{lengthBit}B</span>
               <span className={`${styles.padding}`}>
-                {pair(pads).map((pair) => {
-                return <span style={{ border: 'solid red 1px'}}>{pair}</span>
+                {pair(pads).map((pair, idx) => {
+                return <span key={idx} style={{ border: 'solid red 1px'}}>{pair}</span>
               })}
               </span>
-            </text>
+            </span>
           </div>
           </div>
         </div>
@@ -167,18 +167,18 @@ export default function ListText(props) {
             className="col"
             style={{ border: `solid red`, display: `block` }}
           >
-            <text className={`${styles.hex}`}>
-            {pair(bits).map((pair) => {
-                return <span style={{ border: `solid ${color} 1px`}}>{pair}</span>
+            <span className={`${styles.hex}`}>
+            {pair(bits).map((pair, idx) => {
+                return <span key={idx} style={{ border: `solid ${color} 1px`}}>{pair}</span>
               })}
 
               <span style={{backgroundColor: 'black', color: 'gold'}}>{lengthBit}</span>
               <span className={`${styles.padding}`}>
-                {pair(pads).map((pair) => {
-                return <span style={{ border: `solid ${color} 1px`}}>{pair}</span>
+                {pair(pads).map((pair, idx) => {
+                return <span key={idx} style={{ border: `solid ${color} 1px`}}>{pair}</span>
               })}
               </span>
-            </text>
+            </span>
           </div></div></div>
         </div>
       );
@@ -204,14 +204,14 @@ export default function ListText(props) {
             className="col p-0"
             style={{ border: `solid  ${color}`, display: `block` }}
           >
-            <text style={{ color: color }}>
-              {pair(_chunk).map((pair) => {
-                return <span style={{ border: `solid ${color} 1px`}}>{pair}</span>
+            <span style={{ color: color }}>
+              {pair(_chunk).map((pair, idx) => {
+                return <span key={idx} style={{ border: `solid ${color} 1px`}}>{pair}</span>
               })}
               <span className={`${styles.empties}`}>
                 {/* {empties.reverse().toString()} */}
               </span>
-            </text>
+            </span>
           </div>
         </div></div></div>
       );
@@ -231,17 +231,17 @@ export default function ListText(props) {
             className="col p-0"
             style={{ border: `solid green`, display: `block` }}
           >
-            <text className={`${styles.hex}`}>
-              {pair(bits).map((pair) => {
-                return <span style={{ color: 'green', border: `solid green 1px`}}>{pair}</span>
+            <span className={`${styles.hex}`}>
+              {pair(bits).map((pair, idx) => {
+                return <span key={idx} style={{ color: 'green', border: `solid green 1px`}}>{pair}</span>
               })}
               <span className={`${styles.delimeter}`}>{lengthBit}</span>
               <span className={`${styles.padding}`}>
-                {pair(pads).map((pair) => {
-                return <span style={{ border: 'solid green 1px', color: 'red'}}>{pair}</span>
+                {pair(pads).map((pair, idx) => {
+                return <span key={idx} style={{ border: 'solid green 1px', color: 'red'}}>{pair}</span>
               })}
               </span>
-            </text>
+            </span>
           </div>
         </div></div></div>
       );
@@ -255,11 +255,11 @@ export default function ListText(props) {
             className="col p-0"
             style={{ border: `solid ${color}`, display: `block`, color: color }}
           >
-            <text className={`${styles.hex}`}>
+            <span className={`${styles.hex}`}>
               <span className={`${styles.empties}`}>
                 {_chunk}eggs
               </span>
-            </text>
+            </span>
           </div></div></div>
         </div>
       );
@@ -282,17 +282,17 @@ export default function ListText(props) {
             className="col p-0"
             style={{ border: `solid green`, display: `block` }}
           >
-            <text>
-              {pair(bits).map((pair) => {
-                return <span style={{color: 'green', border: 'solid green 1px'}}>{pair}</span>
+            <span>
+              {pair(bits).map((pair, idx) => {
+                return <span key={idx} style={{color: 'green', border: 'solid green 1px'}}>{pair}</span>
               })}
               <span className={`${styles.delimeter}`}>{lengthBit}</span>
               <span className={`${styles.padding}`}>
-                {pair(pads).map((pair) => {
-                return <span style={{ border: 'solid red 1px'}}>{pair}</span>
+                {pair(pads).map((pair, idx) => {
+                return <span key={idx} style={{ border: 'solid red 1px'}}>{pair}</span>
               })}
               </span>
-            </text>
+            </span>
           </div></div></div>
         </div>
       );
@@ -306,7 +306,7 @@ export default function ListText(props) {
             className="col p-0"
             style={{ border: `solid ${color}`, display: `block`, color: color }}
           >
-            <text>{_chunk}gofuckyaself,</text>
+            <span>{_chunk}gofuckyaself,</span>
             {`]`}1
           </div>
         </div></div></div>
@@ -317,8 +317,8 @@ export default function ListText(props) {
           <div className="col">
           <div className="row justify-content-center" ><div className='col d-inline-flex p-0' style={{justifyContent: 'center' ,border: `solid red 2px`, color: 'gold', backgroundColor: 'red'}}>0x{_chunk}</div>          </div>
 <div className='row'>
-          <div className='col p-0' style={{ color: "red", border: `solid ${color}` }}>                {pair(_chunk).map((pair) => {
-                return <span style={{ border: `solid ${color} 1px`}}>{pair}</span>
+          <div className='col p-0' style={{ color: "red", border: `solid ${color}` }}>                {pair(_chunk).map((pair, idx) => {
+                return <span key={idx} style={{ border: `solid ${color} 1px`}}>{pair}</span>
               })}</div>
         </div></div></div>
       );
@@ -328,8 +328,8 @@ export default function ListText(props) {
             <div className="col">
             <div className="row justify-content-center" ><div className='col d-inline-flex p-0' style={{justifyContent: 'center' ,border: `solid red 2px`, color: 'gold', backgroundColor: color}}>0x{_chunk}</div>          </div>
   <div className='row'>
-            <div className='col p-0' style={{ color: "red", border: `solid ${color}` }}>                {pair(_chunk).map((pair) => {
-                  return <span style={{ border: `solid ${color} 1px`}}>{pair}</span>
+            <div className='col p-0' style={{ color: "red", border: `solid ${color}` }}>                {pair(_chunk).map((pair, idx) => {
+                  return <span key={idx} style={{ border: `solid ${color} 1px`}}>{pair}</span>
                 })}</div>
           </div></div></div>
         );

@@ -4,6 +4,7 @@ import * as BooleanType from "../../ssz/src/types/basic/boolean";
 import * as NumberUintType from "../../ssz/src/types/basic/NumberUintType";
 import * as BigIntUintType from "../../ssz/src/types/basic/BigIntUintType";
 // import * as Array from '../../ssz/src/types/composite/array';
+import BuildHashTree from "../graphics/trees/BuildHashTree";
 
 let _valueSet = [];
 for (let i = 0; i < 16 * 256; i++) {
@@ -23,6 +24,13 @@ export default function VectorControls(props) {
   const [serializer, setSerializer] = useState(NumberUintType);
   const [maxLength, setMaxLength] = useState(32 * 16 - 1);
   const [valueSet, setValueSet] = useState(_valueSet);
+  const [demoTree, setDemoTree] = useState(
+    <BuildHashTree NUMBER_OF_VALUES={1} />
+  );
+
+  useEffect(() => {
+    setDemoTree(<BuildHashTree NUMBER_OF_VALUES={numChunks} />);
+  }, [numChunks]);
 
   useEffect(() => {
     setNumChunks(Math.floor(length / valuesPerChunk + 1));
@@ -32,7 +40,6 @@ export default function VectorControls(props) {
   useEffect(() => {
     _serialize(values);
   }, [values]);
-
 
   function _values() {
     let valueChunks = [];
@@ -118,8 +125,6 @@ export default function VectorControls(props) {
     setSerialized(_chunks);
   }
 
-
-
   return (
     <>
       <div className="row">
@@ -135,7 +140,6 @@ export default function VectorControls(props) {
           </DisplayVector>
         </div>
         <div className="col">
-          
           <div className="row justify-content-center ">
             <div className="col">
               <div className="card">
@@ -163,6 +167,38 @@ export default function VectorControls(props) {
                             ? "3"
                             : "4"}
                         </h5>
+                        <button
+                          className="btn btn-primary"
+                          type="button"
+                          data-bs-toggle="offcanvas"
+                          data-bs-target="#merkleTree"
+                          aria-controls="merkleTree"
+                        >
+                          Show Merkle Tree Details
+                        </button>
+
+                        <div
+                          className="offcanvas offcanvas-end"
+                          tabIndex="-1"
+                          id="merkleTree"
+                          aria-labelledby="merkleTreeLabel"
+                        >
+                          <div className="offcanvas-header">
+                            <h5 id="merkleTreeLabel">Merkle Tree Details</h5>
+                            <button
+                              type="button"
+                              className="btn-close text-reset"
+                              data-bs-dismiss="offcanvas"
+                              aria-label="Close"
+                              onClick={() =>
+                                setDemoTree(
+                                  <BuildHashTree NUMBER_OF_VALUES={numChunks} />
+                                )
+                              }
+                            ></button>
+                          </div>
+                          <div className="offcanvas-body">{demoTree}</div>
+                        </div>
                       </div>
                       <div className="row justify-content-center text-break">
                         {valuesPerChunk} {elementType} Values pack into each 32
@@ -281,7 +317,9 @@ export default function VectorControls(props) {
             </div>
           </div>
           <label for="length" className="form-label">
-            <h3>Type: {elementType} Length: {length}</h3>
+            <h3>
+              Type: {elementType} Length: {length}
+            </h3>
           </label>
           <input
             type="range"
@@ -296,64 +334,74 @@ export default function VectorControls(props) {
           <br />
         </div>
         <div className={`row row-cols-${numChunks} text-break`}>
-                {numChunks < 5 ? _values().map((valueChunk, idx) => {
-                  let red =
-                    idx + 1 == _values().length ? 0 : idx % 2 == 1 ? 256 : 0;
-                  let green = idx + 1 == _values().length ? 200 : 0;
-                  let blue =
-                    idx + 1 == _values().length ? 0 : idx % 2 == 0 ? 256 : 150;
-                  let color = `rgb(${red},${green},${blue})`;
-                  return (
-                    <div className={`col`} style={{ color: color }}>
-                      {valueChunk.map((value) => {
-                        return `${value}, `;
+          {numChunks < 5 ? (
+            _values().map((valueChunk, idx) => {
+              let red =
+                idx + 1 == _values().length ? 0 : idx % 2 == 1 ? 256 : 0;
+              let green = idx + 1 == _values().length ? 200 : 0;
+              let blue =
+                idx + 1 == _values().length ? 0 : idx % 2 == 0 ? 256 : 150;
+              let color = `rgb(${red},${green},${blue})`;
+              return (
+                <div className={`col`} style={{ color: color }}>
+                  {valueChunk.map((value) => {
+                    return `${value}, `;
+                  })}
+                </div>
+              );
+            })
+          ) : (
+            <div>
+              <div
+                className="offcanvas offcanvas-bottom"
+                tabindex="-1"
+                id="offcanvasValues"
+                aria-labelledby="offcanvasValuesLabel"
+              >
+                <div className="offcanvas-header">
+                  <h5 className="offcanvas-title" id="offcanvasValuesLabel">
+                    {elementType} Values
+                  </h5>
+                  <button
+                    type="button"
+                    className="btn-close text-reset"
+                    data-bs-dismiss="offcanvas"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div className="offcanvas-body small">
+                  <div className="container">
+                    <div className={`row row-cols-${numChunks}`}>
+                      {_values().map((valueChunk, idx) => {
+                        let red =
+                          idx + 1 == _values().length
+                            ? 0
+                            : idx % 2 == 1
+                            ? 256
+                            : 0;
+                        let green = idx + 1 == _values().length ? 200 : 0;
+                        let blue =
+                          idx + 1 == _values().length
+                            ? 0
+                            : idx % 2 == 0
+                            ? 256
+                            : 150;
+                        let color = `rgb(${red},${green},${blue})`;
+                        return (
+                          <div className="col" style={{ color: color }}>
+                            {valueChunk.map((value) => {
+                              return `${value}, `;
+                            })}
+                          </div>
+                        );
                       })}
                     </div>
-                  );
-                }) : (
-                  <div>
-                    <div
-                      className="offcanvas offcanvas-bottom"
-                      tabindex="-1"
-                      id="offcanvasValues"
-                      aria-labelledby="offcanvasValuesLabel"
-                    >
-                      <div className="offcanvas-header">
-                        <h5 className="offcanvas-title" id="offcanvasValuesLabel">
-                          {elementType} Values
-                        </h5>
-                        <button
-                          type="button"
-                          className="btn-close text-reset"
-                          data-bs-dismiss="offcanvas"
-                          aria-label="Close"
-                        ></button>
-                      </div>
-                      <div className="offcanvas-body small">
-                        <div className="container">
-                          <div className={`row row-cols-${numChunks}`}>
-                  {_values().map((valueChunk, idx) => {
-                    let red =
-                      idx + 1 == _values().length ? 0 : idx % 2 == 1 ? 256 : 0;
-                    let green = idx + 1 == _values().length ? 200 : 0;
-                    let blue =
-                      idx + 1 == _values().length ? 0 : idx % 2 == 0 ? 256 : 150;
-                    let color = `rgb(${red},${green},${blue})`;
-                    return (
-                      <div className='col' style={{ color: color }}>
-                        {valueChunk.map((value) => {
-                          return `${value}, `;
-                        })}
-                      </div>
-                    );
-                  })}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                   </div>
-                )}
+                </div>
               </div>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

@@ -67,7 +67,7 @@ function chunks() {
 
   for (let i=0; i<emptyLeaves; i++) {
     chunks.push(
-      <div className='col' style={{ border: "solid gray"}}>EMPTY</div>
+      <div key={`empty${i}`} className='col' style={{ border: "solid gray"}}>EMPTY</div>
     )
   }
 
@@ -181,7 +181,7 @@ function color(color) {
 
               let vColor = color(valueColor)
               return (
-                <span style={{ color: vColor}}>
+                <span key={idx} style={{ color: vColor}}>
                   {valueChunk.map((value) => {
                     return `${value}, `;
                   })}

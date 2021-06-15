@@ -21,25 +21,16 @@
 }
 
 .hash {
-  animation-name: loader 3s;
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
   border: solid black;
   background-color: gold;
   display: inline-block;
   height: auto;
   width: 40%;
+  font-size: xx-large;
 }
 
-@keyframes loader {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1
-  }
 
-}
+
 
 .valueChunk0 {
   color: green;

@@ -11,36 +11,23 @@ import ContainerControls from "./ContainerControls";
 import UnionControls from "./UnionControls";
 import { useState } from "react";
 export default function Controls({ ...props }) {
-  const [Type, setType] = useState("UintN");
+  const [Type, setType] = useState("Boolean");
 
   return (
     <div className="container">
       <div className="d-flex flex-row ">
         <div className="col">
           <ul className="nav nav-tabs" id="typeTab" role="tablist">
-            <li className="nav-item" role="presentation">
+
+            <li  className="nav-item" role="presentation">
               <button
-                id="uintn-tab"
-                type="button"
-                role="tab"
-                aria-selected="true"
-                aria-controls="true"
-                className="nav-link active"
-                data-bs-toggle="tab"
-                data-bs-target="#uintn"
-                onClick={() => setType("UintN")}
-              >
-                UintN
-              </button>
-            </li>
-            <li className="nav-item" role="presentation">
-              <button
+              key='boolean-tab'
                 id="boolean-tab"
                 type="button"
                 role="tab"
                 aria-selected="false"
                 aria-controls="true"
-                className="nav-link"
+                className="nav-link active"
                 data-bs-toggle="tab"
                 data-bs-target="#boolean"
                 onClick={() => setType("Boolean")}
@@ -48,8 +35,26 @@ export default function Controls({ ...props }) {
                 Boolean
               </button>
             </li>
-            <li className="nav-item" role="presentation">
+            <li key="uintn-tab" className="nav-item" role="presentation">
               <button
+                id="uintn-tab"
+                
+
+                type="button"
+                role="tab"
+                aria-selected="true"
+                aria-controls="true"
+                className="nav-link"
+                data-bs-toggle="tab"
+                data-bs-target="#uintn"
+                onClick={() => setType("UintN")}
+              >
+                UintN
+              </button>
+            </li>
+            <li key='bitvector-tab' className="nav-item" role="presentation">
+              <button
+              
                 id="bitvector-tab"
                 type="button"
                 role="tab"
@@ -63,7 +68,7 @@ export default function Controls({ ...props }) {
                 BitVector
               </button>
             </li>
-            <li className="nav-item" role="presentation">
+            <li key='bitlist-tab' className="nav-item" role="presentation">
               <button
                 id="bitlist-tab"
                 type="button"
@@ -78,7 +83,7 @@ export default function Controls({ ...props }) {
                 BitList
               </button>
             </li>
-            <li className="nav-item" role="presentation">
+            <li key='list-tab' className="nav-item" role="presentation">
               <button
                 id="list-tab"
                 type="button"
@@ -93,7 +98,7 @@ export default function Controls({ ...props }) {
                 List
               </button>
             </li>
-            <li className="nav-item" role="presentation">
+            <li key='vector-tab' className="nav-item" role="presentation">
               <button
                 id="vector-tab"
                 type="button"
@@ -108,7 +113,7 @@ export default function Controls({ ...props }) {
                 Vector
               </button>
             </li>
-            <li className="nav-item" role="presentation">
+            <li key='container-tab' className="nav-item" role="presentation">
               <button
                 id="container-tab"
                 type="button"
@@ -121,6 +126,21 @@ export default function Controls({ ...props }) {
                 onClick={() => setType("Container")}
               >
                 Container
+              </button>
+            </li>
+            <li key='union-tab' className="nav-item" role="presentation">
+              <button
+                id="union-tab"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-controls="true"
+                className="nav-link"
+                data-bs-toggle="tab"
+                data-bs-target="#union"
+                onClick={() => setType("Union")}
+              >
+                Union
               </button>
             </li>
           </ul>
@@ -142,9 +162,9 @@ export default function Controls({ ...props }) {
             <ListControls />
           ) : Type === "Container" ? (
             <ContainerControls />
-          ) : (
+          ) : Type === "Union" ? (
             <UnionControls />
-          )}
+          ) : <BooleanControls />}
         </div>
       </div>
     </div>

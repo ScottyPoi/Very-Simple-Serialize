@@ -52,7 +52,7 @@ export default function BuildtListTree(props) {
     let empties = [];
     for (let i = 0; i < number; i++) {
       empties.push(
-        <div id={`emptyvaluenode${i}`} className="col p-1">
+        <div id={`emptyvaluenode${i}`} key={`emptyvaluenode${i}`} className="col p-1">
           <Node idx={i + 1} type="EV" empty={true}/>
         </div>
       );
