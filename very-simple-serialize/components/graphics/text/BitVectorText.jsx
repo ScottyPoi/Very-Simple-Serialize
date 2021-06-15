@@ -62,13 +62,13 @@ export default function BitVectorText(props) {
             0x{props.hex}
           </div>
           <div className="row" style={{ border: "solid green" }}>
-            <text style={{fontSize: fontSize}}  className={`${styles.hex} p-0`}>
+            <span style={{fontSize: fontSize}}  className={`${styles.hex} p-0`}>
               {bits.toString()}
               <span style={{ backgroundColor: "black", color: "gold"}}>
                 {lengthBit}
               </span>
               <span className={`${styles.padding}`}>{pads.toString()} </span>
-            </text>
+            </span>
           </div>
         </div>
       );
@@ -83,7 +83,7 @@ export default function BitVectorText(props) {
               backgroundColor: color,
             }}
           >
-            <text className='p-0'>0x{props.hex}</text>
+            <span className='p-0'>0x{props.hex}</span>
           </div>
           <div
             className="row"

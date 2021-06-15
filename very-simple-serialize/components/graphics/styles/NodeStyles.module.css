@@ -20,6 +20,11 @@
     outline: solid black
 }
 
+.demo {
+    background-color: green;
+    color: gold;
+}
+
 .merkle {
     background-color: lime;
     outline: solid red;
@@ -41,10 +46,12 @@
 
 .green {
     background-color: green;
+    color: gold
 }
 
 .blue {
     background-color: blue;
+    color: gold
 }
 
 .limit {

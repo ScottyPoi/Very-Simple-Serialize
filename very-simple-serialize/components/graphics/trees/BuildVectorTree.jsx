@@ -25,6 +25,32 @@ export default function BuildVectorTree(props) {
     return row;
   }
 
+  function rowOfHashNodes(number, type, level, empty=false) {
+    //   let leaves = getNextPowerOfTwo(number);
+    let row = [];
+    for (let i = 0; i < number; i++) {
+      row.push(
+        <div key={`${type}node${i}`} id={`${type}node${i}`} className="col p-1">
+          <Node idx={i + numberLeaves} type={type} empty={empty} level={level} chunkIdx={i} numChunks={NUMBER_OF_VALUES}/>
+        </div>
+      );
+    }
+    return row;
+  }
+
+  function rowOfTreeNodes(number, type, level, empty=false) {
+    //   let leaves = getNextPowerOfTwo(number);
+    let row = [];
+    for (let i = 0; i < number; i++) {
+      row.push(
+        <div key={`${type}node${i}`} id={`${type}node${i}`} className="col p-1">
+          <Node idx={i + 2**level} type="" empty={empty} level={level} chunkIdx={i} numChunks={NUMBER_OF_VALUES}/>
+        </div>
+      );
+    }
+    return row;
+  }
+
   function getNextPowerOfTwo(number) {
     if (number <= 1) {
       return 1;
@@ -93,7 +119,7 @@ export default function BuildVectorTree(props) {
           id={`treelevel:${i}`}
           className="row row-cols-auto justify-content-around"
         >
-          {rowOfNodes(2 ** i, `T${i - 1}`)}
+          {rowOfTreeNodes(2 ** i, `T`, i)}
         </div>
       );
     }
@@ -104,8 +130,8 @@ export default function BuildVectorTree(props) {
           id={"hash"}
           className="row row-cols-auto justify-content-around"
         >
-          {rowOfNodes(number, "H", 'branch')}
-          {rowOfNodes(empties, "EH", 'branch', true)}
+          {rowOfHashNodes(number, "", 'branch')}
+          {rowOfHashNodes(empties, "", 'branch', true)}
         </div>
       );
     }
@@ -115,8 +141,8 @@ export default function BuildVectorTree(props) {
         id={"leaves"}
         className="row row-cols-auto justify-content-around"
       >
-        {rowOfNodes(number, "L", 'leaf')}
-        {rowOfNodes(empties, "EL", 'leaf', true)}
+        {rowOfNodes(number, "", 'leaf')}
+        {rowOfNodes(empties, "", 'leaf', true)}
       </div>
     );
     return tree;

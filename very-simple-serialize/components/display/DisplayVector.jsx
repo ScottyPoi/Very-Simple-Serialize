@@ -94,13 +94,20 @@ export function DisplayVector(props) {
 
   let hashRoot = merkleize(leaves);
 
+  const displaySize = numberOfLeaves == 1 ? "x-large" : "large";
+  const width = numberOfLeaves == 1 ? "50%" : "100%";
+
   return (
     <>
       <div className="container">
         <div className="row">
           <div className="col-10">
             <div className="row justify-content-center">
-              <HashRootText hash={hashRoot} />
+              <HashRootText
+                hash={hashRoot}
+                displaySize={displaySize}
+                width={width}
+              />
             </div>
             <div className="row">
               <BuildTree NUMBER_OF_VALUES={NUMBER_OF_VALUES} />
@@ -109,16 +116,44 @@ export function DisplayVector(props) {
               {numberOfLeaves < 5 ? (
                 chunks()
               ) : (
-                <div>
-                  <button
-                    className="btn btn-primary"
-                    type="button"
-                    data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasBottom"
-                    aria-controls="offcanvasBottom"
-                  >
-                    Show Chunks
-                  </button>
+                <div className="col">
+                  <div className="row">
+                    <br />
+                    <div className="col">
+                      <div className='row p-2'>   <button
+                        className="btn btn-primary"
+                        type="button"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasBottom"
+                        aria-controls="offcanvasBottom"
+                      >
+                        Show Chunks
+                      </button></div>
+                      <div className='row p-2'>
+                      <button
+                        className="btn btn-primary "
+                        type="button"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasMerkle"
+                        aria-controls="offcanvasMerkle"
+                      >
+                        Show Merkle Tree
+                      </button></div>
+                    </div>
+                    <div className="col">
+                    <div className='row p-2'> <button
+                        className="btn btn-primary"
+                        type="button"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasValues"
+                        aria-controls="offcanvasValues"
+                      >
+                        Show Values
+                      </button></div>
+                    </div>
+                  </div>
+                  <br />
+                  <br />
 
                   <div
                     className="offcanvas offcanvas-bottom"
@@ -128,7 +163,7 @@ export function DisplayVector(props) {
                   >
                     <div className="offcanvas-header">
                       <h5 className="offcanvas-title" id="offcanvasBottomLabel">
-                        Chunks
+                        Serialized Bytes32 Chunks
                       </h5>
                       <button
                         type="button"
@@ -149,9 +184,8 @@ export function DisplayVector(props) {
               )}
             </div>
             <br />
-            <p>
-              obj: Vector[{length}] = [
-              <div className={`row  text-break`}>
+
+            {/* <div className={`row  text-break`}>
                 {_values().map((valueChunk, idx) => {
                   let red =
                     idx + 1 == _values().length ? 0 : idx % 2 == 1 ? 256 : 0;
@@ -167,9 +201,7 @@ export function DisplayVector(props) {
                     </div>
                   );
                 })}
-              </div>
-              ]
-            </p>
+              </div> */}
           </div>
         </div>
       </div>

@@ -14,6 +14,8 @@ export default function Node(props) {
       : styles.leaf;
   const chunkIdx = props.empty
     ? ""
+    : props.level === 'demo'
+    ? styles.demo
     : props.level === "leaf" && props.chunkIdx == props.numChunks - 1
     ? styles.green
     : props.level === "leaf" && props.chunkIdx > props.numChunks - 1

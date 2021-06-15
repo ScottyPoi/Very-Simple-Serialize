@@ -1,6 +1,7 @@
 import BitVectorText from "../graphics/text/BitVectorText";
 import styles from "../graphics/styles/UintText.module.css";
 import BuildVectorTree from "../graphics/trees/BuildVectorTree";
+import BuildHashTree from "../graphics/trees/BuildHashTree";
 import * as BitVector from "../../ssz/src/types/composite/bitVector.jsx";
 import * as BigUInt from "../../ssz/src/types/basic/BigIntUintType";
 import HashRootText from "../graphics/text/HashRootText";
@@ -166,7 +167,7 @@ export default function DisplayBitVector(props) {
 
                   <div
                     className="offcanvas offcanvas-bottom"
-                    tabindex="-1"
+                    tabIndex="-1"
                     id="offcanvasBottom"
                     aria-labelledby="offcanvasBottomLabel"
                   >

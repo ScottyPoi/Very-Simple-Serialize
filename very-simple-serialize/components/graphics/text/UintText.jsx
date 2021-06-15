@@ -32,7 +32,7 @@ export default function UintText(props) {
     let hex = asBytes32.slice(padding);
     return (
       <div className='d-flex flex-col' style={uintstyle}>
-        <text><span style={{color: "black"}}>{bitmask}</span><span style={{color: 'red'}}>{zeroes}</span><span style={{color: 'green'}}>{hex}</span></text>
+        <span style={{color: "black"}}>{bitmask}</span><span style={{color: 'red'}}>{zeroes}</span><span style={{color: 'green'}}>{hex}</span>
 
       </div>
       

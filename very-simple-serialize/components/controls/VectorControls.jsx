@@ -33,6 +33,19 @@ export default function VectorControls(props) {
     _serialize(values);
   }, [values]);
 
+
+  function _values() {
+    let valueChunks = [];
+    for (let i = 0; i < numChunks; i++) {
+      let startIdx = (i * 256) / size;
+      let endIdx =
+        startIdx + 256 / size - 1 > serialized.length
+          ? startIdx + 256 / size
+          : serialized.length - 1;
+      valueChunks.push(values.slice(startIdx, endIdx));
+    }
+    return valueChunks;
+  }
   function handleChangeType(type) {
     let mv = 0;
     let sz = 0;
@@ -104,6 +117,8 @@ export default function VectorControls(props) {
 
     setSerialized(_chunks);
   }
+
+
 
   return (
     <>
@@ -280,6 +295,65 @@ export default function VectorControls(props) {
           <br />
           <br />
         </div>
+        <div className={`row row-cols-${numChunks} text-break`}>
+                {numChunks < 5 ? _values().map((valueChunk, idx) => {
+                  let red =
+                    idx + 1 == _values().length ? 0 : idx % 2 == 1 ? 256 : 0;
+                  let green = idx + 1 == _values().length ? 200 : 0;
+                  let blue =
+                    idx + 1 == _values().length ? 0 : idx % 2 == 0 ? 256 : 150;
+                  let color = `rgb(${red},${green},${blue})`;
+                  return (
+                    <div className={`col`} style={{ color: color }}>
+                      {valueChunk.map((value) => {
+                        return `${value}, `;
+                      })}
+                    </div>
+                  );
+                }) : (
+                  <div>
+                    <div
+                      className="offcanvas offcanvas-bottom"
+                      tabindex="-1"
+                      id="offcanvasValues"
+                      aria-labelledby="offcanvasValuesLabel"
+                    >
+                      <div className="offcanvas-header">
+                        <h5 className="offcanvas-title" id="offcanvasValuesLabel">
+                          {elementType} Values
+                        </h5>
+                        <button
+                          type="button"
+                          className="btn-close text-reset"
+                          data-bs-dismiss="offcanvas"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div className="offcanvas-body small">
+                        <div className="container">
+                          <div className={`row row-cols-${numChunks}`}>
+                  {_values().map((valueChunk, idx) => {
+                    let red =
+                      idx + 1 == _values().length ? 0 : idx % 2 == 1 ? 256 : 0;
+                    let green = idx + 1 == _values().length ? 200 : 0;
+                    let blue =
+                      idx + 1 == _values().length ? 0 : idx % 2 == 0 ? 256 : 150;
+                    let color = `rgb(${red},${green},${blue})`;
+                    return (
+                      <div className='col' style={{ color: color }}>
+                        {valueChunk.map((value) => {
+                          return `${value}, `;
+                        })}
+                      </div>
+                    );
+                  })}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
       </div>
     </>
   );

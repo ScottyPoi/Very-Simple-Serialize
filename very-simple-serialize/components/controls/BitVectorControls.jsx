@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import BuildHashTree from "../graphics/trees/BuildHashTree";
 import * as BitVectorType from "../../ssz/src/types/composite/bitVector";
 import * as BooleanType from "../../ssz/src/types/basic/boolean";
 import DisplayBitVector from "../display/DisplayBitVector";
@@ -18,6 +18,22 @@ export default function BitVectorControls(props) {
   const [values, setValues] = useState([false]);
   const [serialized, setSerialized] = useState([]);
   const [numChunks, setNumChunks] = useState(1);
+  const [demoTree, setDemoTree] = useState(<BuildHashTree NUMBER_OF_VALUES={1} />)
+
+  useEffect(() => {
+    setDemoTree(<BuildHashTree NUMBER_OF_VALUES={numChunks} />)
+  }, [numChunks])
+
+
+  function getLength() {
+    return length
+  }
+
+  function NUMBER_OF_VALUES() { 
+    return numChunks
+}
+
+
 
   function _values() {
     let numChunks = serialized.length;
@@ -96,6 +112,14 @@ export default function BitVectorControls(props) {
   //   return output;
   // }
 
+  function getLength() {
+    return length
+  }
+
+  function NUMBER_OF_VALUES() { 
+    return Math.floor(getLength() / 256 + 1);
+}
+
   return (
     <>
     <div className="row">
@@ -116,7 +140,7 @@ export default function BitVectorControls(props) {
                 <h4 className="card-title">BitVector</h4>
                 <h4 className="card-title">Fixed Length: {length}</h4>
 
-                <p className="card-text">
+                <div className="card-text">
                   <div className="container">
                     <div className="row justify-content-center text-break">
                       <h5>Bytes32 Chunks: {numChunks}</h5>
@@ -132,6 +156,17 @@ export default function BitVectorControls(props) {
                           ? "3"
                           : "4"}
                       </h5>
+                      <button className="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#merkleTree" aria-controls="merkleTree">Show Merkle Tree Details</button>
+
+<div className="offcanvas offcanvas-end" tabIndex="-1" id="merkleTree" aria-labelledby="merkleTreeLabel">
+  <div className="offcanvas-header">
+    <h5 id="merkleTreeLabel">Merkle Tree Details</h5>
+    <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close" onClick={() => setDemoTree(<BuildHashTree NUMBER_OF_VALUES={numChunks} />)}></button>
+  </div>
+  <div className="offcanvas-body">
+    {demoTree}
+  </div>
+</div>
                     </div>
                     <div className="row justify-content-center text-break">
                       256 Boolean Values pack into each 32 Byte Chunk
@@ -147,7 +182,7 @@ export default function BitVectorControls(props) {
                       The Merkle_Tree is filled in with zero-nodes
                     </div>
                   </div>
-                </p>
+                </div>
               </div>
             </div>
           </div>
@@ -158,7 +193,7 @@ export default function BitVectorControls(props) {
             <div>
               <p>ChunkCount: {numChunks}</p>
             </div>
-            <label for="length" className="form-label">
+            <label htmlFor="length" className="form-label">
               Length
             </label>
             <input
@@ -181,7 +216,7 @@ export default function BitVectorControls(props) {
                   idx + 1 == _values().length ? 0 : idx % 2 == 0 ? 256 : 150;
                 let color = `rgb(${red},${green},${blue})`;
                 return (
-                  <div className="col" style={{ color: color }}>
+                  <div key={idx} className="col" style={{ color: color }}>
                     {valueChunk.map((value) => {
                       return `${value}, `;
                     })}
@@ -201,7 +236,7 @@ export default function BitVectorControls(props) {
 
                   <div
                     className="offcanvas offcanvas-bottom"
-                    tabindex="-1"
+                    tabIndex="-1"
                     id="offcanvasValues"
                     aria-labelledby="offcanvasValuesLabel"
                   >
@@ -227,7 +262,7 @@ export default function BitVectorControls(props) {
                     idx + 1 == _values().length ? 0 : idx % 2 == 0 ? 256 : 150;
                   let color = `rgb(${red},${green},${blue})`;
                   return (
-                    <div className='col' style={{ color: color }}>
+                    <div key={idx} className='col' style={{ color: color }}>
                       {valueChunk.map((value) => {
                         return `${value}, `;
                       })}
@@ -245,7 +280,7 @@ export default function BitVectorControls(props) {
     </div>
      <div className="row">
      {numChunks == 1 ? (
-       <p>
+       <>
          obj: BitVector[{length}] = [
          {_values().map((valueChunk, idx) => {
            let red =
@@ -255,7 +290,7 @@ export default function BitVectorControls(props) {
              idx + 1 == _values().length ? 0 : idx % 2 == 0 ? 256 : 150;
            let color = `rgb(${red},${green},${blue})`;
            return (
-             <div className="col" style={{ color: color }}>
+             <div key={idx} className="col" style={{ color: color }}>
                {valueChunk.map((value) => {
                  return `${value}, `;
                })}
@@ -263,7 +298,7 @@ export default function BitVectorControls(props) {
            );
          })}
          ]
-       </p>
+       </>
      ) : (
        <></>
      )}
