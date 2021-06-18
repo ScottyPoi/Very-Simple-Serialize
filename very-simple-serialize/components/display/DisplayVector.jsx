@@ -4,6 +4,7 @@ import * as NumberUintType from "../../ssz/src/types/basic/NumberUintType";
 import HashRootText from "../graphics/text/HashRootText";
 import { merkleize } from "../../ssz/src/util/merkleize";
 import { createHash } from "crypto";
+import BuildVectorTree from "../graphics/trees/BuildVectorTree";
 
 export function DisplayVector(props) {
   let serialized = props.serialized;
@@ -110,7 +111,10 @@ export function DisplayVector(props) {
               />
             </div>
             <div className="row">
-              <BuildTree NUMBER_OF_VALUES={NUMBER_OF_VALUES} />
+              <BuildVectorTree NUMBER_OF_VALUES={NUMBER_OF_VALUES} />
+            </div>
+            <div className="row">
+              Click on a Leaf to see its Merkle Proof
             </div>
             <div className={`row row-cols-${numberOfLeaves} text-break`}>
               {numberOfLeaves < 5 ? (

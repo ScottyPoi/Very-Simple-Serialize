@@ -32,11 +32,12 @@ export default function BooleanText(props) {
     let hex = asBytes32.slice(padding);
     return (
       <div className="d-flex flex-row">
-        <text>
+        <span>
           <span>{bitmask}</span>
-          <span style={{ color: "red" }}>{zeroes}</span>
           <span style={{ color: "green" }}>{hex}</span>
-        </text>
+
+          <span style={{ color: "red" }}>{zeroes}</span>
+        </span>
       </div>
     );
   }

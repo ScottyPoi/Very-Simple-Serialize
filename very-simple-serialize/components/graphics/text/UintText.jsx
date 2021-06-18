@@ -12,7 +12,7 @@ export default function UintText(props) {
     width: "50%",
     paddingRight: "0px",
     fontSize: "x-large",
-    backgroundColor: 'lightgreen'
+    backgroundColor: "lightgreen",
   };
 
   function parseSerial() {
@@ -28,19 +28,26 @@ export default function UintText(props) {
 
   function parseBytes32() {
     let bitmask = asBytes32.slice(0, 2);
-    let zeroes = asBytes32.slice(2, padding);
     let hex = asBytes32.slice(padding);
-    return (
-      <div className='d-flex flex-col' style={uintstyle}>
-        <span style={{color: "black"}}>{bitmask}</span><span style={{color: 'red'}}>{zeroes}</span><span style={{color: 'green'}}>{hex}</span>
 
+    let zeroes = asBytes32.slice(2, padding);
+    return (
+      <div className="d-flex flex-row ">
+        <span>
+          <span style={{ color: "black" }}>{bitmask}</span>
+          <span style={{ color: "green" }}>{hex}</span>
+
+          <span style={{ color: "red" }}>{zeroes}</span>
+        </span>
       </div>
-      
     );
   }
 
   return (
-    <div className={`d-flex flex-row text-break justify-content-center`} >
+    <div
+      className={`d-flex flex-row text-break justify-content-center`}
+      style={uintstyle}
+    >
       {parseBytes32()}
     </div>
   );

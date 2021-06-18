@@ -1,50 +1,138 @@
 import Node from "../nodes/Node";
 import { useEffect, useState } from "react";
-import styles from '../styles/NodeStyles.module.css'
+import styles from "../styles/NodeStyles.module.css";
+import { formatDiagnosticsWithColorAndContext } from "typescript";
 
 export default function BuildVectorTree(props) {
+  const [selected, setSelected] = useState(0);
+  const [rootActivated, setRootActivated] = useState(false);
+  const [selections, setSelections] = useState([]);
 
-    const NUMBER_OF_VALUES = props.NUMBER_OF_VALUES
+  const NUMBER_OF_VALUES = props.NUMBER_OF_VALUES;
 
+  function rootActive() {
+    return rootActivated;
+  }
 
-    
-    let numberLeaves = getNextPowerOfTwo(NUMBER_OF_VALUES);
-    let numberEmpty = numberLeaves - NUMBER_OF_VALUES;
-    let tree = build(NUMBER_OF_VALUES);
+  function isSelected(node) {
+    return selected === node;
+  }
 
-  function rowOfNodes(number, type, level, empty=false) {
+  function isInSelections(node) {
+    return selections.includes(node);
+  }
+
+  let numberLeaves = getNextPowerOfTwo(NUMBER_OF_VALUES);
+  let totalNodes = getNextPowerOfTwo(numberLeaves + 1);
+  let numberEmpty = numberLeaves - NUMBER_OF_VALUES;
+  let tree = build(NUMBER_OF_VALUES);
+
+  function toggleSelected(node) {
+    selected !== node ? setSelected(node) : setSelected(0);
+  }
+
+  useEffect(() => {
+    if (selected !== 0) {
+      setRootActivated(true);
+      let _selections =
+        selected == 4
+          ? [3]
+          : selected == 5
+          ? [2]
+          : selected == 8
+          ? [5, 3]
+          : selected == 9
+          ? [4, 3]
+          : selected == 10
+          ? [7, 2]
+          : selected == 11
+          ? [6, 2]
+          : selected == 16
+          ? [9, 5, 3]
+          : selected == 17
+          ? [8, 5, 3]
+          : selected == 18
+          ? [11, 4, 3]
+          : selected == 19
+          ? [10, 4, 3]
+          : selected == 20
+          ? [13, 7, 2]
+          : selected == 21
+          ? [12, 7, 2]
+          : selected == 22
+          ? [15, 6, 2]
+          : selected == 23
+          ? [14, 6, 2]
+          : [];
+      setSelections(_selections);
+    } else {
+      setRootActivated(false);
+      setSelections([]);
+    }
+  }, [selected]);
+
+  function rowOfNodes(number, type, level, empty = false) {
     //   let leaves = getNextPowerOfTwo(number);
     let row = [];
-    for (let i = 0; i < number; i++) {
+    for (let i = totalNodes; i < totalNodes + number; i++) {
       row.push(
-        <div key={`${type}node${i}`} id={`${type}node${i}`} className="col p-1">
-          <Node idx={i + 1} type={type} empty={empty} level={level} chunkIdx={i} numChunks={NUMBER_OF_VALUES}/>
+        <div
+          onClick={() => toggleSelected(`${i}`)}
+          key={`${type}node${i}`}
+          id={`${type}node${i}`}
+          className={"col p-1"}
+        >
+          <Node
+            idx={i - totalNodes}
+            type={type}
+            empty={empty}
+            level={level}
+            chunkIdx={i - totalNodes}
+            numChunks={NUMBER_OF_VALUES}
+            selected={isSelected(`${i}`)}
+          />
         </div>
       );
     }
     return row;
   }
 
-  function rowOfHashNodes(number, type, level, empty=false) {
+  function rowOfHashNodes(number, type, level, empty = false) {
     //   let leaves = getNextPowerOfTwo(number);
     let row = [];
     for (let i = 0; i < number; i++) {
       row.push(
         <div key={`${type}node${i}`} id={`${type}node${i}`} className="col p-1">
-          <Node idx={i + numberLeaves} type={type} empty={empty} level={level} chunkIdx={i} numChunks={NUMBER_OF_VALUES}/>
+          <Node
+            idx={i + numberLeaves}
+            type={type}
+            empty={empty}
+            level={level}
+            chunkIdx={i}
+            numChunks={NUMBER_OF_VALUES}
+            active={isInSelections(i + number)}
+          />
         </div>
       );
     }
     return row;
   }
 
-  function rowOfTreeNodes(number, type, level, empty=false) {
+  function rowOfTreeNodes(number, type, level, empty = false) {
     //   let leaves = getNextPowerOfTwo(number);
     let row = [];
     for (let i = 0; i < number; i++) {
       row.push(
         <div key={`${type}node${i}`} id={`${type}node${i}`} className="col p-1">
-          <Node idx={i + 2**level} type="" empty={empty} level={level} chunkIdx={i} numChunks={NUMBER_OF_VALUES}/>
+          <Node
+            idx={i + 2 ** level}
+            type=""
+            empty={empty}
+            level={level}
+            chunkIdx={i}
+            numChunks={NUMBER_OF_VALUES}
+            active={isInSelections(i + 2 ** level)}
+          />
         </div>
       );
     }
@@ -66,8 +154,6 @@ export default function BuildVectorTree(props) {
     }
   }
 
-
-
   function getEmpty() {
     return numberEmpty;
   }
@@ -77,7 +163,7 @@ export default function BuildVectorTree(props) {
     for (let i = 0; i < number; i++) {
       empties.push(
         <div id={`emptyvaluenode${i}`} className="col p-1">
-          <Node idx={i + 1} type="EV" empty={true}/>
+          <Node idx={i + 1} type="EV" empty={true} />
         </div>
       );
     }
@@ -95,7 +181,6 @@ export default function BuildVectorTree(props) {
     }
   }
 
-
   function build(number) {
     let tree = [];
     let leaves = getNextPowerOfTwo(number);
@@ -108,7 +193,7 @@ export default function BuildVectorTree(props) {
         className="row row-cols-auto justify-content-around"
       >
         <div className="col p-1">
-          <Node type="R" level='root'/>
+          <Node type="R" level="root" active={rootActive()} />
         </div>
       </div>
     );
@@ -130,8 +215,8 @@ export default function BuildVectorTree(props) {
           id={"hash"}
           className="row row-cols-auto justify-content-around"
         >
-          {rowOfHashNodes(number, "", 'branch')}
-          {rowOfHashNodes(empties, "", 'branch', true)}
+          {rowOfHashNodes(number + empties, "", "branch")}
+          {/* {rowOfHashNodes(empties, "", "branch", true)} */}
         </div>
       );
     }
@@ -141,8 +226,8 @@ export default function BuildVectorTree(props) {
         id={"leaves"}
         className="row row-cols-auto justify-content-around"
       >
-        {rowOfNodes(number, "", 'leaf')}
-        {rowOfNodes(empties, "", 'leaf', true)}
+        {rowOfNodes(number + empties, "", "leaf")}
+        {/* {rowOfNodes(empties, "", "leaf", true)} */}
       </div>
     );
     return tree;
@@ -152,7 +237,5 @@ export default function BuildVectorTree(props) {
     return tree;
   }
 
-  return getTree()
-
-
+  return getTree();
 }

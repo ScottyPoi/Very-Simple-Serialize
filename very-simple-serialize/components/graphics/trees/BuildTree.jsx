@@ -104,8 +104,8 @@ export default function BuildTree(props) {
           id={"hash"}
           className="row row-cols-auto justify-content-around"
         >
-          {rowOfNodes(number, "H", 'branch')}
-          {rowOfNodes(empties, "EH", 'branch', true)}
+          {rowOfNodes(number + empties, "", 'branch')}
+          {/* {rowOfNodes(empties, "EH", 'branch', true)} */}
         </div>
       );
     }
@@ -115,8 +115,8 @@ export default function BuildTree(props) {
         id={"leaves"}
         className="row row-cols-auto justify-content-around"
       >
-        {rowOfNodes(number, "L", 'leaf')}
-        {rowOfNodes(empties, "EL", 'leaf', true)}
+        {rowOfNodes(number + empties, "", 'leaf')}
+        {/* {rowOfNodes(empties, "EL", 'leaf', true)} */}
       </div>
     );
     return tree;

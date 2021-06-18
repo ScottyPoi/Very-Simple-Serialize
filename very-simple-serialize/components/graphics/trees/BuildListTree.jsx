@@ -1,26 +1,75 @@
 import Node from "../nodes/Node";
 import { useEffect, useState } from "react";
-import styles from '../styles/NodeStyles.module.css'
+import styles from "../styles/NodeStyles.module.css";
 
 export default function BuildtListTree(props) {
+  const chunks = props.chunks;
+  const length = props.length;
+  const valuesPerChunk = props.valuesPerChunk;
+  let activeChunk = Math.floor(length / valuesPerChunk) + 1;
 
-    const chunks = props.chunks;
-    const length = props.length;
-    const valuesPerChunk = props.valuesPerChunk
-    let activeChunk = Math.floor((length)/valuesPerChunk) + 1
+  let numberLeaves = getNextPowerOfTwo(chunks);
+  let totalNodes = getNextPowerOfTwo(chunks+1)
+  let numberEmpty = numberLeaves - chunks;
+  let tree = build(chunks);
 
-    
-    let numberLeaves = getNextPowerOfTwo(chunks);
-    let numberEmpty = numberLeaves - chunks;
-    let tree = build(chunks);
-
-  function rowOfNodes(number, type, level, empty=false) {
+  function rowOfNodes(number, type, level, empty = false) {
     //   let leaves = getNextPowerOfTwo(number);
     let row = [];
     for (let i = 0; i < number; i++) {
       row.push(
         <div key={`${type}node${i}`} id={`${type}node${i}`} className="col p-1">
-          <Node idx={i + 1} type={type} empty={empty} level={level} chunkIdx={i} numChunks={activeChunk} limit={chunks}/>
+          <Node
+            idx={i + 1}
+            type={type}
+            empty={empty}
+            level={level}
+            chunkIdx={i}
+            numChunks={activeChunk}
+            limit={chunks}
+          />
+        </div>
+      );
+    }
+    return row;
+  }
+
+  function rowOfHashNodes(number, type, level, empty = false) {
+    //   let leaves = getNextPowerOfTwo(number);
+    let row = [];
+    for (let i = 0; i < number; i++) {
+      row.push(
+        <div key={`${type}node${i}`} id={`${type}node${i}`} className="col p-1">
+          <Node
+            idx={i + 1}
+            type={type}
+            empty={empty}
+            level={level}
+            chunkIdx={i}
+            numChunks={activeChunk}
+            limit={chunks}
+          />
+        </div>
+      );
+    }
+    return row;
+  }
+
+  function rowOfTreeNodes(number, type, level, empty = false) {
+    //   let leaves = getNextPowerOfTwo(number);
+    let row = [];
+    for (let i = 0; i < number; i++) {
+      row.push(
+        <div key={`${type}node${i}`} id={`${type}node${i}`} className="col p-1">
+          <Node
+            idx={i + 1}
+            type={type}
+            empty={empty}
+            level={level}
+            chunkIdx={i}
+            numChunks={activeChunk}
+            limit={chunks}
+          />
         </div>
       );
     }
@@ -42,8 +91,6 @@ export default function BuildtListTree(props) {
     }
   }
 
-
-
   function getEmpty() {
     return numberEmpty;
   }
@@ -52,8 +99,12 @@ export default function BuildtListTree(props) {
     let empties = [];
     for (let i = 0; i < number; i++) {
       empties.push(
-        <div id={`emptyvaluenode${i}`} key={`emptyvaluenode${i}`} className="col p-1">
-          <Node idx={i + 1} type="EV" empty={true}/>
+        <div
+          id={`emptyvaluenode${i}`}
+          key={`emptyvaluenode${i}`}
+          className="col p-1"
+        >
+          <Node idx={i + 1} type="EV" empty={true} />
         </div>
       );
     }
@@ -71,28 +122,32 @@ export default function BuildtListTree(props) {
     }
   }
 
-
   function build(number) {
     let tree = [];
     let leaves = getNextPowerOfTwo(number);
     let empties = leaves - number;
     let levels = numberOfLevels(leaves);
-    tree.push(<div
+    tree.push(
+      <div
         key={`merkleroot`}
         id={`merkleroot`}
         className="row row-cols-auto justify-content-evenly"
-    >
-                <div className="col p-1">
-             <div style={{display: "inline-block", width:"25px", height: "auto"}} />
+      >
+        <div className="col p-1">
+          <div
+            style={{ display: "inline-block", width: "25px", height: "auto" }}
+          />
         </div>
         <div className="col p-1">
-        <div style={{display: "inline-block", width:"25px", height: "auto"}} />
+          <div
+            style={{ display: "inline-block", width: "25px", height: "auto" }}
+          />
         </div>
         <div className="col p-1">
-        <Node type="M" level='merkle'/>
-
-          </div>
-    </div>)
+          <Node type="M" level="merkle" />
+        </div>
+      </div>
+    );
     tree.push(
       <div
         key={`hashtreeroot`}
@@ -100,21 +155,25 @@ export default function BuildtListTree(props) {
         className="row row-cols-auto justify-content-between"
       >
         <div className="col p-1">
-        <div style={{display: "inline-block", width:"25px", height: "auto"}} />
+          <div
+            style={{ display: "inline-block", width: "25px", height: "auto" }}
+          />
         </div>
         <div className="col p-1">
-        <div style={{display: "inline-block", width:"25px", height: "auto"}} />
+          <div
+            style={{ display: "inline-block", width: "25px", height: "auto" }}
+          />
         </div>
         <div className="col p-1">
-        <Node type="R" level='root'/>
-
-          </div>
-          <div className="col p-1">
-          <div style={{display: "inline-block", width:"25px", height: "auto"}} />
+          <Node type="R" level="root" />
         </div>
-          <div className="col p-1">
-          <Node type={props.limit} level='length'/>
-
+        <div className="col p-1">
+          <div
+            style={{ display: "inline-block", width: "25px", height: "auto" }}
+          />
+        </div>
+        <div className="col p-1">
+          <Node type={props.limit} level="length" />
         </div>
       </div>
     );
@@ -125,7 +184,7 @@ export default function BuildtListTree(props) {
           id={`treelevel:${i}`}
           className="row row-cols-auto justify-content-around"
         >
-          {rowOfNodes(2 ** i, `T${i - 1}`)}
+          {rowOfTreeNodes(2 ** i, `T${i - 1}`)}
         </div>
       );
     }
@@ -136,8 +195,8 @@ export default function BuildtListTree(props) {
           id={"hash"}
           className="row row-cols-auto justify-content-around"
         >
-          {rowOfNodes(number, "H", 'branch')}
-          {rowOfNodes(empties, "EH", 'branch', true)}
+          {rowOfHashNodes(number + empties, "H", "branch")}
+          {/* {rowOfNodes(empties, "EH", 'branch', true)} */}
         </div>
       );
     }
@@ -147,8 +206,8 @@ export default function BuildtListTree(props) {
         id={"leaves"}
         className="row row-cols-auto justify-content-around"
       >
-        {rowOfNodes(number, "L", 'leaf')}
-        {rowOfNodes(empties, "EL", 'leaf', true)}
+        {rowOfNodes(number + empties, "L", "leaf")}
+        {/* {rowOfNodes(empties, "EL", 'leaf', true)} */}
       </div>
     );
     return tree;
@@ -158,7 +217,5 @@ export default function BuildtListTree(props) {
     return tree;
   }
 
-  return getTree()
-
-
+  return getTree();
 }

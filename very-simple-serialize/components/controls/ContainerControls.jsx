@@ -1,240 +1,185 @@
 import { useEffect, useState } from "react";
-import GetRandomValue from '../math/GetRandomValue';
-export default function ContainerControls(props) {
-  const [length, setLength] = useState("1");
-  const [values, setValues] = useState([["Boolean", true]]);
-  const [types, setTypes] = useState({
-    "Uint8": false,
-    "Boolean": true,
-    "Uint16": false,
-    "Uint32": false,
-    "Uint64": false,
-    "Uint128": false,
-    "Uint256": false,
-    "BitVector": false,
-    "BitList": false,
-    "Vector": false,
-    "List": false,
-    "Container": false,
-    "Union": false,
-  });
-  const [activeTypes, setActiveTypes] = useState(["Boolean"]);
+import GetRandomValue from "../math/GetRandomValue";
+import DisplayContainer from "../display/DisplayContainer";
+import NumberUintType from "../../ssz/src/types/basic/NumberUintType";
+import BuildHashTree from "../graphics/trees/BuildHashTree";
 
+const examples = [
+  {
+    BeaconBlockHeader: {
+      slot: { type: "Uint64", value: "3" },
+      proposerIndex: { type: "Uint64", value: "2" },
+      parentRoot: {
+        type: "Root",
+        value:
+          "0x41485c23d68c1f592677d77c034ad2256f88b1220af2e105fa966baeae9a87b9",
+      },
+      stateRoot: {
+        type: "Root",
+        value:
+          "0xcbcd6d7f1f0bde6c8ad85efc3941ed5fc0f1663f1adf03209c07e471186adaf8",
+      },
+      bodyRoot: {
+        type: "Root",
+        value:
+          "0xeaeb8b1728c07a9fb10ad2b61aa2ce8f1b4a17dfab81db49a9729ad1cdbbac40",
+      },
+    },
+  },
+];
 
-
-  useEffect(() => {
-      let typeList = types
-      let active = []
-      for (let type in typeList) {
-        if (typeList[type] === true) {
-            active.push(type)
-        }}
-        setActiveTypes(active);
-    }, [length])
-
-  useEffect(() => {
-    let len = length;
-    let numTypes = activeTypes.length;
-    let values = [];
-    for (let i = 0; i < len; i++) {
-        let idx = i % numTypes
-        let type = activeTypes[idx]
-        let val = GetRandomValue(type);
-      values.push([type, val]);
+export function getNextPowerOfTwo(number) {
+  if (number <= 1) {
+    return 1;
+  } else {
+    let i = 2;
+    while (i < Infinity) {
+      if (number <= i) {
+        return i;
+      } else {
+        i *= 2;
+      }
     }
-    setValues(values);
-  }, [length]);
-
-  const include = (value) => {
-    let includes = types;
-    let typ = value;
-    includes[typ] === true ? (includes[typ] = false) : (includes[typ] = true);
-    return setTypes(includes);
-    
   }
-
-  return (
-    <>
-      <div>ContainerControls</div>
-      <div>
-        Includes:{" "}
-        {activeTypes.map((type) => {
-            return `${type}, `;
-        })}
-      </div>
-      <div className="form-check form-switch">
-        <input
-          className="form-check-input"
-          type="checkbox"
-          id="Boolean"
-          value="Boolean"
-          onClick={(e) => include(e.target.value)}
-          defaultChecked
-        />
-        <label className="form-check-label" for="Boolean">
-          Boolean
-        </label>
-        <br />
-        <input
-          className="form-check-input"
-          type="checkbox"
-          id="Uint8"
-          value="Uint8"
-          onClick={(e) => include(e.target.value)}
-        />
-        <label className="form-check-label" for="Uint8">
-          Uint8
-        </label>
-        <br />
-        <input
-          className="form-check-input"
-          type="checkbox"
-          onClick={(e) => include(e.target.value)}
-          value="Uint16"
-          id="Uint16"
-        />
-        <label className="form-check-label" for="Uint16">
-          Uint16
-        </label>
-        <br />
-        <input
-          className="form-check-input"
-          type="checkbox"
-          id="Uint32"
-          value="Uint32"
-          onClick={(e) => include(e.target.value)}
-        />
-        <label className="form-check-label" for="Uint32">
-          Uint32
-        </label>
-        <br />
-        <input
-          className="form-check-input"
-          type="checkbox"
-          id="Uint64"
-          value="Uint64"
-          onClick={(e) => include(e.target.value)}
-        />
-        <label className="form-check-label" for="Uint64">
-          Uint64
-        </label>
-        <br />
-        <input
-          className="form-check-input"
-          type="checkbox"
-          id="Uint128"
-          value="Uint128"
-          onClick={(e) => include(e.target.value)}
-        />
-        <label className="form-check-label" for="Uint128">
-          Uint128
-        </label>
-        <br />
-        <input
-          className="form-check-input"
-          type="checkbox"
-          id="Uint256"
-          value="Uint256"
-          onClick={(e) => include(e.target.value)}
-        />
-        <label className="form-check-label" for="Uint256">
-          Uint256
-        </label>
-        <br />
-        <input
-          className="form-check-input"
-          type="checkbox"
-          id="BitVector"
-          value="BitVector"
-          onClick={(e) => include(e.target.value)}
-        />
-        <label className="form-check-label" for="BitVector">
-          BitVector
-        </label>
-        <br />
-        <input
-          className="form-check-input"
-          type="checkbox"
-          id="BitList"
-          value="BitList"
-          onClick={(e) => include(e.target.value)}
-        />
-        <label className="form-check-label" for="BitList">
-          BitList
-        </label>
-        <br />
-        <input
-          className="form-check-input"
-          type="checkbox"
-          id="Vector"
-          value="Vector"
-          onClick={(e) => include(e.target.value)}
-        />
-        <label className="form-check-label" for="Vector">
-          Vector
-        </label>
-        <br />
-        <input
-          className="form-check-input"
-          type="checkbox"
-          id="List"
-          value="List"
-          onClick={(e) => include(e.target.value)}
-        />
-        <label className="form-check-label" for="List">
-          List
-        </label>
-        <br />
-        <input
-          className="form-check-input"
-          type="checkbox"
-          id="Container"
-          value="Container"
-          onClick={(e) => include(e.target.value)}
-        />
-        <label className="form-check-label" for="Container">
-          Container
-        </label>
-        <br />
-        <input
-          className="form-check-input"
-          type="checkbox"
-          id="Union"
-          value="Union"
-          onClick={(e) => include(e.target.value)}
-        />
-        <label className="form-check-label" for="Union">
-          Union
-        </label>
-        <br />
-      </div>
-
-      <div>Length: {length}</div>
-      <input
-        value={length}
-        type="number"
-        min={1}
-        onChange={(e) => setLength(e.target.value)}
-      />
-      <br />
-      <br />
-      <p>
-        obj: Container[ <br />
-        {values.map((value, idx) => {
-          return (
-            <>
-              {`(val${idx}: ${value[1][0]}), `}
-              <br />
-            </>
-          );
-        })}
-        ] = [ <br />{" "}
-        {values.map((value, idx) => {
-          return <p>{`${value[1][1]}, `}</p>;
-        })}
-        ]
-      </p>
-    </>
-  );
 }
 
+export default function ContainerControls(props) {
+  const [example, setExample] = useState(examples[0].BeaconBlockHeader);
+  const [length, setLength] = useState(5);
+  const [demoTree, setDemoTree] = useState(<BuildHashTree NUMBER_OF_VALUES={5} />);
+  const [leaves, setLeaves] = useState(8)
+
+  useEffect(() => {
+    setLength(Object.keys(example).length)
+    setDemoTree(<BuildHashTree NUMBER_OF_VALUES={length} />)
+    setLeaves(getNextPowerOfTwo(length))
+  }, [example])
+
+  return (
+    <div className="row">
+      <div className="col-6">
+        <div className='row'>
+                  <DisplayContainer example={example} length={length} />
+        </div>
+      </div>
+      <div className="col">
+        <div className="row justify-content-center ">
+          <div className="col">
+            <div className="card">
+              <div className="card-body" style={{ textAlign: "center" }}>
+                <h4 className="card-title">Container</h4>
+                <h4 className="card-title">
+                  Example: {Object.keys(examples[0])}
+                </h4>
+
+                <div className="card-text">
+                  <div className="container">
+                    <div className="row" style={{ border: "solid black" }}>
+                      <div className="col text-start">
+                        <span>
+                          {`type BeaconBlockHeader = {`} <br />
+                          slot: Uint64; <br />
+                          proposerIndex: Uint64; <br />
+                          parentRoot: Root;
+                          <br />
+                          stateRoot: Root;
+                          <br />
+                          bodyRoot: Root;
+                          <br />
+                          {`}`}
+                        </span>
+                      </div>
+                      <div className="col">
+                        <div className="d-flex flex-row text-break text-start">
+                          <div className="flex-col">
+                            <div className="row">
+                              let x: BeaconBlockHeader = {`{`}
+                            </div>
+                            <div className="row" style={{color: "blue"}}>
+                              <div className="col">slot:</div>
+                              <div className="col">3</div>
+                            </div>
+                            <div className="row" style={{color: "magenta"}}>
+                              <div className="col">proposerIndex:</div>
+                              <div className="col">2</div>
+                            </div>
+                            <div className="row" style={{color: "blue"}}>
+                              <div className="col">parentRoot:</div>
+                              <div className="col">
+                                0x41485c23d68c1f592677d77c034ad2256f88b1220af2e105fa966baeae9a87b9;
+                              </div>
+                            </div>
+                            <div className="row" style={{color: "magenta"}}>
+                              <div className="col">stateRoot:</div>
+                              <div className="col">
+                                0xcbcd6d7f1f0bde6c8ad85efc3941ed5fc0f1663f1adf03209c07e471186adaf8;
+                              </div>
+                            </div>
+                            <div className="row" style={{color: "green"}}>
+                              <div className="col">bodyRoot:</div>
+                              <div className="col">
+                                0xeaeb8b1728c07a9fb10ad2b61aa2ce8f1b4a17dfab81db49a9729ad1cdbbac40;
+                              </div>
+                            </div>
+                            <div className="row">
+                              {`}`}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="row justify-content-center text-break">
+                      <h5>
+                        MerkleTree - Depth 4
+                      </h5>
+                      <button
+                        className="btn btn-primary"
+                        type="button"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#merkleTree"
+                        aria-controls="merkleTree"
+                      >
+                        Show Merkle Tree Details
+                      </button>
+
+                      <div
+                        className="offcanvas offcanvas-end"
+                        tabIndex="-1"
+                        id="merkleTree"
+                        aria-labelledby="merkleTreeLabel"
+                      >
+                        <div className="offcanvas-header">
+                          <h5 id="merkleTreeLabel">Merkle Tree Details</h5>
+                          <button
+                            type="button"
+                            className="btn-close text-reset"
+                            data-bs-dismiss="offcanvas"
+                            aria-label="Close"
+                            onClick={() =>
+                              setDemoTree(
+                                <BuildHashTree NUMBER_OF_VALUES={5} />
+                              )
+                            }
+                          ></button>
+                        </div>
+                        <div className="offcanvas-body">{demoTree}</div>
+                      </div>
+                    </div>
+
+                    <div className="row justify-content-center text-break">
+                      Here the "leaves" of the Merkle tree each contain one serialized basic object <br/>
+                      Or the Bytes32 {`<{Root}>`} of a composite object<br/>
+                      
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
