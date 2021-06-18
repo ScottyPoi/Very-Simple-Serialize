@@ -9,11 +9,9 @@ export default function TypeSelect({ ...props }) {
 
 
   return (
-    <div>
-      <ul className="nav nav-tabs">
-            <li className='nav-item'><button  onClick={() => selectType("Basic")}>Basic</button></li>
-            <li className='nav-item'><button  onClick={() => selectType("Composite")}>Composite</button></li>
-      </ul>
+    <div className='button-group'>
+<button  onClick={() => selectType("Basic")}>Basic</button>
+<button  onClick={() => selectType("Composite")}>Composite</button>
 
 </div>
   );

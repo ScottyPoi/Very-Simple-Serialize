@@ -9,15 +9,9 @@ export default function Display() {
   return (
     <div className="container">
       <div className="row">
-        <div className="col">
-          <div className="row">Controls</div>
         <Controls
         selectType={selectType}
         type={type} />
-        </div>
-        <div className="col">Structural</div>
-        <div className="col">Tree</div>
-        <div className="col">Serialized</div>
       </div>
     </div>
   );

@@ -1,14 +1,16 @@
-import BitListText from '../graphics/text/BitListText'
+import ListText from '../graphics/text/ListText'
 import styles from '../graphics/styles/UintText.module.css';
 import BuildListTree from '../graphics/trees/BuildListTree'
 import { serialize } from '../../ssz/src/types/basic/NumberUintType';
-export default function DisplayBitList(props) {
+export default function DisplayList(props) {
 let serialized = props.serialized;
+let valuesPerChunk = props.valuesPerChunk;
 let limit = props.limit;
 let values = props.values;
+let size = props.size;
 let length = props.length;
 let numEmpty = props.numEmpty;
-let numberOfChunks = serialized.length;
+let numberOfChunks = Math.floor((limit)/valuesPerChunk);
 let numberOfLeaves = getNextPowerOfTwo(numberOfChunks)
 let emptyLeaves = numberOfLeaves - numberOfChunks
 // let emp = new Array(numEmpty);
@@ -44,16 +46,20 @@ function chunks() {
 
 
 
-    let _output =  `${toHexString(chunk)}`
+    let _output =  toHexString(chunk)
 
     return (
-      <div key={`chunk${idx}`} className='col' key={idx} id={`chunk${idx}`}>
-           <BitListText
+       
+      <div className='col' key={idx} id={`chunk${idx}`}>
+           <ListText
             chunk={_output}
             limit={limit}
             length={length}
             idx={idx}
             chunk_count={numberOfChunks}
+            valuesPerChunk={valuesPerChunk}
+            numberOfLeaves={numberOfLeaves}
+        size={props.size}
           /> 
       </div>
     );
@@ -61,7 +67,7 @@ function chunks() {
 
   for (let i=0; i<emptyLeaves; i++) {
     chunks.push(
-      <div key={`Echunk${i}`} className='col' style={{ border: "solid gray"}}>EMPTY</div>
+      <div key={`empty${i}`} className='col' style={{ border: "solid gray"}}>EMPTY</div>
     )
   }
 
@@ -75,14 +81,14 @@ function emptyVal(number) {
 }
 
 function _values() {
-  let numChunks = serialized.length;
+  let numChunks = numberOfChunks;
   let valueChunks = [];
   for (let i = 0; i < numChunks; i++) {
-    let startIdx = i * 256;
+    let startIdx = i * valuesPerChunk;
     let endIdx =
-      startIdx + 255 > serialized.length
-        ? startIdx + 256
-        : serialized.length - 1;
+      startIdx + valuesPerChunk - 1 > numberOfChunks
+        ? startIdx + valuesPerChunk
+        : numberOfChunks;
     valueChunks.push(values.slice(startIdx, endIdx));
   }
   return valueChunks;
@@ -109,8 +115,10 @@ function color(color) {
           <div className='col-10'>
       <BuildListTree 
       limit={limit}
-      chunks={serialized.length}
+      chunks={numberOfChunks}
       length={length}
+      valuesPerChunk={valuesPerChunk}
+      numberofLeaves={numberOfLeaves}
       
       />
       
@@ -169,11 +177,11 @@ function color(color) {
           <span>
         {_values().map((valueChunk, idx) => {
 
-              let valueColor =  idx == Math.floor(length/256) ? green : idx % 2 == 0 ? blue : magenta
+              let valueColor =  idx == Math.floor(length/valuesPerChunk) ? green : idx % 2 == 0 ? blue : magenta
 
               let vColor = color(valueColor)
               return (
-                <span key={`valuechunk${idx}`} style={{ color: vColor}}>
+                <span key={idx} style={{ color: vColor}}>
                   {valueChunk.map((value) => {
                     return `${value}, `;
                   })}
@@ -187,7 +195,6 @@ function color(color) {
         })}</span>
         </span>
         </div>
-        {`]`}
         </p>
       </div>
       </div>
